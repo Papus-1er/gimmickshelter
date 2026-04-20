@@ -22,7 +22,7 @@ get_header() ?>
                 'post_type' => array('post', 'anachroniques', 'dates', 'playlists'),
                 'posts_per_page' => 9,
                 'orderby' => 'date',
-                'orderby' => 'DESC',
+                'order' => 'DESC',
                 'post__not_in' => get_option('sticky_posts'),
             );
             $query = new WP_Query($args);
