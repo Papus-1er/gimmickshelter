@@ -25,7 +25,7 @@
         </nav>
     </div>
     <div class="container-fluid bgc-1">
-        
+        Test
         <div class="row">
             <div class="col-lg-2">
                 <div class="gs-logo d-none d-lg-block">

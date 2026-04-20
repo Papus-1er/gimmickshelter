@@ -1,0 +1,22 @@
+name: Deploy WordPress Theme to OVH
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy via FTP to OVH
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ftp.cluster130.hosting.ovh.net
+          username: gimmicn
+          password: Penpaany94100
+          server-dir: /www/wp-content/themes/gimmickshelter/
