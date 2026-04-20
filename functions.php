@@ -234,7 +234,6 @@ add_action('widgets_init', 'gimmickshelter_register_widget');
 
 // Comments 
 add_filter('comment_form_default_fields', function ($fields) {
-    var_dump($fields);
     $fields['email'] = '<div class="form-group"><label for="email">Votre email*</label><input class="form-control" name="email" placeholder="prénom.nom@example.com" id="email" required></div>';
     $fields['author'] = '<div class="form-group"><label for="name">Votre nom*</label><input class="form-control" name="name" id="name" required></div>'; 
     $fields['url'] = '';

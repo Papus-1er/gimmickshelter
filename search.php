@@ -40,7 +40,7 @@ get_header() ?>
                                 <div class="gs-card-img-overlay d-flex align-items-end justify-content-center text-left">
                                     <div class="gs-overlay-text p-3">
                                         <h2 class="card-title c-3 mb-2 d-flex justify-content-center"><?php the_title() ?></h2>
-                                        <h3 class="card-subtitle c-3 mt-2 mb-2 d-flex justify-content-center"><?= get_field('subtitle_post') ?></h3>
+                                        <h3 class="card-subtitle c-3 mt-2 mb-2 d-flex justify-content-center"><?php echo wp_kses_post(get_field('subtitle_post')); ?></h3>
                                     </div>
                                 </div>
                                 <div class="card-label">
