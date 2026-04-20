@@ -168,8 +168,7 @@ function gimmickshelter_init() {
         ],
         'public'            => true, 
         'menu_position'     => 6,
-        'menu_icon'         => 'data:image/svg+xml;base64,' . base64_encode('<svg width="20" height="20" data-prefix="fas" data-icon="album-collection" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-album-collection fa-w-16 fa-3x"><path fill="currentColor" d="M496 104a24 24 0 0 0-24-24H40a24 24 0 0 0-24 24v24h480zm-16-80a24 24 0 0 0-24-24H56a24 24 0 0 0-24 24v24h448zM256 325.65c-16.63 0-30 9.93-29.86 22.09s13.5 21.72 29.86 21.72 29.73-9.68 29.87-21.72-13.23-22.09-29.87-22.09zM480 160H32A32 32 0 0 0 .13 194.9l26.19 288A32 32 0 0 0 58.18 512h395.64a32 32 0 0 0 31.86-29.1l26.19-288A32 32 0 0 0 480 160zM256 472.89c-94.26 0-174.39-54.53-179.21-125.15C71.71 273.1 151.82 209.4 256 209.4s184.29 63.7 179.21 138.34c-4.82 70.63-84.95 125.15-179.21 125.15z" class=""></path></svg>'),  
-        'supports'          => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments' ),
+        'menu_icon'         => 'data:image/svg+xml;base64,' . base64_encode('<svg width="20" height="20" data-prefix="fas" data-icon="album-collection" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-album-collection fa-w-16 fa-3x"><path fill="currentColor" d="M496 104a24 24 0 0 0-24-24H40a24 24 0 0 0-24 24v24h480zm-16-80a24 24 0 0 0-24-24H56a24 24 0 0 0-24 24v24h448zm0 144H32A32 32 0 0 0 .13 194.9l26.19 288A32 32 0 0 0 58.18 512h395.64a32 32 0 0 0 31.86-29.1l26.19-288A32 32 0 0 0 480 160zm-224 312.89c-94.26 0-174.39-54.53-179.21-125.15C71.71 273.1 151.82 209.4 256 209.4s184.29 63.7 179.21 138.34c-4.82 70.63-84.95 125.15-179.21 125.15z" class=""></path></svg>'),        'supports'          => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments' ),
         'show_in_rest'      => true,
         'has_archive'       => true,
         'taxonomies' => ['post_tag'],
@@ -183,7 +182,7 @@ function gimmickshelter_init() {
         ],
         'public'            => true, 
         'menu_position'     => 7,
-        'menu_icon'         => 'data:image/svg+xml;base64,' . base64_encode('<svg width="20" height="20" data-prefix="fas" data-icon="cassette-tape" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-cassette-tape fa-w-16 fa-2x"><path fill="currentColor" d="M464 63H48a48 48 0 0 0-48 48v288a48 48 0 0 0 48 48h32l48-96h256l48 96h32a48 48 0 0 0 48-48V111a48 48 0 0 0-48-48zM128 255a32 32 0 1 1 32-32 32 32 0 0 1-32 32zm182.78 0H201.22a78.91 78.91 0 0 0 0-64h109.56a78.91 78.91 0 0 0 0 64zm73.22 0a32 32 0 1 1 32-32 32 32 0 0 1-32 32zM147.78 383l-32 64h280.44l-32-64z" class=""></path></svg>'),  
+        'menu_icon'         => 'data:image/svg+xml;base64,' . base64_encode('<svg width="20" height="20" data-prefix="fas" data-icon="cassette-tape" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="svg-inline--fa fa-cassette-tape fa-w-16 fa-2x"><path fill="currentColor" d="M464 63H48a48 48 0 0 0-48 48v288a48 48 0 0 0 48 48h416a48 48 0 0 0 48-48V111a48 48 0 0 0-48-48zm-32-80a24 24 0 0 0-24-24H56a24 24 0 0 0-24 24v24h448zm0 144H32A32 32 0 0 0 .13 194.9l26.19 288A32 32 0 0 0 58.18 512h395.64a32 32 0 0 0 31.86-29.1l26.19-288A32 32 0 0 0 480 160zm-224 312.89c-94.26 0-174.39-54.53-179.21-125.15C71.71 273.1 151.82 209.4 256 209.4s184.29 63.7 179.21 138.34c-4.82 70.63-84.95 125.15-179.21 125.15zM128 255a32 32 0 1 1 32-32 32 32 0 0 1-32 32zm182.78 0H201.22a78.91 78.91 0 0 0 0-64h109.56a78.91 78.91 0 0 0 0 64zm73.22 0a32 32 0 1 1 32-32 32 32 0 0 1-32 32zM147.78 383l-32 64h280.44l-32-64z" class=""></path></svg>'),
         'supports'          => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments' ),
         'show_in_rest'      => true,
         'has_archive'       => true,
@@ -198,10 +197,7 @@ function gimmickshelter_init() {
         ],
         'public'            => true, 
         'menu_position'     => 8,
-        'menu_icon'         => 'data:image/svg+xml;base64,' . base64_encode('<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-date" viewBox="0 0 16 16">
-        <path d="M6.445 11.688V6.354h-.633A13 13 0 0 0 4.5 7.16v.695c.375-.257.969-.62 1.258-.777h.012v4.61zm1.188-1.305c.047.64.594 1.406 1.703 1.406 1.258 0 2-1.066 2-2.871 0-1.934-.781-2.668-1.953-2.668-.926 0-1.797.672-1.797 1.809 0 1.16.824 1.77 1.676 1.77.746 0 1.23-.376 1.383-.79h.027c-.004 1.316-.461 2.164-1.305 2.164-.664 0-1.008-.45-1.05-.82zm2.953-2.317c0 .696-.559 1.18-1.184 1.18-.601 0-1.144-.383-1.144-1.2 0-.823.582-1.21 1.168-1.21.633 0 1.16.398 1.16 1.23"/>
-        <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/>
-      </svg>'),  
+        'menu_icon'         => 'data:image/svg+xml;base64,' . base64_encode('<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-date" viewBox="0 0 16 16"><path d="M6.445 11.688V6.354h-.633A13 13 0 0 0 4.5 7.16v.695c.375-.257.969-.62 1.258-.777h.012v4.61zm1.188-1.305c.047.64.594 1.406 1.703 1.406 1.258 0 2-1.066 2-2.871 0-1.934-.781-2.668-1.953-2.668-.926 0-1.797.672-1.797 1.809 0 1.16.824 1.77 1.676 1.77.746 0 1.23-.376 1.383-.79h.027c-.004 1.316-.461 2.164-1.305 2.164-.664 0-1.008-.45-1.05-.82zm2.953-2.317c0 .696-.559 1.18-1.184 1.18-.601 0-1.144-.383-1.144-1.2 0-.823.582-1.21 1.168-1.21.633 0 1.16.398 1.16 1.23"/><path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5M1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4z"/></svg>'), 
         'supports'          => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments' ),
         'show_in_rest'      => true,
         'has_archive'       => true,
