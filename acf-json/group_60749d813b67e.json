@@ -1,0 +1,159 @@
+{
+    "key": "group_60749d813b67e",
+    "title": "Anachroniques personnalisation",
+    "fields": [
+        {
+            "key": "field_60749d91f97ab",
+            "label": "Labels",
+            "name": "labels",
+            "type": "text",
+            "instructions": "Labels de l'anachronique (affiché sous le titre)",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_60749e0e992db",
+            "label": "Note Générale",
+            "name": "note_generale",
+            "type": "number",
+            "instructions": "Note générale de l'album (sur 5)",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "min": 0,
+            "max": 5,
+            "step": ""
+        },
+        {
+            "key": "field_60749e54992dc",
+            "label": "Genre",
+            "name": "genre",
+            "type": "text",
+            "instructions": "Genre de l'album",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_60749f008d52c",
+            "label": "Best tracks",
+            "name": "best_tracks",
+            "type": "text",
+            "instructions": "Best tracks de l'album",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_60749e63992dd",
+            "label": "Où les écouter ?",
+            "name": "ou_les_ecouter",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_60749e7d992de",
+            "label": "Prochain concert",
+            "name": "prochain_concert",
+            "type": "text",
+            "instructions": "Information sur prochain concert",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        },
+        {
+            "key": "field_608b03776a972",
+            "label": "Album spotify",
+            "name": "album_spotify",
+            "type": "text",
+            "instructions": "Ajouter l'HTML personnalisé de l'album sur spotify",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "placeholder": "",
+            "prepend": "",
+            "append": "",
+            "maxlength": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "post_type",
+                "operator": "==",
+                "value": "anachroniques"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "modified": 1619723208
+}
