@@ -25,7 +25,6 @@
     <link rel="icon" type="image/png" sizes="16x16" href="<?php echo get_template_directory_uri(); ?>/img/favicon/favicon-16x16.png">
     <link rel="manifest" href="<?php echo get_template_directory_uri(); ?>/img/favicon/manifest.json">
     <meta name="theme-color" content="#ffffff">
-    <meta name="description" content="<meta name="description" content="<?php echo esc_attr($description); ?>">
     <meta name="robots" content="index, follow" />
     <meta name="author" content="Gimmick Shelter"/>
     <meta name="country" content="FR"/>
