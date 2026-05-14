@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proposal — Hero : Artiste / Album / Label · Gimmick Shelter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+
+    /* ── RESET & BASE ─────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color1: #E81F1F;
+      --color2: #000B29;
+      --color3: #FFFFFF;
+      --color4: #000000;
+      --color5: #6D6D64;
+      --gs-nav-height: 52px;
+      --hero-surface: #0c0c10;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #0a0a0d;
+      color: var(--color3);
+    }
+
+    /* ── LABELS DE SECTION ─────────────────────────────── */
+    .page-header {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 2rem 1.5rem;
+    }
+    .page-header__title {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.4rem;
+      color: var(--color1);
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      margin-bottom: .5rem;
+    }
+    .page-header__sub {
+      font-size: .8rem;
+      color: rgba(255,255,255,.4);
+      line-height: 1.6;
+    }
+
+    /* ── VARIANT LABEL ─────────────────────────────────── */
+    .variant-label {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3.5rem 2rem .75rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .variant-label__num {
+      font-family: 'Anton', sans-serif;
+      font-size: 3rem;
+      color: rgba(232,31,31,.15);
+      line-height: 1;
+    }
+    .variant-label__text h2 {
+      font-family: 'Anton', sans-serif;
+      font-size: 1rem;
+      color: var(--color1);
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+    .variant-label__text p {
+      font-size: .78rem;
+      color: rgba(255,255,255,.4);
+      margin-top: .25rem;
+    }
+
+    /* ── DIVIDER ───────────────────────────────────────── */
+    .divider {
+      max-width: 1200px;
+      margin: 0 auto;
+      height: 1px;
+      background: rgba(255,255,255,.06);
+    }
+
+    /* ── FAUX HEADER ───────────────────────────────────── */
+    .fake-nav {
+      height: var(--gs-nav-height);
+      background: var(--color4);
+      display: flex;
+      align-items: center;
+      padding: 0 2rem;
+      gap: 2rem;
+      font-size: .85rem;
+      color: rgba(255,255,255,.5);
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .fake-nav span { color: var(--color1); font-weight: 700; }
+    .fake-nav .active::after {
+      content: '';
+      display: block;
+      height: 2px;
+      background: var(--color1);
+      margin-top: 2px;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       HERO — BASE
+    ══════════════════════════════════════════════════════ */
+    .an-hero {
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      background: var(--hero-surface);
+      overflow: hidden;
+      min-height: min(85vh, 680px);
+    }
+    .an-hero__bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .an-hero__bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: blur(6px) saturate(.6) brightness(.45);
+      transform: scale(1.06);
+    }
+    .an-hero__overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(
+        to top,
+        var(--color2) 0%,
+        rgba(0,11,41,.75) 45%,
+        rgba(0,0,0,.3) 100%
+      );
+    }
+    .an-hero__grain {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      opacity: .04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 200px;
+      pointer-events: none;
+    }
+    .an-hero__divider {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(232,31,31,.45) 20%, rgba(232,31,31,.45) 80%, transparent);
+      z-index: 3;
+    }
+    .an-hero__inner {
+      position: relative;
+      z-index: 3;
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 2rem 3.5rem;
+    }
+    .an-hero__layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 3rem;
+      align-items: flex-end;
+    }
+    .an-hero__cover {
+      width: 260px;
+      height: 260px;
+      object-fit: cover;
+      display: block;
+      box-shadow: 0 20px 60px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.08);
+    }
+    .an-hero__info {
+      display: flex;
+      flex-direction: column;
+      gap: .8rem;
+      padding-bottom: .25rem;
+    }
+
+    /* Pills */
+    .an-hero__meta { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .an-hero__pill {
+      display: inline-block; padding: .22rem .65rem;
+      font-size: .68rem; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; background: var(--color1); color: var(--color3);
+    }
+    .an-hero__pill--ghost {
+      display: inline-block; padding: .22rem .65rem;
+      font-size: .68rem; font-weight: 400; letter-spacing: .06em;
+      text-transform: uppercase; background: transparent;
+      border: 1px solid rgba(255,255,255,.3); color: rgba(255,255,255,.75);
+    }
+    .an-hero__pill--label {
+      display: inline-flex; align-items: center; gap: .35rem;
+      padding: .22rem .65rem;
+      font-size: .68rem; font-weight: 400; letter-spacing: .06em;
+      text-transform: uppercase; background: transparent;
+      border: 1px solid rgba(232,31,31,.35); color: rgba(232,31,31,.8);
+    }
+    .an-hero__pill--label svg { width: 10px; height: 10px; flex-shrink: 0; }
+
+    /* Accroche */
+    .an-hero__accroche {
+      font-size: .95rem; line-height: 1.55;
+      color: rgba(255,255,255,.62); font-style: italic;
+      border-left: 2px solid var(--color1); padding-left: .9rem;
+    }
+
+    /* Byline */
+    .an-hero__byline {
+      font-size: .75rem; color: rgba(255,255,255,.38); letter-spacing: .03em;
+    }
+
+    /* Faux album cover (placeholder coloré) */
+    .fake-cover {
+      width: 260px; height: 260px;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 20px 60px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.08);
+      flex-shrink: 0;
+    }
+    .fake-cover span {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.2rem;
+      color: rgba(255,255,255,.2);
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    /* Faux bg */
+    .fake-bg-img {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, #1a1826 0%, #2a1f3d 40%, #1e2a4a 100%);
+    }
+
+    /* ══════════════════════════════════════════════════════
+       VARIANTE A — Hiérarchie verticale pure
+       Artiste (rouge, caps) → Album (H1) → Label (italic)
+    ══════════════════════════════════════════════════════ */
+
+    /* Artiste */
+    .va__artist {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 700;
+      font-size: .82rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--color1);
+    }
+
+    /* Titre album */
+    .va__title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      line-height: .95;
+      color: var(--color3);
+      text-transform: uppercase;
+    }
+
+    /* Label discographique */
+    .va__record {
+      font-family: 'Roboto', sans-serif;
+      font-size: .78rem;
+      font-style: italic;
+      font-weight: 300;
+      color: rgba(255,255,255,.42);
+      letter-spacing: .04em;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       VARIANTE B — Artiste + Label sur une seule ligne
+       [Artiste] · [Label]  → Album (H1)
+    ══════════════════════════════════════════════════════ */
+
+    .vb__headline {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      font-size: .8rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+    .vb__headline__artist {
+      font-weight: 700;
+      color: var(--color1);
+    }
+    .vb__headline__sep {
+      color: rgba(255,255,255,.25);
+      font-weight: 300;
+    }
+    .vb__headline__record {
+      font-weight: 300;
+      color: rgba(255,255,255,.5);
+    }
+
+    .vb__title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      line-height: .95;
+      color: var(--color3);
+      text-transform: uppercase;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       VARIANTE C — Label comme pill distincte
+       Artiste (rouge) → Album (H1) → pills dont Label stylisé
+    ══════════════════════════════════════════════════════ */
+
+    .vc__artist {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 700;
+      font-size: .82rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--color1);
+    }
+
+    .vc__title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(2.8rem, 6vw, 5.5rem);
+      line-height: .95;
+      color: var(--color3);
+      text-transform: uppercase;
+    }
+
+    /* ══════════════════════════════════════════════════════
+       LÉGENDE ACF
+    ══════════════════════════════════════════════════════ */
+    .acf-legend {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 4rem 2rem 6rem;
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+    .acf-legend__title {
+      font-family: 'Anton', sans-serif;
+      color: var(--color1);
+      font-size: 1.1rem;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      margin-bottom: 2rem;
+    }
+    .acf-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .8rem;
+    }
+    .acf-table th {
+      text-align: left;
+      padding: .6rem 1rem;
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.3);
+      border-bottom: 1px solid rgba(255,255,255,.07);
+    }
+    .acf-table td {
+      padding: .75rem 1rem;
+      color: rgba(255,255,255,.6);
+      border-bottom: 1px solid rgba(255,255,255,.04);
+      vertical-align: top;
+    }
+    .acf-table td:first-child { color: var(--color3); font-family: 'Roboto', monospace; font-size: .78rem; }
+    .acf-table tr:last-child td { border-bottom: none; }
+
+    .badge-new {
+      display: inline-block;
+      background: var(--color1);
+      color: #fff;
+      font-size: .58rem; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; padding: .07rem .4rem;
+      margin-left: .4rem; vertical-align: middle;
+    }
+    .badge-mod {
+      display: inline-block;
+      background: rgba(255,165,0,.2);
+      color: rgba(255,165,0,.8);
+      font-size: .58rem; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; padding: .07rem .4rem;
+      margin-left: .4rem; vertical-align: middle;
+    }
+    .badge-ok {
+      display: inline-block;
+      background: rgba(255,255,255,.08);
+      color: rgba(255,255,255,.35);
+      font-size: .58rem; font-weight: 700; letter-spacing: .08em;
+      text-transform: uppercase; padding: .07rem .4rem;
+      margin-left: .4rem; vertical-align: middle;
+    }
+
+    .variant-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+      margin: 3rem 0 2rem;
+      border: 1px solid rgba(255,255,255,.07);
+    }
+    .variant-grid__cell {
+      padding: 1.5rem;
+      border-right: 1px solid rgba(255,255,255,.07);
+    }
+    .variant-grid__cell:last-child { border-right: none; }
+    .variant-grid__head {
+      font-size: .65rem; font-weight: 700; letter-spacing: .12em;
+      text-transform: uppercase; color: var(--color1); margin-bottom: 1rem;
+    }
+    .variant-grid__body {
+      font-size: .8rem; color: rgba(255,255,255,.5); line-height: 2;
+    }
+    .variant-grid__body .line-a { color: var(--color1); font-weight: 700; }
+    .variant-grid__body .line-h1 { color: var(--color3); font-family: 'Anton'; font-size: 1.1rem; }
+    .variant-grid__body .line-c { color: rgba(255,255,255,.35); font-style: italic; }
+    .variant-grid__body .line-pill { display: inline-block; padding: .1rem .4rem; border: 1px solid rgba(232,31,31,.4); color: rgba(232,31,31,.7); font-size: .7rem; margin-right: .2rem; }
+
+  </style>
+</head>
+<body>
+
+<!-- ── EN-TÊTE ──────────────────────────────────────────── -->
+<div class="page-header">
+  <p class="page-header__title">Proposal — Hero : Artiste / Album / Label</p>
+  <p class="page-header__sub">
+    Séparation des 3 informations actuellement mélangées dans le titre.<br>
+    3 variantes visuelles · Nouveau champ ACF <code>artiste</code> · Champ <code>labels</code> renommé "Label discographique"
+  </p>
+</div>
+
+<!-- ═════════════════════════════════════════════════════════
+     COMPARATIF DES 3 VARIANTES (schéma)
+═══════════════════════════════════════════════════════════ -->
+<div style="max-width:1200px;margin:0 auto;padding:0 2rem;">
+  <div class="variant-grid">
+    <div class="variant-grid__cell">
+      <div class="variant-grid__head">Variante A — Stack vertical</div>
+      <div class="variant-grid__body">
+        <div class="line-a">KEVIN MORBY</div>
+        <div class="line-h1">SUNDOWNER</div>
+        <div class="line-c">Dead Oceans Records</div>
+        <div style="margin-top:.4rem">
+          <span style="background:var(--color1);color:#fff;font-size:.65rem;padding:.1rem .4rem;margin-right:.2rem">Review</span>
+          <span style="border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.7);font-size:.65rem;padding:.1rem .4rem;margin-right:.2rem">Indie Rock</span>
+          <span style="border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.7);font-size:.65rem;padding:.1rem .4rem">2020</span>
+        </div>
+      </div>
+    </div>
+    <div class="variant-grid__cell">
+      <div class="variant-grid__head">Variante B — Ligne combinée</div>
+      <div class="variant-grid__body">
+        <div><span class="line-a">KEVIN MORBY</span> <span style="color:rgba(255,255,255,.25)">·</span> <span style="color:rgba(255,255,255,.45)">Dead Oceans Records</span></div>
+        <div class="line-h1">SUNDOWNER</div>
+        <div style="margin-top:.4rem">
+          <span style="background:var(--color1);color:#fff;font-size:.65rem;padding:.1rem .4rem;margin-right:.2rem">Review</span>
+          <span style="border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.7);font-size:.65rem;padding:.1rem .4rem;margin-right:.2rem">Indie Rock</span>
+          <span style="border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.7);font-size:.65rem;padding:.1rem .4rem">2020</span>
+        </div>
+      </div>
+    </div>
+    <div class="variant-grid__cell">
+      <div class="variant-grid__head">Variante C — Label en pill</div>
+      <div class="variant-grid__body">
+        <div class="line-a">KEVIN MORBY</div>
+        <div class="line-h1">SUNDOWNER</div>
+        <div style="margin-top:.4rem">
+          <span style="background:var(--color1);color:#fff;font-size:.65rem;padding:.1rem .4rem;margin-right:.2rem">Review</span>
+          <span style="border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.7);font-size:.65rem;padding:.1rem .4rem;margin-right:.2rem">Indie Rock</span>
+          <span style="border:1px solid rgba(255,255,255,.3);color:rgba(255,255,255,.7);font-size:.65rem;padding:.1rem .4rem;margin-right:.2rem">2020</span>
+          <span class="line-pill">Dead Oceans</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═════════════════════════════════════════════════════════
+     VARIANTE A — HERO COMPLET
+═══════════════════════════════════════════════════════════ -->
+<div class="variant-label">
+  <div class="variant-label__num">A</div>
+  <div class="variant-label__text">
+    <h2>Hiérarchie verticale pure</h2>
+    <p>Artiste en rouge au-dessus · H1 pour l'album · Label en italique discret en-dessous · Lecture naturelle top→bottom · Plus lisible</p>
+  </div>
+</div>
+
+<div class="fake-nav">
+  <span>GIMMICK SHELTER</span>
+  <div>News</div><div class="active">Reviews</div><div>Playlists</div><div>Agenda</div>
+</div>
+
+<section class="an-hero">
+  <div class="fake-bg-img"></div>
+  <div class="an-hero__overlay"></div>
+  <div class="an-hero__grain"></div>
+  <div class="an-hero__divider"></div>
+
+  <div class="an-hero__inner">
+    <div class="an-hero__layout">
+
+      <div class="fake-cover">
+        <span>Pochette<br>album</span>
+      </div>
+
+      <div class="an-hero__info">
+
+        <!-- ARTISTE — champ ACF artiste (nouveau) -->
+        <p class="va__artist">Kevin Morby</p>
+
+        <!-- ALBUM — the_title() (titre WP, ne contient plus que l'album) -->
+        <h1 class="va__title">Sundowner</h1>
+
+        <!-- LABEL — champ ACF labels (existant, renommé "Label discographique") -->
+        <p class="va__record">Dead Oceans Records</p>
+
+        <!-- Accroche -->
+        <p class="an-hero__accroche">Un album qui flirte avec l'americana crépusculaire et les paysages désertiques de la Californie.</p>
+
+        <!-- Pills genre + année -->
+        <div class="an-hero__meta" role="list">
+          <span class="an-hero__pill" role="listitem">Review</span>
+          <span class="an-hero__pill--ghost" role="listitem">Indie Rock</span>
+          <span class="an-hero__pill--ghost" role="listitem">Indie Folk</span>
+          <span class="an-hero__pill--ghost" role="listitem">2020</span>
+        </div>
+
+        <!-- Byline -->
+        <p class="an-hero__byline">Par Florent Froideval &nbsp;·&nbsp; <time datetime="2021-04-21">21 Avr 2021</time></p>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════════════════════════
+     VARIANTE B — HERO COMPLET
+═══════════════════════════════════════════════════════════ -->
+<div class="variant-label">
+  <div class="variant-label__num">B</div>
+  <div class="variant-label__text">
+    <h2>Artiste + Label sur une ligne</h2>
+    <p>Artiste et label séparés par un "·" · Économise de l'espace vertical · Bon quand les noms sont courts · Moins lisible si les noms sont longs</p>
+  </div>
+</div>
+
+<div class="fake-nav">
+  <span>GIMMICK SHELTER</span>
+  <div>News</div><div class="active">Reviews</div><div>Playlists</div><div>Agenda</div>
+</div>
+
+<section class="an-hero">
+  <div class="fake-bg-img" style="background: linear-gradient(135deg, #1e1a26 0%, #2e1f3d 40%, #1a2a3e 100%);"></div>
+  <div class="an-hero__overlay"></div>
+  <div class="an-hero__grain"></div>
+  <div class="an-hero__divider"></div>
+
+  <div class="an-hero__inner">
+    <div class="an-hero__layout">
+
+      <div class="fake-cover" style="background: linear-gradient(135deg, #0d1b2a 0%, #1b263b 50%, #415a77 100%);">
+        <span>Pochette<br>album</span>
+      </div>
+
+      <div class="an-hero__info">
+
+        <!-- ARTISTE + LABEL sur une ligne -->
+        <div class="vb__headline">
+          <span class="vb__headline__artist">Kevin Morby</span>
+          <span class="vb__headline__sep">·</span>
+          <span class="vb__headline__record">Dead Oceans Records</span>
+        </div>
+
+        <!-- ALBUM — H1 -->
+        <h1 class="vb__title">Sundowner</h1>
+
+        <!-- Accroche -->
+        <p class="an-hero__accroche">Un album qui flirte avec l'americana crépusculaire et les paysages désertiques de la Californie.</p>
+
+        <!-- Pills genre + année -->
+        <div class="an-hero__meta" role="list">
+          <span class="an-hero__pill" role="listitem">Review</span>
+          <span class="an-hero__pill--ghost" role="listitem">Indie Rock</span>
+          <span class="an-hero__pill--ghost" role="listitem">Indie Folk</span>
+          <span class="an-hero__pill--ghost" role="listitem">2020</span>
+        </div>
+
+        <!-- Byline -->
+        <p class="an-hero__byline">Par Florent Froideval &nbsp;·&nbsp; <time datetime="2021-04-21">21 Avr 2021</time></p>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════════════════════════
+     VARIANTE C — HERO COMPLET
+═══════════════════════════════════════════════════════════ -->
+<div class="variant-label">
+  <div class="variant-label__num">C</div>
+  <div class="variant-label__text">
+    <h2>Label comme pill distincte</h2>
+    <p>Artiste au-dessus · H1 album · Label glissé dans les pills avec un style rouge rosé distinct · Visuel plus compact · Le label est moins mis en avant</p>
+  </div>
+</div>
+
+<div class="fake-nav">
+  <span>GIMMICK SHELTER</span>
+  <div>News</div><div class="active">Reviews</div><div>Playlists</div><div>Agenda</div>
+</div>
+
+<section class="an-hero">
+  <div class="fake-bg-img" style="background: linear-gradient(135deg, #1a1e26 0%, #2a2f3d 40%, #1e2a2e 100%);"></div>
+  <div class="an-hero__overlay"></div>
+  <div class="an-hero__grain"></div>
+  <div class="an-hero__divider"></div>
+
+  <div class="an-hero__inner">
+    <div class="an-hero__layout">
+
+      <div class="fake-cover" style="background: linear-gradient(135deg, #2d1b69 0%, #11998e 100%);">
+        <span>Pochette<br>album</span>
+      </div>
+
+      <div class="an-hero__info">
+
+        <!-- ARTISTE -->
+        <p class="vc__artist">Kevin Morby</p>
+
+        <!-- ALBUM — H1 -->
+        <h1 class="vc__title">Sundowner</h1>
+
+        <!-- Accroche -->
+        <p class="an-hero__accroche">Un album qui flirte avec l'americana crépusculaire et les paysages désertiques de la Californie.</p>
+
+        <!-- Pills genre + année + LABEL -->
+        <div class="an-hero__meta" role="list">
+          <span class="an-hero__pill" role="listitem">Review</span>
+          <span class="an-hero__pill--ghost" role="listitem">Indie Rock</span>
+          <span class="an-hero__pill--ghost" role="listitem">Indie Folk</span>
+          <span class="an-hero__pill--ghost" role="listitem">2020</span>
+          <span class="an-hero__pill--label" role="listitem">
+            <svg viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="6" cy="6" r="5" stroke="currentColor" stroke-width="1.2"/>
+              <circle cx="6" cy="6" r="1.5" fill="currentColor"/>
+            </svg>
+            Dead Oceans Records
+          </span>
+        </div>
+
+        <!-- Byline -->
+        <p class="an-hero__byline">Par Florent Froideval &nbsp;·&nbsp; <time datetime="2021-04-21">21 Avr 2021</time></p>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═════════════════════════════════════════════════════════
+     LÉGENDE ACF & MAPPING CHAMPS
+═══════════════════════════════════════════════════════════ -->
+<div class="acf-legend">
+  <p class="acf-legend__title">Structure ACF — Champs requis</p>
+
+  <table class="acf-table">
+    <thead>
+      <tr>
+        <th>Champ ACF</th>
+        <th>Type</th>
+        <th>Statut</th>
+        <th>Affichage hero</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>artiste<span class="badge-new">Nouveau</span></td>
+        <td>text</td>
+        <td>Recommandé</td>
+        <td>Ligne au-dessus du H1 · classe <code>an-hero__artist</code></td>
+        <td>Remplace la partie artiste du titre WP. Texte seul, pas de markup.</td>
+      </tr>
+      <tr>
+        <td>— Titre WP —</td>
+        <td>Post title</td>
+        <td>Modifié éditoriale&shy;ment<span class="badge-mod">Éditorial</span></td>
+        <td><code>&lt;h1&gt;</code> · classe <code>an-hero__title</code></td>
+        <td>Ne contient plus que le nom de l'album. Ex : "Sundowner" (sans "Kevin Morby |").</td>
+      </tr>
+      <tr>
+        <td>labels<span class="badge-ok">Existant</span></td>
+        <td>text</td>
+        <td>Renommé en back-office<span class="badge-mod">Label UI</span></td>
+        <td>Variante A : ligne <code>an-hero__record</code> · Variante B : sur même ligne que artiste · Variante C : pill distincte</td>
+        <td>La clé ACF <code>labels</code> reste inchangée — seul le label UI dans le groupe ACF change (→ "Label discographique").</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="margin-top:2.5rem; padding:1.25rem 1.5rem; background:rgba(255,255,255,.03); border-left:2px solid var(--color1); font-size:.8rem; color:rgba(255,255,255,.5); line-height:1.7;">
+    <strong style="color:rgba(255,255,255,.7);">Migration éditoriale</strong><br>
+    Les chroniques existantes ont le titre WP au format <code>"Artiste | Album"</code>. Deux approches :
+    <ol style="margin-top:.6rem; padding-left:1.2rem; display:flex; flex-direction:column; gap:.4rem;">
+      <li>Remplir manuellement le champ <code>artiste</code> sur chaque chronique (safe, pas de modification titre).</li>
+      <li>Nettoyer les titres WP (enlever la partie artiste) + remplir <code>artiste</code> en même temps. Plus propre pour le SEO mais requiert une passe éditoriale.</li>
+    </ol>
+    <div style="margin-top:.8rem; color:rgba(255,165,0,.6);">
+      ⚠ Le champ <code>artiste</code> est conditionnel — si vide, rien ne s'affiche (pas de bloc vide). Les anciens posts sans ce champ restent affichables.
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

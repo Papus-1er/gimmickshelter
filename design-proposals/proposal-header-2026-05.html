@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<!--
+  PROPOSITION DESIGN — Header Gimmick Shelter
+  Date      : 2026-05
+  Auteur    : Agent /designer
+  Source    : header.php + .claude/skills/design/SKILL.md
+
+  Problèmes identifiés sur l'actuel :
+  - Logo et nav dans 2 containers séparés → 2 divs rouges empilées sans lien visuel
+  - Code mobile/desktop dupliqué à l'identique (lignes 62–108)
+  - Barre de recherche commentée → fonctionnalité manquante
+  - Hamburger mobile non visible sur desktop (caché via d-none) → OK, mais toggle
+    du même #navbarTogglerDemo02 en mobile et desktop = conflit d'ID
+  - Fond rouge (bgc-1) pour logo + nav → très saturé, peu de hiérarchie visuelle
+
+  3 options proposées ci-dessous.
+-->
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proposals — Header Gimmick Shelter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@300;400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" crossorigin="anonymous">
+  <style>
+    /* ── Reset & tokens DS ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color1: #E81F1F;
+      --color2: #000B29;
+      --color3: #FFFFFF;
+      --color4: #000000;
+      --color5: #6D6D64;
+    }
+    body { background: #1a1a1a; font-family: 'Roboto', sans-serif; }
+
+    /* ── Labels de section ─────────────────────────────────────────── */
+    .proposal-label {
+      display: flex; align-items: center; gap: 12px;
+      padding: 28px 32px 12px;
+      font-family: 'Anton', sans-serif;
+      font-size: 1.1rem; color: var(--color5);
+      letter-spacing: .08em; text-transform: uppercase;
+    }
+    .proposal-label span {
+      background: var(--color1); color: #fff;
+      padding: 2px 10px; font-size: .85rem; border-radius: 3px;
+    }
+    .proposal-label .badge-current {
+      background: var(--color5);
+    }
+    .proposal-desc {
+      padding: 0 32px 20px;
+      font-size: .85rem; color: var(--color5); line-height: 1.6;
+      max-width: 780px;
+    }
+    .proposal-desc strong { color: var(--color3); }
+    .proposal-desc .pro  { color: #4caf50; }
+    .proposal-desc .con  { color: var(--color1); }
+    hr.sep { border: none; border-top: 1px solid #2a2a2a; margin: 32px 0 0; }
+
+    /* ════════════════════════════════════════════════════════════════
+       ÉTAT ACTUEL (pour référence)
+    ════════════════════════════════════════════════════════════════ */
+    .current-header {
+      background: var(--color1);
+    }
+    .current-logo-zone {
+      padding: 16px 0;
+      display: flex; justify-content: center; align-items: center;
+    }
+    .current-logo-zone svg { height: 56px; width: auto; }
+    .current-nav {
+      background: var(--color1);
+      border-top: 1px solid rgba(255,255,255,.15);
+    }
+    .current-nav ul {
+      display: flex; justify-content: center; gap: 0;
+      list-style: none; padding: 0; margin: 0;
+    }
+    .current-nav ul li a {
+      display: block; padding: 14px 22px;
+      color: var(--color3); text-decoration: none;
+      font-family: 'Roboto', sans-serif; font-size: .95rem;
+      letter-spacing: .04em; transition: background .2s;
+    }
+    .current-nav ul li a:hover { background: rgba(0,0,0,.2); }
+
+    /* ════════════════════════════════════════════════════════════════
+       OPTION A — Header unifié horizontal
+       Logo gauche + nav droite sur une seule bande
+       Fond : bleu GS (color2) — moins saturé que le rouge actuel
+       Accent rouge : bordure basse + lien actif
+    ════════════════════════════════════════════════════════════════ */
+    .header-a {
+      background: var(--color2);
+      border-bottom: 3px solid var(--color1);
+      position: sticky; top: 0; z-index: 100;
+    }
+    .header-a__inner {
+      max-width: 1400px; margin: 0 auto;
+      padding: 0 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 72px;
+    }
+    .header-a__logo svg { height: 40px; width: auto; display: block; }
+    .header-a__logo:focus-visible { outline: 2px solid var(--color1); outline-offset: 4px; }
+    .header-a__nav ul {
+      display: flex; list-style: none; gap: 4px; margin: 0; padding: 0;
+    }
+    .header-a__nav a {
+      display: block; padding: 10px 16px;
+      color: var(--color3); text-decoration: none;
+      font-family: 'Roboto', sans-serif; font-size: .9rem;
+      letter-spacing: .05em; border-radius: 4px;
+      transition: background .18s, color .18s;
+    }
+    .header-a__nav a:hover { background: rgba(255,255,255,.08); }
+    .header-a__nav a.active {
+      color: var(--color1);
+      border-bottom: 2px solid var(--color1);
+      padding-bottom: 8px;
+    }
+    .header-a__actions { display: flex; align-items: center; gap: 16px; }
+    .header-a__search {
+      background: none; border: 1px solid rgba(255,255,255,.25);
+      border-radius: 20px; padding: 6px 14px;
+      color: var(--color3); font-family: 'Roboto', sans-serif; font-size: .85rem;
+      width: 180px; transition: border-color .2s, width .3s;
+      outline: none;
+    }
+    .header-a__search::placeholder { color: var(--color5); }
+    .header-a__search:focus {
+      border-color: var(--color1); width: 220px;
+    }
+    /* Mobile A */
+    .header-a__burger {
+      display: none;
+      background: none; border: 1px solid rgba(255,255,255,.4);
+      border-radius: 4px; padding: 6px 10px; cursor: pointer;
+      color: var(--color3); font-size: 1.1rem;
+    }
+    .header-a__mobile-menu {
+      display: none; flex-direction: column;
+      background: var(--color2); border-top: 1px solid rgba(255,255,255,.1);
+      padding: 8px 0 16px;
+    }
+    .header-a__mobile-menu a {
+      padding: 12px 32px; color: var(--color3); text-decoration: none;
+      font-family: 'Roboto', sans-serif; font-size: .95rem;
+      border-left: 3px solid transparent; transition: border-color .2s;
+    }
+    .header-a__mobile-menu a:hover { border-left-color: var(--color1); background: rgba(255,255,255,.04); }
+
+    @media (max-width: 991px) {
+      .header-a__nav, .header-a__search { display: none; }
+      .header-a__burger { display: block; }
+      .header-a__mobile-menu { display: flex; }
+    }
+
+    /* ════════════════════════════════════════════════════════════════
+       OPTION B — Header magazine deux niveaux
+       Bandeau logo rouge (conservé) + barre nav noire séparée visuellement
+       Ajout : recherche intégrée dans la barre logo + réseaux sociaux
+    ════════════════════════════════════════════════════════════════ */
+    .header-b {}
+    .header-b__brand {
+      background: var(--color1);
+      padding: 20px 32px;
+      display: flex; align-items: center; justify-content: center;
+      position: relative;
+    }
+    .header-b__logo { display: flex; justify-content: center; }
+    .header-b__logo svg { height: 64px; }
+    .header-b__social {
+      position: absolute; right: 32px; top: 50%; transform: translateY(-50%);
+      display: flex; gap: 14px;
+    }
+    .header-b__social a {
+      color: rgba(255,255,255,.75); font-size: 1.1rem;
+      transition: color .2s; text-decoration: none;
+    }
+    .header-b__social a:hover { color: #fff; }
+    .header-b__search-bar {
+      position: absolute; left: 32px; top: 50%; transform: translateY(-50%);
+    }
+    .header-b__search-input {
+      background: rgba(0,0,0,.3); border: 1px solid rgba(255,255,255,.3);
+      border-radius: 20px; padding: 7px 16px;
+      color: #fff; font-family: 'Roboto', sans-serif; font-size: .85rem;
+      width: 200px; outline: none;
+    }
+    .header-b__search-input::placeholder { color: rgba(255,255,255,.5); }
+    .header-b__search-input:focus { background: rgba(0,0,0,.5); border-color: #fff; }
+
+    .header-b__nav {
+      background: var(--color4);
+      position: sticky; top: 0; z-index: 100;
+      border-bottom: 2px solid var(--color1);
+    }
+    .header-b__nav-inner {
+      max-width: 1400px; margin: 0 auto; padding: 0 32px;
+      display: flex; justify-content: center;
+    }
+    .header-b__nav ul {
+      display: flex; list-style: none; margin: 0; padding: 0; gap: 0;
+    }
+    .header-b__nav a {
+      display: block; padding: 15px 20px;
+      color: var(--color3); text-decoration: none;
+      font-family: 'Anton', sans-serif; font-size: .9rem;
+      letter-spacing: .1em; text-transform: uppercase;
+      transition: color .18s, background .18s;
+      border-bottom: 3px solid transparent; margin-bottom: -2px;
+    }
+    .header-b__nav a:hover { color: var(--color1); }
+    .header-b__nav a.active { color: var(--color1); border-bottom-color: var(--color1); }
+
+    /* Mobile B */
+    .header-b__burger {
+      display: none; margin-left: auto;
+      background: none; border: none; color: var(--color3);
+      font-size: 1.3rem; cursor: pointer; padding: 15px 0;
+    }
+    .header-b__mobile-menu {
+      display: none; flex-direction: column;
+      background: var(--color4); border-top: 1px solid #222;
+    }
+    .header-b__mobile-menu a {
+      padding: 14px 24px; color: var(--color3); text-decoration: none;
+      font-family: 'Anton', sans-serif; letter-spacing: .08em; font-size: .9rem;
+      border-left: 3px solid transparent; text-transform: uppercase;
+    }
+    .header-b__mobile-menu a:hover { border-left-color: var(--color1); color: var(--color1); }
+
+    @media (max-width: 991px) {
+      .header-b__nav ul, .header-b__search-bar, .header-b__social { display: none; }
+      .header-b__burger { display: block; }
+      .header-b__mobile-menu { display: flex; }
+      .header-b__brand { justify-content: flex-start; padding: 16px 24px; }
+      .header-b__logo svg { height: 44px; }
+      .header-b__nav-inner { justify-content: space-between; }
+    }
+
+    /* ════════════════════════════════════════════════════════════════
+       OPTION C — Header transparent → opaque au scroll (hero-friendly)
+       Conçu pour les pages avec image plein écran en haut.
+       Transparent sur le hero, devient bleu GS au scroll.
+       Logo centré au départ, glisse à gauche au scroll.
+    ════════════════════════════════════════════════════════════════ */
+    .header-c-wrapper { position: relative; }
+    .header-c-hero {
+      background: linear-gradient(180deg, rgba(0,11,41,.85) 0%, rgba(0,11,41,0) 100%);
+      height: 220px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: flex-start;
+    }
+    .header-c {
+      width: 100%;
+      padding: 24px 40px 0;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 20px;
+    }
+    .header-c__logo svg { height: 72px; }
+    .header-c__nav ul {
+      display: flex; list-style: none; gap: 4px; margin: 0; padding: 0;
+    }
+    .header-c__nav a {
+      display: block; padding: 8px 18px;
+      color: rgba(255,255,255,.85); text-decoration: none;
+      font-family: 'Roboto', sans-serif; font-size: .9rem;
+      letter-spacing: .04em; border-radius: 4px;
+      transition: background .18s, color .18s;
+      border-bottom: 2px solid transparent;
+    }
+    .header-c__nav a:hover { color: #fff; background: rgba(255,255,255,.1); }
+    .header-c__nav a.active { color: var(--color1); border-bottom-color: var(--color1); }
+
+    /* Version "scrollée" simulée */
+    .header-c-scrolled {
+      background: var(--color2);
+      border-bottom: 3px solid var(--color1);
+      position: sticky; top: 0; z-index: 100;
+      width: 100%;
+    }
+    .header-c-scrolled__inner {
+      max-width: 1400px; margin: 0 auto;
+      padding: 0 32px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .header-c-scrolled__logo svg { height: 32px; }
+    .header-c-scrolled__nav ul {
+      display: flex; list-style: none; gap: 4px; margin: 0; padding: 0;
+    }
+    .header-c-scrolled__nav a {
+      display: block; padding: 8px 14px;
+      color: var(--color3); text-decoration: none;
+      font-family: 'Roboto', sans-serif; font-size: .875rem;
+      letter-spacing: .04em; border-radius: 3px;
+      transition: background .15s;
+    }
+    .header-c-scrolled__nav a:hover { background: rgba(255,255,255,.07); }
+    .header-c-scrolled__nav a.active { color: var(--color1); }
+    .header-c-scrolled__search-btn {
+      background: none; border: none; color: var(--color3);
+      font-size: 1rem; cursor: pointer; padding: 8px; opacity: .7;
+      transition: opacity .2s;
+    }
+    .header-c-scrolled__search-btn:hover { opacity: 1; }
+    .state-label {
+      display: inline-block; background: rgba(255,255,255,.1);
+      color: var(--color5); font-size: .7rem; letter-spacing: .1em;
+      text-transform: uppercase; padding: 3px 8px; border-radius: 3px; margin-bottom: 12px;
+    }
+
+    /* ── Logo SVG inline (simplifié) ─────────────────────────────── */
+    /* On simule le logo texte avec Anton puisque le SVG réel est sur le serveur */
+    .gs-logo-text {
+      font-family: 'Anton', sans-serif;
+      font-size: inherit;
+      letter-spacing: .06em;
+      fill: #FFFFFF;
+    }
+
+    /* ── Fake page content ──────────────────────────────────────────*/
+    .fake-content {
+      background: var(--color2);
+      min-height: 200px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--color5); font-size: .85rem; letter-spacing: .08em;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     ÉTAT ACTUEL — pour référence
+═══════════════════════════════════════════════════════════════════ -->
+<div class="proposal-label">
+  <span class="badge-current">Actuel</span>
+  Header actuel (header.php)
+</div>
+<div class="proposal-desc">
+  Structure en place : logo centré sur fond rouge + nav centrée sur fond rouge dans deux containers séparés.
+  <br>
+  <span class="con">⚠ Problèmes :</span> 2 divs rouges empilées sans hiérarchie • code mobile/desktop dupliqué • recherche commentée • conflit d'ID `#navbarTogglerDemo02` mobile/desktop
+</div>
+
+<div class="current-header">
+  <div class="current-logo-zone">
+    <a href="#" aria-label="Gimmick Shelter">
+      <svg viewBox="0 0 320 60" xmlns="http://www.w3.org/2000/svg">
+        <text x="50%" y="48" text-anchor="middle" class="gs-logo-text" font-size="48">GIMMICK SHELTER</text>
+      </svg>
+    </a>
+  </div>
+  <div class="current-nav">
+    <ul>
+      <li><a href="#">Accueil</a></li>
+      <li><a href="#">Chroniques</a></li>
+      <li><a href="#">Interviews</a></li>
+      <li><a href="#">Live Reports</a></li>
+      <li><a href="#">Playlists</a></li>
+      <li><a href="#">Dates</a></li>
+    </ul>
+  </div>
+</div>
+
+<hr class="sep">
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     OPTION A — Header unifié horizontal sticky
+═══════════════════════════════════════════════════════════════════ -->
+<div class="proposal-label">
+  <span>Option A</span>
+  Header unifié horizontal — Logo gauche · Nav centre · Recherche droite
+</div>
+<div class="proposal-desc">
+  <strong>Principe :</strong> Une seule bande, fond bleu GS (<code>#000B29</code>), sticky immédiatement. Logo à gauche, nav centrée, champ recherche à droite.<br><br>
+  <span class="pro">✔ Avantages :</span> Pattern webzine/magazine standard · Sticky dès le départ (nav toujours accessible) · Recherche intégrée · Code simplifié (un seul nav, responsive via CSS)<br>
+  <span class="con">✘ Compromis :</span> Logo plus petit qu'en plein écran · Perd l'impact visuel du grand logo rouge actuel
+</div>
+
+<header class="header-a">
+  <div class="header-a__inner">
+    <a href="#" class="header-a__logo" aria-label="Gimmick Shelter — Accueil">
+      <svg viewBox="0 0 280 44" xmlns="http://www.w3.org/2000/svg">
+        <text x="0" y="38" class="gs-logo-text" font-size="38">GIMMICK SHELTER</text>
+      </svg>
+    </a>
+
+    <nav class="header-a__nav" aria-label="Navigation principale">
+      <ul>
+        <li><a href="#" class="active">Chroniques</a></li>
+        <li><a href="#">Interviews</a></li>
+        <li><a href="#">Live Reports</a></li>
+        <li><a href="#">Playlists</a></li>
+        <li><a href="#">Dates</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-a__actions">
+      <input class="header-a__search" type="search" placeholder="Rechercher…" aria-label="Rechercher sur le site">
+      <button class="header-a__burger" aria-label="Ouvrir le menu" aria-expanded="false">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+  </div>
+  <!-- Menu mobile uniquement visible < LG -->
+  <nav class="header-a__mobile-menu" aria-label="Navigation mobile">
+    <a href="#">Chroniques</a>
+    <a href="#">Interviews</a>
+    <a href="#">Live Reports</a>
+    <a href="#">Playlists</a>
+    <a href="#">Dates</a>
+  </nav>
+</header>
+
+<div class="fake-content">← contenu de la page →</div>
+
+<hr class="sep">
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     OPTION B — Header magazine deux niveaux
+═══════════════════════════════════════════════════════════════════ -->
+<div class="proposal-label">
+  <span>Option B</span>
+  Header magazine deux niveaux — Bandeau rouge logo + barre nav noire sticky
+</div>
+<div class="proposal-desc">
+  <strong>Principe :</strong> Conserve l'identité rouge du bandeau logo actuel mais le distingue clairement de la nav (fond noir). La nav seule devient sticky. Ajout : réseaux sociaux à droite du logo, recherche à gauche.<br><br>
+  <span class="pro">✔ Avantages :</span> Évolution douce de l'existant · Hiérarchie visuelle claire logo / nav · Titres en Anton dans la nav (plus "rock") · Réseaux sociaux visibles<br>
+  <span class="con">✘ Compromis :</span> Plus haut que l'option A · Le bandeau rouge disparaît au scroll (seule la nav noire reste visible)
+</div>
+
+<div class="header-b">
+  <div class="header-b__brand">
+    <div class="header-b__search-bar">
+      <input class="header-b__search-input" type="search" placeholder="🔍  Rechercher…" aria-label="Rechercher">
+    </div>
+    <div class="header-b__logo">
+      <a href="#" aria-label="Gimmick Shelter — Accueil">
+        <svg viewBox="0 0 400 70" xmlns="http://www.w3.org/2000/svg">
+          <text x="50%" y="58" text-anchor="middle" class="gs-logo-text" font-size="56">GIMMICK SHELTER</text>
+        </svg>
+      </a>
+    </div>
+    <div class="header-b__social" aria-label="Réseaux sociaux">
+      <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+      <a href="#" aria-label="Twitter / X"><i class="fab fa-twitter"></i></a>
+      <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+      <a href="#" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
+    </div>
+  </div>
+
+  <nav class="header-b__nav" aria-label="Navigation principale">
+    <div class="header-b__nav-inner">
+      <ul>
+        <li><a href="#" class="active">Chroniques</a></li>
+        <li><a href="#">Interviews</a></li>
+        <li><a href="#">Live Reports</a></li>
+        <li><a href="#">Playlists</a></li>
+        <li><a href="#">Dates</a></li>
+        <li><a href="#">À propos</a></li>
+      </ul>
+      <button class="header-b__burger" aria-label="Ouvrir le menu" aria-expanded="false">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+    <nav class="header-b__mobile-menu" aria-label="Navigation mobile">
+      <a href="#">Chroniques</a>
+      <a href="#">Interviews</a>
+      <a href="#">Live Reports</a>
+      <a href="#">Playlists</a>
+      <a href="#">Dates</a>
+      <a href="#">À propos</a>
+    </nav>
+  </nav>
+</div>
+
+<div class="fake-content">← contenu de la page →</div>
+
+<hr class="sep">
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     OPTION C — Header transparent → sticky (deux états)
+═══════════════════════════════════════════════════════════════════ -->
+<div class="proposal-label">
+  <span>Option C</span>
+  Header transparent sur hero → compact bleu au scroll
+</div>
+<div class="proposal-desc">
+  <strong>Principe :</strong> Sur les pages avec image/vidéo hero (front-page, archives), le header est transparent et se fond dans le visuel. Au scroll, il devient une barre compacte bleu GS sticky. Logo centré grand → logo petit à gauche.<br><br>
+  <span class="pro">✔ Avantages :</span> Impact visuel fort en arrivant · Très courant sur les sites musicaux · Gain d'espace vertical · Elegant sur la homepage<br>
+  <span class="con">✘ Compromis :</span> Complexité JS (détection scroll) · Ne fonctionne bien que sur les pages avec hero image · Les pages sans hero doivent fallback sur la version scrollée
+</div>
+
+<div class="header-c-wrapper">
+  <!-- État initial : sur le hero (transparent) -->
+  <div class="header-c-hero">
+    <div class="header-c">
+      <a href="#" aria-label="Gimmick Shelter — Accueil" class="header-c__logo">
+        <svg viewBox="0 0 460 72" xmlns="http://www.w3.org/2000/svg">
+          <text x="50%" y="62" text-anchor="middle" class="gs-logo-text" font-size="60">GIMMICK SHELTER</text>
+        </svg>
+      </a>
+      <nav class="header-c__nav" aria-label="Navigation principale">
+        <ul>
+          <li><a href="#" class="active">Chroniques</a></li>
+          <li><a href="#">Interviews</a></li>
+          <li><a href="#">Live Reports</a></li>
+          <li><a href="#">Playlists</a></li>
+          <li><a href="#">Dates</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<!-- État scrollé (toujours visible sur cette maquette) -->
+<div style="padding: 16px 32px; color: var(--color5); font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; background: #111;">
+  ↓ Après scroll — la barre sticky remplace le header transparent
+</div>
+<div class="header-c-scrolled">
+  <div class="header-c-scrolled__inner">
+    <a href="#" aria-label="Gimmick Shelter — Accueil" class="header-c-scrolled__logo">
+      <svg viewBox="0 0 280 36" xmlns="http://www.w3.org/2000/svg">
+        <text x="0" y="30" class="gs-logo-text" font-size="30">GIMMICK SHELTER</text>
+      </svg>
+    </a>
+    <nav class="header-c-scrolled__nav" aria-label="Navigation principale">
+      <ul>
+        <li><a href="#" class="active">Chroniques</a></li>
+        <li><a href="#">Interviews</a></li>
+        <li><a href="#">Live Reports</a></li>
+        <li><a href="#">Playlists</a></li>
+        <li><a href="#">Dates</a></li>
+      </ul>
+    </nav>
+    <button class="header-c-scrolled__search-btn" aria-label="Rechercher">
+      <i class="fas fa-search"></i>
+    </button>
+  </div>
+</div>
+
+<div class="fake-content">← contenu de la page →</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════
+     RÉSUMÉ
+═══════════════════════════════════════════════════════════════════ -->
+<div style="padding: 40px 32px; background: #111; color: var(--color5); font-size: .85rem; line-height: 2;">
+  <div style="font-family: 'Anton', sans-serif; color: var(--color3); font-size: 1.1rem; letter-spacing: .08em; margin-bottom: 16px; text-transform: uppercase;">
+    Récapitulatif des options
+  </div>
+  <table style="border-collapse: collapse; width: 100%; max-width: 700px;">
+    <thead>
+      <tr style="color: var(--color3); border-bottom: 1px solid #333;">
+        <th style="text-align:left; padding: 8px 12px; font-family: 'Roboto', sans-serif; font-weight: 400;">Option</th>
+        <th style="text-align:left; padding: 8px 12px; font-family: 'Roboto', sans-serif; font-weight: 400;">Sticky</th>
+        <th style="text-align:left; padding: 8px 12px; font-family: 'Roboto', sans-serif; font-weight: 400;">Recherche</th>
+        <th style="text-align:left; padding: 8px 12px; font-family: 'Roboto', sans-serif; font-weight: 400;">Réseaux</th>
+        <th style="text-align:left; padding: 8px 12px; font-family: 'Roboto', sans-serif; font-weight: 400;">Complexité</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom: 1px solid #222;">
+        <td style="padding: 10px 12px; color: #fff;">Actuel</td>
+        <td style="padding: 10px 12px;">❌</td>
+        <td style="padding: 10px 12px;">❌ (commentée)</td>
+        <td style="padding: 10px 12px;">❌</td>
+        <td style="padding: 10px 12px;">Code dupliqué</td>
+      </tr>
+      <tr style="border-bottom: 1px solid #222;">
+        <td style="padding: 10px 12px; color: #fff;"><strong style="color: var(--color1)">A</strong> — Unifié</td>
+        <td style="padding: 10px 12px; color: #4caf50;">✔ dès le départ</td>
+        <td style="padding: 10px 12px; color: #4caf50;">✔</td>
+        <td style="padding: 10px 12px;">❌</td>
+        <td style="padding: 10px 12px; color: #4caf50;">Faible — CSS only</td>
+      </tr>
+      <tr style="border-bottom: 1px solid #222;">
+        <td style="padding: 10px 12px; color: #fff;"><strong style="color: var(--color1)">B</strong> — Magazine</td>
+        <td style="padding: 10px 12px; color: #4caf50;">✔ nav seule</td>
+        <td style="padding: 10px 12px; color: #4caf50;">✔</td>
+        <td style="padding: 10px 12px; color: #4caf50;">✔</td>
+        <td style="padding: 10px 12px;">Moyenne — CSS only</td>
+      </tr>
+      <tr>
+        <td style="padding: 10px 12px; color: #fff;"><strong style="color: var(--color1)">C</strong> — Transparent</td>
+        <td style="padding: 10px 12px; color: #4caf50;">✔ au scroll</td>
+        <td style="padding: 10px 12px; color: #4caf50;">✔ (scrollé)</td>
+        <td style="padding: 10px 12px;">❌</td>
+        <td style="padding: 10px 12px; color: #E8A01F;">Élevée — JS scroll</td>
+      </tr>
+    </tbody>
+  </table>
+  <div style="margin-top: 28px; padding-top: 20px; border-top: 1px solid #333;">
+    <strong style="color: var(--color3);">🔁 Prochaine étape → valider une option → /redacteur puis /seo puis /accessibilite puis /developer</strong>
+  </div>
+</div>
+
+</body>
+</html>

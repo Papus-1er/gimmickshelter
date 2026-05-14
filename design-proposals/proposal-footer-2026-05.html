@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<!--
+  PROPOSITION DESIGN — Footer Gimmick Shelter
+  Date      : 2026-05
+  Auteur    : Agent /designer
+  Source    : footer.php + header.php + .claude/skills/design/SKILL.md
+
+  Problèmes identifiés sur l'actuel :
+  - Fond rouge plein (bgc-1) sur tout le bloc → fatigue visuelle, contraste faible
+    avec le rouge du nouveau bandeau header (redondance)
+  - Pas de hiérarchie : logo + nav + RS empilés sans séparation visuelle
+  - Seulement 3 réseaux sociaux (FB / IG / Spotify) — pas de Twitter/X
+  - Aucune mention légale, aucun copyright, aucun crédit auteur
+  - Aucun CTA (newsletter, contribution, contact)
+  - Aucune segmentation par rubriques (faible SEO de pied de page)
+  - Logo dupliqué desktop / mobile via Bootstrap d-* (code mort visuel)
+  - Classes Bootstrap mal écrites (`d-md-blok`) → potentiel bug d'affichage
+
+  3 directions proposées :
+   A — Minimaliste sombre   : logo géant + RS + ligne légale
+   B — 4 colonnes éditorial : layout magazine, valorise les rubriques (SEO)
+   C — Héro avec bandeau rouge : reprend la signature header, pousse à l'action
+-->
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proposals — Footer Gimmick Shelter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" crossorigin="anonymous">
+  <style>
+    /* ── Reset & tokens DS ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color1: #E81F1F;
+      --color2: #000B29;
+      --color3: #FFFFFF;
+      --color4: #000000;
+      --color5: #6D6D64;
+      --gs-divider-soft:   rgba(255,255,255,0.08);
+      --gs-divider-medium: rgba(255,255,255,0.15);
+    }
+    body {
+      background: #1a1a1a;
+      font-family: 'Roboto', sans-serif;
+      color: var(--color3);
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Labels de section ─────────────────────────────────────────── */
+    .proposal-label {
+      display: flex; align-items: center; gap: 12px;
+      padding: 40px 32px 12px;
+      font-family: 'Anton', sans-serif;
+      font-size: 1.1rem; color: var(--color5);
+      letter-spacing: .08em; text-transform: uppercase;
+    }
+    .proposal-label span {
+      background: var(--color1); color: #fff;
+      padding: 2px 10px; font-size: .85rem; border-radius: 3px;
+      font-family: 'Roboto', sans-serif; letter-spacing: .05em;
+    }
+    .proposal-label .badge-current { background: var(--color5); }
+    .proposal-desc {
+      padding: 0 32px 24px;
+      font-size: .9rem; color: var(--color5); line-height: 1.6;
+      max-width: 880px;
+    }
+    .proposal-desc strong { color: var(--color3); }
+    .proposal-desc .pro { color: #4caf50; }
+    .proposal-desc .con { color: var(--color1); }
+    hr.sep { border: none; border-top: 1px solid #2a2a2a; margin: 48px 0 0; }
+
+    /* ── Faux contenu de page (contexte) ────────────────────────────── */
+    .fake-article {
+      max-width: 780px; margin: 0 auto;
+      padding: 48px 24px 64px;
+      color: var(--color5);
+      font-size: .95rem; line-height: 1.7;
+    }
+    .fake-article__label {
+      display: inline-block;
+      font-family: 'Anton', sans-serif;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--color1); font-size: .8rem;
+      border: 1px dashed var(--color1);
+      padding: 6px 12px; margin-bottom: 20px;
+    }
+    .fake-article p { margin-bottom: 1em; }
+    .fake-article p::first-letter { font-weight: 500; color: var(--color3); }
+
+    /* ════════════════════════════════════════════════════════════════
+       VARIANTE A — FOOTER MINIMALISTE SOMBRE
+    ════════════════════════════════════════════════════════════════ */
+    .footer-a {
+      background: var(--color4);
+      color: var(--color3);
+      padding: 72px 24px 24px;
+      text-align: center;
+    }
+    .footer-a__logo {
+      display: inline-block;
+      margin-bottom: 16px;
+    }
+    .footer-a__logo img {
+      height: 64px; width: auto;
+    }
+    .footer-a__tagline {
+      font-family: 'Roboto', sans-serif;
+      font-style: italic;
+      color: var(--color5);
+      font-size: .95rem;
+      letter-spacing: .05em;
+      margin-bottom: 40px;
+    }
+    .footer-a__social {
+      display: flex; justify-content: center; gap: 8px;
+      list-style: none;
+      margin-bottom: 48px;
+    }
+    .footer-a__social a {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 48px; height: 48px;
+      border: 1px solid var(--gs-divider-medium);
+      border-radius: 50%;
+      color: var(--color3);
+      font-size: 1.1rem;
+      transition: background .25s ease, border-color .25s ease, transform .25s ease;
+    }
+    .footer-a__social a:hover,
+    .footer-a__social a:focus-visible {
+      background: var(--color1);
+      border-color: var(--color1);
+      transform: translateY(-2px);
+      outline: none;
+    }
+    .footer-a__nav {
+      display: flex; justify-content: center; flex-wrap: wrap;
+      gap: 8px 24px;
+      list-style: none;
+      font-family: 'Anton', sans-serif;
+      letter-spacing: .08em; text-transform: uppercase;
+      font-size: .95rem;
+      margin-bottom: 40px;
+    }
+    .footer-a__nav a {
+      color: var(--color3);
+      transition: color .2s ease;
+    }
+    .footer-a__nav a:hover { color: var(--color1); }
+    .footer-a__legal {
+      border-top: 1px solid var(--gs-divider-soft);
+      padding-top: 24px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px;
+      font-size: .8rem;
+      color: var(--color5);
+    }
+    .footer-a__legal-links {
+      display: flex; gap: 16px; list-style: none; flex-wrap: wrap;
+    }
+    .footer-a__legal a:hover { color: var(--color3); }
+    .footer-a__credit em { font-style: italic; color: var(--color3); }
+
+    @media (max-width: 768px) {
+      .footer-a { padding: 56px 16px 20px; }
+      .footer-a__logo img { height: 48px; }
+      .footer-a__nav { font-size: .85rem; gap: 6px 18px; }
+      .footer-a__legal { flex-direction: column; text-align: center; }
+    }
+
+    /* ════════════════════════════════════════════════════════════════
+       VARIANTE B — FOOTER 4 COLONNES ÉDITORIAL
+    ════════════════════════════════════════════════════════════════ */
+    .footer-b {
+      background: var(--color2);
+      color: var(--color3);
+      padding: 64px 32px 0;
+    }
+    .footer-b__grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1.3fr;
+      gap: 48px;
+      max-width: 1400px; margin: 0 auto;
+      padding-bottom: 48px;
+    }
+    .footer-b__col-title {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--color3);
+      margin-bottom: 20px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid var(--color1);
+      display: inline-block;
+    }
+    .footer-b__brand img { height: 56px; width: auto; margin-bottom: 16px; }
+    .footer-b__brand-tagline {
+      font-family: 'Roboto', sans-serif;
+      font-style: italic;
+      color: var(--color3);
+      font-size: 1rem;
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+    .footer-b__brand-pitch {
+      color: var(--color5);
+      font-size: .9rem;
+      line-height: 1.6;
+    }
+    .footer-b__list {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .footer-b__list a {
+      color: var(--color3);
+      font-size: .95rem;
+      transition: color .2s ease, padding-left .2s ease;
+      display: inline-block;
+    }
+    .footer-b__list a:hover,
+    .footer-b__list a:focus-visible {
+      color: var(--color1);
+      padding-left: 6px;
+      outline: none;
+    }
+    .footer-b__list a::before {
+      content: "→ ";
+      color: var(--color1);
+      opacity: 0; margin-right: 0;
+      transition: opacity .2s ease, margin-right .2s ease;
+    }
+    .footer-b__list a:hover::before {
+      opacity: 1; margin-right: 4px;
+    }
+    .footer-b__newsletter p {
+      color: var(--color5);
+      font-size: .85rem;
+      line-height: 1.5;
+      margin-bottom: 14px;
+    }
+    .footer-b__newsletter-form {
+      display: flex; gap: 0;
+      margin-bottom: 24px;
+    }
+    .footer-b__newsletter-form input {
+      flex: 1;
+      background: var(--color4);
+      border: 1px solid var(--gs-divider-medium);
+      color: var(--color3);
+      padding: 10px 12px;
+      font-family: 'Roboto', sans-serif;
+      font-size: .9rem;
+    }
+    .footer-b__newsletter-form input::placeholder { color: var(--color5); }
+    .footer-b__newsletter-form input:focus {
+      outline: none;
+      border-color: var(--color1);
+    }
+    .footer-b__newsletter-form button {
+      background: var(--color1);
+      color: var(--color3);
+      border: 1px solid var(--color1);
+      font-family: 'Anton', sans-serif;
+      letter-spacing: .1em; text-transform: uppercase;
+      padding: 0 18px;
+      font-size: .9rem;
+      cursor: pointer;
+      transition: background .2s ease;
+    }
+    .footer-b__newsletter-form button:hover { background: #c41a1a; }
+    .footer-b__social {
+      display: flex; gap: 10px;
+      list-style: none;
+    }
+    .footer-b__social a {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 40px; height: 40px;
+      background: var(--color4);
+      border: 1px solid var(--gs-divider-medium);
+      color: var(--color3);
+      font-size: 1rem;
+      transition: background .2s ease, color .2s ease;
+    }
+    .footer-b__social a:hover {
+      background: var(--color1);
+      border-color: var(--color1);
+    }
+    .footer-b__bottom {
+      background: var(--color4);
+      margin: 0 -32px;
+      padding: 18px 32px;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px;
+      font-size: .8rem;
+      color: var(--color5);
+    }
+    .footer-b__legal-links {
+      display: flex; gap: 20px; list-style: none; flex-wrap: wrap;
+    }
+    .footer-b__legal-links a:hover { color: var(--color3); }
+    .footer-b__credit em { color: var(--color3); font-style: italic; }
+
+    @media (max-width: 992px) {
+      .footer-b__grid { grid-template-columns: 1fr 1fr; gap: 40px; }
+    }
+    @media (max-width: 600px) {
+      .footer-b { padding: 48px 16px 0; }
+      .footer-b__grid { grid-template-columns: 1fr; gap: 36px; padding-bottom: 36px; }
+      .footer-b__bottom { margin: 0 -16px; padding: 18px 16px;
+        flex-direction: column; text-align: center; }
+    }
+
+    /* ════════════════════════════════════════════════════════════════
+       VARIANTE C — FOOTER HÉRO AVEC BANDEAU ROUGE
+    ════════════════════════════════════════════════════════════════ */
+    .footer-c__hero {
+      background: var(--color1);
+      color: var(--color3);
+      padding: 56px 32px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .footer-c__hero::before {
+      content: "";
+      position: absolute; inset: 0;
+      background:
+        repeating-linear-gradient(
+          135deg,
+          transparent 0 22px,
+          rgba(255,255,255,0.04) 22px 24px
+        );
+      pointer-events: none;
+    }
+    .footer-c__hero-inner {
+      position: relative; z-index: 1;
+      max-width: 880px; margin: 0 auto;
+    }
+    .footer-c__hero img {
+      height: 56px; width: auto;
+      margin-bottom: 16px;
+    }
+    .footer-c__hero-tagline {
+      font-family: 'Roboto', sans-serif;
+      font-style: italic;
+      font-size: 1rem;
+      letter-spacing: .04em;
+      margin-bottom: 28px;
+      opacity: .92;
+    }
+    .footer-c__hero-headline {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      line-height: 1.1;
+      letter-spacing: .02em;
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+    .footer-c__hero-headline em {
+      font-style: normal;
+      background: var(--color4);
+      padding: 2px 12px;
+      display: inline-block;
+    }
+    .footer-c__hero-ctas {
+      display: flex; justify-content: center; gap: 14px;
+      flex-wrap: wrap;
+    }
+    .footer-c__cta {
+      font-family: 'Anton', sans-serif;
+      letter-spacing: .12em; text-transform: uppercase;
+      font-size: .95rem;
+      padding: 14px 26px;
+      border: 2px solid var(--color3);
+      color: var(--color3);
+      background: transparent;
+      transition: background .2s ease, color .2s ease;
+      display: inline-flex; align-items: center; gap: 10px;
+    }
+    .footer-c__cta:hover,
+    .footer-c__cta:focus-visible {
+      background: var(--color3);
+      color: var(--color1);
+      outline: none;
+    }
+    .footer-c__cta--primary {
+      background: var(--color4);
+      border-color: var(--color4);
+    }
+    .footer-c__cta--primary:hover { background: var(--color2); border-color: var(--color2); color: var(--color3); }
+
+    .footer-c__body {
+      background: var(--color2);
+      color: var(--color3);
+      padding: 48px 32px 0;
+    }
+    .footer-c__body-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 40px;
+      max-width: 1400px; margin: 0 auto;
+      padding-bottom: 40px;
+    }
+    .footer-c__col-title {
+      font-family: 'Anton', sans-serif;
+      font-size: 1rem;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: var(--color5);
+      margin-bottom: 16px;
+    }
+    .footer-c__list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .footer-c__list a {
+      color: var(--color3); font-size: .95rem;
+      transition: color .2s ease;
+    }
+    .footer-c__list a:hover { color: var(--color1); }
+    .footer-c__about p {
+      color: var(--color5);
+      font-size: .9rem;
+      line-height: 1.6;
+      margin-bottom: 14px;
+    }
+    .footer-c__social {
+      display: flex; gap: 10px; list-style: none;
+    }
+    .footer-c__social a {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 42px; height: 42px;
+      border: 1px solid var(--gs-divider-medium);
+      color: var(--color3);
+      font-size: 1rem;
+      transition: background .2s ease, border-color .2s ease;
+    }
+    .footer-c__social a:hover {
+      background: var(--color1);
+      border-color: var(--color1);
+    }
+    .footer-c__bottom {
+      border-top: 1px solid var(--gs-divider-soft);
+      padding: 18px 0;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 12px;
+      font-size: .8rem;
+      color: var(--color5);
+    }
+    .footer-c__bottom-links {
+      display: flex; gap: 18px; list-style: none; flex-wrap: wrap;
+    }
+    .footer-c__bottom a:hover { color: var(--color3); }
+    .footer-c__credit em { color: var(--color3); font-style: italic; }
+
+    @media (max-width: 992px) {
+      .footer-c__body-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .footer-c__hero { padding: 40px 16px; }
+      .footer-c__hero-ctas { flex-direction: column; align-items: stretch; }
+      .footer-c__body { padding: 40px 16px 0; }
+      .footer-c__body-grid { grid-template-columns: 1fr; gap: 32px; }
+      .footer-c__bottom { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===========================================================
+       0 — ÉTAT ACTUEL (référence)
+       Pour mémoire : fond rouge plein, RS incomplets, pas de mentions.
+  =========================================================== -->
+  <div class="proposal-label">
+    <span class="badge-current">CURRENT</span> Footer actuel — référence
+  </div>
+  <div class="proposal-desc">
+    Fond <strong>rouge plein</strong> sur tout le bloc, logo + nav + 3 RS empilés
+    sans hiérarchie. <span class="con">Pas de copyright, pas de mentions légales,
+    pas de crédit auteur, pas de CTA</span>, et <span class="con">Twitter/X absent</span>
+    des réseaux sociaux. Bug CSS sur <code>d-md-blok</code>.
+  </div>
+
+  <hr class="sep">
+
+  <!-- ===========================================================
+       VARIANTE A — MINIMALISTE SOMBRE
+  =========================================================== -->
+  <div class="proposal-label">
+    <span>A</span> Footer minimaliste sombre
+  </div>
+  <div class="proposal-desc">
+    Fond <strong>noir (<code>--color4</code>)</strong>, logo Anton centré, ligne
+    de réseaux sociaux en cercles, nav secondaire fine, copyright et crédit en
+    bas. <span class="pro">Très épuré, fait écho à la signature graphique du
+    header sans rajouter une seconde zone rouge</span>. <span class="con">Apport
+    SEO limité, peu de liens internes</span>.
+  </div>
+
+  <!-- Contexte : faux contenu de page -->
+  <div class="fake-article">
+    <span class="fake-article__label">← Bas d'article →</span>
+    <p>… et c'est sur ce dernier accord saturé que se referme la chronique. On
+    quittera l'album avec ce sentiment tenace que le rock, en 2026, n'a toujours
+    pas dit son dernier mot — pourvu qu'on lui prête l'oreille où il faut.</p>
+    <p style="text-align: right; color: var(--color5);">— La rédaction</p>
+  </div>
+
+  <footer class="footer-a" aria-labelledby="footer-a-title">
+    <h2 id="footer-a-title" class="sr-only" style="position:absolute;left:-9999px;">Pied de page Gimmick Shelter</h2>
+
+    <a href="/" class="footer-a__logo" aria-label="Gimmick Shelter — Accueil">
+      <img src="../img/identity/gimmick-shelter-logo-blanc.svg" alt="">
+    </a>
+    <p class="footer-a__tagline">Prédicateur rock et indépendant depuis 2021</p>
+
+    <ul class="footer-a__social" role="list" aria-label="Réseaux sociaux">
+      <li><a href="https://www.instagram.com/gimmick_shelter/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
+      <li><a href="https://twitter.com/gimmick_shelter" target="_blank" rel="noopener" aria-label="Twitter / X"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
+      <li><a href="https://www.facebook.com/Gimmick-Shelter-111613287097036" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
+      <li><a href="https://open.spotify.com/user/1113597649" target="_blank" rel="noopener" aria-label="Spotify"><i class="fab fa-spotify" aria-hidden="true"></i></a></li>
+    </ul>
+
+    <nav aria-label="Navigation secondaire">
+      <ul class="footer-a__nav" role="list">
+        <li><a href="/chroniques/">Chroniques</a></li>
+        <li><a href="/interviews/">Interviews</a></li>
+        <li><a href="/playlists/">Playlists</a></li>
+        <li><a href="/dates/">Agenda</a></li>
+        <li><a href="/a-propos-de-nous/">À propos</a></li>
+        <li><a href="/contact/">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="footer-a__legal">
+      <p class="footer-a__credit">© 2021–2026 Gimmick Shelter — Site développé par <em>Adrien Masseron</em></p>
+      <ul class="footer-a__legal-links" role="list">
+        <li><a href="/mentions-legales/">Mentions légales</a></li>
+        <li><a href="/politique-de-confidentialite/">Confidentialité</a></li>
+        <li><a href="/cgu/">CGU</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <hr class="sep">
+
+  <!-- ===========================================================
+       VARIANTE B — 4 COLONNES ÉDITORIAL
+  =========================================================== -->
+  <div class="proposal-label">
+    <span>B</span> Footer 4 colonnes éditorial
+  </div>
+  <div class="proposal-desc">
+    Layout magazine sur fond <strong>bleu nuit (<code>--color2</code>)</strong> :
+    colonne marque, colonne rubriques, colonne pages utilitaires, colonne
+    newsletter + RS. Bandeau noir <code>--color4</code> en bas pour mentions.
+    <span class="pro">Maximise les liens internes (SEO), donne de la matière, formulaire
+    newsletter intégré</span>. <span class="con">Plus dense, moins minimaliste,
+    demande un peu plus de hauteur</span>.
+  </div>
+
+  <div class="fake-article">
+    <span class="fake-article__label">← Bas de page archive →</span>
+    <p>Vous avez parcouru toutes les chroniques de la rubrique. Pour ne pas
+    rester sur votre faim, descendez dans le pied de page — vous y trouverez les
+    accès rapides aux interviews, playlists et au prochain agenda.</p>
+  </div>
+
+  <footer class="footer-b" aria-labelledby="footer-b-title">
+    <h2 id="footer-b-title" class="sr-only" style="position:absolute;left:-9999px;">Pied de page Gimmick Shelter</h2>
+
+    <div class="footer-b__grid">
+
+      <!-- Col 1 — Marque -->
+      <div class="footer-b__brand">
+        <a href="/" aria-label="Gimmick Shelter — Accueil">
+          <img src="../img/identity/gimmick-shelter-logo-blanc.svg" alt="">
+        </a>
+        <p class="footer-b__brand-tagline">Prédicateur rock et indépendant depuis 2021</p>
+        <p class="footer-b__brand-pitch">Webzine musical édité depuis Lyon. Chroniques d'albums, interviews, playlists thématiques et agenda concerts — sans algorithme, sans encart sponso.</p>
+      </div>
+
+      <!-- Col 2 — Rubriques -->
+      <nav aria-label="Rubriques">
+        <h3 class="footer-b__col-title">Rubriques</h3>
+        <ul class="footer-b__list" role="list">
+          <li><a href="/chroniques/">Chroniques</a></li>
+          <li><a href="/anachroniques/">Anachroniques</a></li>
+          <li><a href="/interviews/">Interviews</a></li>
+          <li><a href="/playlists/">Playlists</a></li>
+          <li><a href="/dates/">Agenda concerts</a></li>
+        </ul>
+      </nav>
+
+      <!-- Col 3 — Le webzine -->
+      <nav aria-label="Le webzine">
+        <h3 class="footer-b__col-title">Le webzine</h3>
+        <ul class="footer-b__list" role="list">
+          <li><a href="/a-propos-de-nous/">À propos</a></li>
+          <li><a href="/equipe/">L'équipe</a></li>
+          <li><a href="/contact/">Contact rédaction</a></li>
+          <li><a href="/proposer-une-chronique/">Proposer une chronique</a></li>
+          <li><a href="/soutenir/">Soutenir le webzine</a></li>
+        </ul>
+      </nav>
+
+      <!-- Col 4 — Newsletter + RS -->
+      <div class="footer-b__newsletter">
+        <h3 class="footer-b__col-title">Restez branchés</h3>
+        <p>Une newsletter par mois, nos coups de cœur et zéro pub. Désinscription en un clic.</p>
+        <form class="footer-b__newsletter-form" action="/newsletter/" method="post">
+          <label for="footer-b-email" class="sr-only" style="position:absolute;left:-9999px;">Adresse email</label>
+          <input id="footer-b-email" type="email" name="email" placeholder="vous@exemple.fr" required>
+          <button type="submit">OK</button>
+        </form>
+
+        <h3 class="footer-b__col-title" style="margin-top: 8px;">Suivez-nous</h3>
+        <ul class="footer-b__social" role="list" aria-label="Réseaux sociaux">
+          <li><a href="https://www.instagram.com/gimmick_shelter/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
+          <li><a href="https://twitter.com/gimmick_shelter" target="_blank" rel="noopener" aria-label="Twitter / X"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
+          <li><a href="https://www.facebook.com/Gimmick-Shelter-111613287097036" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
+          <li><a href="https://open.spotify.com/user/1113597649" target="_blank" rel="noopener" aria-label="Spotify"><i class="fab fa-spotify" aria-hidden="true"></i></a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer-b__bottom">
+      <p class="footer-b__credit">© 2021–2026 Gimmick Shelter — Site développé par <em>Adrien Masseron</em></p>
+      <ul class="footer-b__legal-links" role="list">
+        <li><a href="/mentions-legales/">Mentions légales</a></li>
+        <li><a href="/politique-de-confidentialite/">Confidentialité</a></li>
+        <li><a href="/cgu/">CGU</a></li>
+        <li><a href="/cookies/">Cookies</a></li>
+      </ul>
+    </div>
+  </footer>
+
+  <hr class="sep">
+
+  <!-- ===========================================================
+       VARIANTE C — HÉRO AVEC BANDEAU ROUGE
+  =========================================================== -->
+  <div class="proposal-label">
+    <span>C</span> Footer héro avec bandeau rouge
+  </div>
+  <div class="proposal-desc">
+    Reprend la signature visuelle du header : <strong>bandeau rouge
+    <code>--color1</code></strong> en haut avec logo + tagline + grand titre
+    Anton + 2 CTA (« Proposer une chronique » / « Soutenir »), suivi d'une zone
+    <strong>bleu nuit <code>--color2</code></strong> avec navigation et mentions.
+    <span class="pro">Impactant, fait rimer ouverture/fermeture de page,
+    transforme le footer en zone de conversion</span>. <span class="con">Le
+    bandeau rouge est très présent — à n'utiliser que si on assume une fin de
+    page éditoriale forte</span>.
+  </div>
+
+  <div class="fake-article">
+    <span class="fake-article__label">← Bas d'interview →</span>
+    <p>« Ce qui m'intéresse aujourd'hui, c'est de retrouver l'urgence du premier
+    album, mais avec les outils du dernier. » Sur ces mots, l'enregistreur
+    s'éteint et la conversation se poursuit dans le noir du bar — hors article.</p>
+    <p style="text-align: right; color: var(--color5);">— Propos recueillis par la rédaction</p>
+  </div>
+
+  <footer class="footer-c" aria-labelledby="footer-c-title">
+    <h2 id="footer-c-title" class="sr-only" style="position:absolute;left:-9999px;">Pied de page Gimmick Shelter</h2>
+
+    <!-- HÉRO ROUGE -->
+    <div class="footer-c__hero">
+      <div class="footer-c__hero-inner">
+        <a href="/" aria-label="Gimmick Shelter — Accueil">
+          <img src="../img/identity/gimmick-shelter-logo-blanc.svg" alt="">
+        </a>
+        <p class="footer-c__hero-tagline">Prédicateur rock et indépendant depuis 2021</p>
+
+        <h3 class="footer-c__hero-headline">Le rock vit <em>de ses lecteurs</em>.<br>Et de ses contributeurs.</h3>
+
+        <div class="footer-c__hero-ctas">
+          <a href="/proposer-une-chronique/" class="footer-c__cta footer-c__cta--primary">
+            <i class="fas fa-feather-alt" aria-hidden="true"></i> Proposer une chronique
+          </a>
+          <a href="/soutenir/" class="footer-c__cta">
+            <i class="fas fa-heart" aria-hidden="true"></i> Soutenir le webzine
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- ZONE BLEU NUIT -->
+    <div class="footer-c__body">
+      <div class="footer-c__body-grid">
+
+        <div class="footer-c__about">
+          <h3 class="footer-c__col-title">Gimmick Shelter</h3>
+          <p>Webzine musical édité depuis Lyon. Chroniques d'albums, interviews, playlists et agenda concerts — sans algorithme, sans encart sponso, sans concession sur l'oreille.</p>
+          <ul class="footer-c__social" role="list" aria-label="Réseaux sociaux">
+            <li><a href="https://www.instagram.com/gimmick_shelter/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
+            <li><a href="https://twitter.com/gimmick_shelter" target="_blank" rel="noopener" aria-label="Twitter / X"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
+            <li><a href="https://www.facebook.com/Gimmick-Shelter-111613287097036" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
+            <li><a href="https://open.spotify.com/user/1113597649" target="_blank" rel="noopener" aria-label="Spotify"><i class="fab fa-spotify" aria-hidden="true"></i></a></li>
+          </ul>
+        </div>
+
+        <nav aria-label="Rubriques">
+          <h3 class="footer-c__col-title">Rubriques</h3>
+          <ul class="footer-c__list" role="list">
+            <li><a href="/chroniques/">Chroniques</a></li>
+            <li><a href="/anachroniques/">Anachroniques</a></li>
+            <li><a href="/interviews/">Interviews</a></li>
+            <li><a href="/playlists/">Playlists</a></li>
+            <li><a href="/dates/">Agenda</a></li>
+          </ul>
+        </nav>
+
+        <nav aria-label="Le webzine">
+          <h3 class="footer-c__col-title">Le webzine</h3>
+          <ul class="footer-c__list" role="list">
+            <li><a href="/a-propos-de-nous/">À propos</a></li>
+            <li><a href="/equipe/">L'équipe</a></li>
+            <li><a href="/contact/">Contact</a></li>
+            <li><a href="/newsletter/">Newsletter</a></li>
+          </ul>
+        </nav>
+
+        <nav aria-label="Juridique">
+          <h3 class="footer-c__col-title">Juridique</h3>
+          <ul class="footer-c__list" role="list">
+            <li><a href="/mentions-legales/">Mentions légales</a></li>
+            <li><a href="/politique-de-confidentialite/">Confidentialité</a></li>
+            <li><a href="/cgu/">CGU</a></li>
+            <li><a href="/cookies/">Cookies</a></li>
+          </ul>
+        </nav>
+
+      </div>
+
+      <div class="footer-c__bottom">
+        <p class="footer-c__credit">© 2021–2026 Gimmick Shelter — Site développé par <em>Adrien Masseron</em></p>
+        <ul class="footer-c__bottom-links" role="list">
+          <li><a href="/plan-du-site/">Plan du site</a></li>
+          <li><a href="/contact/">Nous contacter</a></li>
+          <li><a href="#haut" aria-label="Retour en haut de page">Haut de page ↑</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+
+  <hr class="sep">
+
+  <!-- ===========================================================
+       SYNTHÈSE
+  =========================================================== -->
+  <div class="proposal-label">
+    <span>↳</span> Synthèse / recommandation
+  </div>
+  <div class="proposal-desc">
+    <strong>A</strong> si on assume un site très éditorial et minimaliste, où le
+    footer doit se faire oublier.<br>
+    <strong>B</strong> pour le meilleur compromis éditorial + SEO + newsletter,
+    sans surcharger visuellement la fin de page.<br>
+    <strong>C</strong> si on veut transformer le footer en zone de conversion
+    (contributions, soutien) et faire écho fort au header rouge.<br><br>
+    Recommandation par défaut : <strong>B</strong>. Si on veut booster les
+    contributions cette année : <strong>C</strong>.
+  </div>
+
+  <div style="height: 64px;"></div>
+
+</body>
+</html>

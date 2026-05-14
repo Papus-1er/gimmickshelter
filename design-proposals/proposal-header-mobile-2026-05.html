@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<!--
+  PROPOSITION DESIGN — Menu Mobile Gimmick Shelter
+  Date      : 2026-05
+  Auteur    : Agent /designer
+  Contexte  : Suite de la validation de l'Option A (proposal-header-v2-2026-05.html).
+              Le bandeau logo rouge + nav fond noir est conservé tel quel.
+              Ce fichier explore 3 patterns de menu mobile.
+
+  Header validé (Option A) :
+  - Bandeau logo rouge centré (sans ticker)
+  - Nav fond noir sous le logo, liens Roboto uppercase
+
+  Variantes mobile :
+  A — Drawer plein écran (overlay fond noir, liens Anton grands)
+  B — Slide-down sous la nav (fond #000B29, pas d'overlay)
+  C — Bottom sheet (monte du bas, icônes FA à gauche)
+
+  Tokens DS :
+  --color1: #E81F1F  (rouge)
+  --color2: #000B29  (bleu nuit)
+  --color3: #FFFFFF  (blanc)
+  --color4: #000000  (noir)
+  --color5: #6D6D64  (khaki)
+
+  Polices : Anton (titres/nav), Roboto (corps/secondaire)
+  Simulation statique — JS non fonctionnel, états "ouvert" en CSS
+-->
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Menu Mobile — Gimmick Shelter · 2026-05</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" crossorigin="anonymous">
+  <style>
+
+    /* ══════════════════════════════════════════════════════════════════
+       RESET & TOKENS DS
+    ══════════════════════════════════════════════════════════════════ */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color1: #E81F1F;
+      --color2: #000B29;
+      --color3: #FFFFFF;
+      --color4: #000000;
+      --color5: #6D6D64;
+    }
+    body {
+      background: #0d0d0d;
+      font-family: 'Roboto', sans-serif;
+      color: var(--color3);
+      min-height: 100vh;
+    }
+
+    /* ══════════════════════════════════════════════════════════════════
+       EN-TÊTE DE PAGE (document)
+    ══════════════════════════════════════════════════════════════════ */
+    .doc-header {
+      padding: 52px 24px 36px;
+      text-align: center;
+      border-bottom: 1px solid #1f1f1f;
+    }
+    .doc-header h1 {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.4rem;
+      color: var(--color5);
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    .doc-header h1 span { color: var(--color1); }
+    .doc-header p {
+      font-size: 0.82rem;
+      color: #444;
+      margin-top: 8px;
+      letter-spacing: 0.05em;
+    }
+    .doc-header .doc-note {
+      display: inline-block;
+      margin-top: 18px;
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-left: 3px solid var(--color1);
+      padding: 10px 16px;
+      font-size: 0.8rem;
+      color: var(--color5);
+      text-align: left;
+      max-width: 620px;
+      line-height: 1.7;
+    }
+
+    /* ══════════════════════════════════════════════════════════════════
+       LAYOUT GÉNÉRAL DES SECTIONS
+    ══════════════════════════════════════════════════════════════════ */
+    .proposal-section {
+      padding: 56px 24px 72px;
+      border-bottom: 1px solid #1f1f1f;
+    }
+    .proposal-section:last-of-type { border-bottom: none; }
+
+    /* Titre de section */
+    .section-label {
+      max-width: 860px;
+      margin: 0 auto 36px;
+    }
+    .section-label h2 {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.8rem;
+      color: var(--color1);
+      letter-spacing: 0.05em;
+      margin-bottom: 8px;
+    }
+    .section-label .desc {
+      font-size: 0.88rem;
+      color: var(--color5);
+      line-height: 1.7;
+      max-width: 600px;
+    }
+    .section-label .tags {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .tag {
+      display: inline-block;
+      background: var(--color2);
+      border: 1px solid #1a2d5a;
+      color: var(--color3);
+      font-size: 0.7rem;
+      padding: 2px 10px;
+      border-radius: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .tag.tag-new {
+      background: var(--color1);
+      border-color: var(--color1);
+    }
+    .section-label .pros-cons {
+      margin-top: 16px;
+      font-size: 0.82rem;
+      line-height: 1.8;
+      color: #888;
+    }
+    .section-label .pros-cons strong { color: var(--color3); }
+
+    /* ══════════════════════════════════════════════════════════════════
+       CONTENEUR SIMULATION iPhone (390px)
+    ══════════════════════════════════════════════════════════════════ */
+    .iphone-wrap {
+      margin: 0 auto;
+      width: 390px;
+      /* Cadre "device" subtil */
+      background: #111;
+      border-radius: 40px;
+      border: 2px solid #2a2a2a;
+      overflow: hidden;
+      box-shadow:
+        0 0 0 1px #111,
+        0 24px 64px rgba(0,0,0,0.6),
+        inset 0 0 0 1px rgba(255,255,255,0.04);
+      position: relative;
+    }
+    /* Encoche iPhone simulée */
+    .iphone-notch {
+      background: #111;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 10;
+    }
+    .iphone-notch::after {
+      content: '';
+      display: block;
+      width: 100px;
+      height: 18px;
+      background: #111;
+      border-radius: 0 0 16px 16px;
+      border: 2px solid #2a2a2a;
+      border-top: none;
+    }
+    /* Contenu de page factice (sous le menu) */
+    .fake-page-content {
+      background: #111;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      color: #333;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* ══════════════════════════════════════════════════════════════════
+       HEADER OPTION A — VALIDÉ
+       (bandeau logo rouge + nav fond noir, sans ticker)
+    ══════════════════════════════════════════════════════════════════ */
+
+    /* Bandeau logo */
+    .header-logo-band {
+      background: var(--color1);
+      padding: 16px 20px 12px;
+      text-align: center;
+      border-bottom: 2px solid rgba(0,0,0,0.2);
+    }
+    .header-logo-band img {
+      height: 36px;
+      width: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    /* Barre de nav mobile (hamburger) */
+    .header-nav-bar {
+      background: var(--color4);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      height: 48px;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    .header-nav-bar .nav-label {
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+    }
+    .hamburger-btn {
+      background: none;
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 3px;
+      padding: 5px 9px;
+      color: var(--color3);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.7rem;
+      font-family: 'Roboto', sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .hamburger-btn i { font-size: 0.85rem; }
+
+    /* ══════════════════════════════════════════════════════════════════
+       MOBILE A — DRAWER PLEIN ÉCRAN
+       Overlay fond noir total, liens Anton grands, croix fermeture,
+       réseaux sociaux en bas.
+    ══════════════════════════════════════════════════════════════════ */
+
+    .ma-overlay {
+      background: var(--color4);
+      position: relative;
+      /* Dans la démo statique : simule le drawer ouvert */
+    }
+
+    /* Barre supérieure du drawer */
+    .ma-drawer-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 20px 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .ma-drawer-top .drawer-logo {
+      font-family: 'Anton', sans-serif;
+      font-size: 0.95rem;
+      color: rgba(255,255,255,0.3);
+      letter-spacing: 0.1em;
+    }
+    .ma-close-btn {
+      background: none;
+      border: none;
+      color: var(--color3);
+      font-size: 1.2rem;
+      cursor: pointer;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: background 0.2s;
+    }
+    .ma-close-btn:hover { background: rgba(255,255,255,0.08); }
+
+    /* Liens du menu plein écran */
+    .ma-nav {
+      padding: 20px 0 16px;
+    }
+    .ma-nav a {
+      display: block;
+      font-family: 'Anton', sans-serif;
+      font-size: 2rem;
+      color: var(--color3);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      padding: 10px 24px;
+      border-left: 4px solid transparent;
+      line-height: 1.15;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    .ma-nav a:hover,
+    .ma-nav a.active {
+      color: var(--color1);
+      border-left-color: var(--color1);
+    }
+    .ma-nav a.active {
+      color: var(--color1);
+    }
+
+    /* Barre du bas : séparateur + réseaux */
+    .ma-drawer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.08);
+      padding: 18px 24px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .ma-social {
+      display: flex;
+      gap: 18px;
+    }
+    .ma-social a {
+      color: rgba(255,255,255,0.45);
+      font-size: 1.05rem;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .ma-social a:hover { color: var(--color1); }
+    .ma-search-link {
+      background: none;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 20px;
+      padding: 6px 14px;
+      color: rgba(255,255,255,0.5);
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .ma-search-link:hover {
+      color: var(--color3);
+      border-color: rgba(255,255,255,0.35);
+    }
+
+    /* ══════════════════════════════════════════════════════════════════
+       MOBILE B — SLIDE-DOWN SOUS LA NAV
+       Panneau qui descend depuis la nav, fond #000B29,
+       séparateurs fins, icône recherche en bas.
+       Pas d'overlay — navigation rapide.
+    ══════════════════════════════════════════════════════════════════ */
+
+    .mb-dropdown {
+      background: var(--color2);
+      border-top: 2px solid var(--color1);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+    }
+
+    /* Chaque item */
+    .mb-dropdown a {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.8);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 14px 20px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      transition: color 0.15s, background 0.15s;
+    }
+    .mb-dropdown a:last-of-type { border-bottom: none; }
+    .mb-dropdown a:hover {
+      color: var(--color3);
+      background: rgba(255,255,255,0.04);
+    }
+    .mb-dropdown a.active {
+      color: var(--color1);
+    }
+    .mb-dropdown a .chevron {
+      color: rgba(255,255,255,0.2);
+      font-size: 0.65rem;
+    }
+    .mb-dropdown a.active .chevron { color: var(--color1); }
+
+    /* Pied du dropdown : barre de recherche */
+    .mb-search-bar {
+      background: rgba(0,0,0,0.3);
+      border-top: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      padding: 10px 16px;
+      gap: 10px;
+    }
+    .mb-search-bar i {
+      color: rgba(255,255,255,0.3);
+      font-size: 0.8rem;
+    }
+    .mb-search-bar input {
+      background: none;
+      border: none;
+      outline: none;
+      color: rgba(255,255,255,0.7);
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.82rem;
+      flex: 1;
+      letter-spacing: 0.05em;
+    }
+    .mb-search-bar input::placeholder { color: rgba(255,255,255,0.25); }
+
+    /* ══════════════════════════════════════════════════════════════════
+       MOBILE C — BOTTOM SHEET
+       Drawer montant du bas, border-radius haut,
+       icônes FA à gauche des liens, fond semi-transparent.
+    ══════════════════════════════════════════════════════════════════ */
+
+    /* Wrapper pour la simulation du bottom sheet */
+    .mc-screen-wrap {
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Contenu de la page visible derrière (assombri) */
+    .mc-page-bg {
+      background: rgba(0,0,0,0.55);
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.15);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    /* Le sheet lui-même */
+    .mc-sheet {
+      background: var(--color2);
+      border-radius: 20px 20px 0 0;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      box-shadow: 0 -8px 32px rgba(0,0,0,0.4);
+    }
+
+    /* Poignée de glissement */
+    .mc-handle {
+      display: flex;
+      justify-content: center;
+      padding: 10px 0 6px;
+    }
+    .mc-handle::after {
+      content: '';
+      display: block;
+      width: 36px;
+      height: 4px;
+      background: rgba(255,255,255,0.18);
+      border-radius: 2px;
+    }
+
+    /* Titre du sheet */
+    .mc-sheet-title {
+      padding: 0 20px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .mc-sheet-title span {
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.72rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: rgba(255,255,255,0.3);
+    }
+    .mc-sheet-close {
+      background: rgba(255,255,255,0.07);
+      border: none;
+      color: rgba(255,255,255,0.5);
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Liens du sheet avec icônes */
+    .mc-nav {
+      padding: 0 0 8px;
+    }
+    .mc-nav a {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 13px 20px;
+      text-decoration: none;
+      color: rgba(255,255,255,0.75);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      transition: color 0.15s, background 0.15s;
+    }
+    .mc-nav a:last-of-type { border-bottom: none; }
+    .mc-nav a:hover {
+      color: var(--color3);
+      background: rgba(255,255,255,0.04);
+    }
+    .mc-nav a.active {
+      color: var(--color3);
+    }
+    .mc-nav a .mc-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      font-size: 0.85rem;
+      background: rgba(255,255,255,0.06);
+      color: rgba(255,255,255,0.45);
+      transition: background 0.15s, color 0.15s;
+    }
+    .mc-nav a.active .mc-icon {
+      background: var(--color1);
+      color: var(--color3);
+    }
+    .mc-nav a:hover .mc-icon {
+      background: rgba(232,31,31,0.15);
+      color: var(--color1);
+    }
+    .mc-nav a .mc-label {
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 500;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      flex: 1;
+    }
+    .mc-nav a .mc-arrow {
+      color: rgba(255,255,255,0.15);
+      font-size: 0.6rem;
+    }
+    .mc-nav a.active .mc-arrow { color: rgba(255,255,255,0.3); }
+
+    /* Barre basse du sheet : social + recherche */
+    .mc-sheet-footer {
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding: 14px 20px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .mc-social {
+      display: flex;
+      gap: 14px;
+    }
+    .mc-social a {
+      color: rgba(255,255,255,0.35);
+      font-size: 0.9rem;
+      text-decoration: none;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .mc-social a:hover {
+      color: var(--color1);
+      border-color: var(--color1);
+    }
+    .mc-search-pill {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 7px 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .mc-search-pill:hover { background: rgba(255,255,255,0.1); }
+    .mc-search-pill i {
+      color: rgba(255,255,255,0.35);
+      font-size: 0.75rem;
+    }
+    .mc-search-pill span {
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.72rem;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════════════════════════════
+     EN-TÊTE DE PAGE
+══════════════════════════════════════════════════════════════════ -->
+<div class="doc-header">
+  <h1>Menu Mobile — <span>Gimmick Shelter</span></h1>
+  <p>Proposition design · Mai 2026 · 3 variantes · Option A validée</p>
+  <div class="doc-note">
+    Header <strong>Option A fixé</strong> : bandeau logo rouge centré + barre nav fond noir.<br>
+    Ticker supprimé comme demandé. Chaque simulation affiche le header visible en haut<br>
+    puis le menu mobile ouvert en dessous. Conteneur : 390px (iPhone 14 Pro).
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════
+     MOBILE A — DRAWER PLEIN ÉCRAN
+══════════════════════════════════════════════════════════════════ -->
+<div class="proposal-section">
+  <div class="section-label">
+    <h2>Mobile A — Drawer plein écran</h2>
+    <p class="desc">
+      Le menu s'ouvre en overlay plein écran sur fond noir total.
+      Les liens sont en <strong>Anton majuscule, grands</strong> — chaque rubrique
+      prend toute la largeur. Croix de fermeture en haut à droite.
+      Réseaux sociaux + recherche en bas. Pattern immersif très répandu
+      sur les sites musicaux et webzines.
+    </p>
+    <div class="tags">
+      <span class="tag tag-new">Plein écran</span>
+      <span class="tag">Anton grands liens</span>
+      <span class="tag">Réseaux bas</span>
+      <span class="tag">Très immersif</span>
+    </div>
+    <div class="pros-cons">
+      <strong>Avantages :</strong> très identitaire rock · les liens Anton sont imposants et lisibles au pouce · réseaux sociaux bien visibles en bas · impression "scène" cohérente avec l'identité GS.<br>
+      <strong>Vigilance :</strong> cache tout le contenu → à réserver aux navigations courtes · animer l'entrée/sortie pour éviter la brutalité · tester le scroll si les rubriques dépassent l'écran.
+    </div>
+  </div>
+
+  <!-- Simulation iPhone -->
+  <div class="iphone-wrap">
+    <div class="iphone-notch"></div>
+
+    <!-- Header Option A (validé) -->
+    <div class="header-logo-band">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 44'%3E%3Ctext x='160' y='34' font-family='Anton,sans-serif' font-size='30' fill='%23ffffff' text-anchor='middle' letter-spacing='1'%3EGIMMICK SHELTER%3C/text%3E%3C/svg%3E"
+           alt="Gimmick Shelter">
+    </div>
+    <div class="header-nav-bar">
+      <span class="nav-label">Navigation</span>
+      <button class="hamburger-btn" aria-label="Fermer le menu">
+        <i class="fas fa-times"></i>
+        <span>Fermer</span>
+      </button>
+    </div>
+
+    <!-- Drawer plein écran ouvert -->
+    <div class="ma-overlay">
+      <div class="ma-drawer-top">
+        <span class="drawer-logo">GIMMICK SHELTER</span>
+        <button class="ma-close-btn" aria-label="Fermer">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+
+      <nav class="ma-nav">
+        <a href="#" class="active">Accueil</a>
+        <a href="#">Actualités</a>
+        <a href="#">Chroniques</a>
+        <a href="#">Playlists</a>
+        <a href="#">Anachroniques</a>
+        <a href="#">Concerts</a>
+        <a href="#">À propos</a>
+      </nav>
+
+      <div class="ma-drawer-bottom">
+        <div class="ma-social">
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
+        </div>
+        <button class="ma-search-link">
+          <i class="fas fa-search"></i>
+          Rechercher
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════
+     MOBILE B — SLIDE-DOWN SOUS LA NAV
+══════════════════════════════════════════════════════════════════ -->
+<div class="proposal-section">
+  <div class="section-label">
+    <h2>Mobile B — Slide-down sous la nav</h2>
+    <p class="desc">
+      Le menu se déroule vers le bas depuis la barre de nav, sans overlay.
+      Fond <code style="color:var(--color1)">#000B29</code>, liens avec séparateurs fins et chevron à droite.
+      Barre de recherche intégrée en pied de dropdown.
+      Pattern moins intrusif — la navigation est rapide, le contenu reste perceptible.
+    </p>
+    <div class="tags">
+      <span class="tag">Sous la nav</span>
+      <span class="tag">Fond bleu nuit</span>
+      <span class="tag">Roboto</span>
+      <span class="tag tag-new">Recherche intégrée</span>
+      <span class="tag">Peu intrusif</span>
+    </div>
+    <div class="pros-cons">
+      <strong>Avantages :</strong> le contenu de la page reste visible derrière → moins de rupture · la recherche est directement accessible · transitions d'entrée simples (height 0→auto) · bon pour les sites à forte densité de contenu.<br>
+      <strong>Vigilance :</strong> si la liste de rubriques est longue, le dropdown dépasse l'écran → prévoir un scroll interne · pas d'effet "waouh" mais très efficace en usage quotidien.
+    </div>
+  </div>
+
+  <!-- Simulation iPhone -->
+  <div class="iphone-wrap">
+    <div class="iphone-notch"></div>
+
+    <!-- Header Option A (validé) -->
+    <div class="header-logo-band">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 44'%3E%3Ctext x='160' y='34' font-family='Anton,sans-serif' font-size='30' fill='%23ffffff' text-anchor='middle' letter-spacing='1'%3EGIMMICK SHELTER%3C/text%3E%3C/svg%3E"
+           alt="Gimmick Shelter">
+    </div>
+    <div class="header-nav-bar">
+      <span class="nav-label">Navigation</span>
+      <button class="hamburger-btn" aria-label="Fermer le menu">
+        <i class="fas fa-times"></i>
+        <span>Fermer</span>
+      </button>
+    </div>
+
+    <!-- Dropdown ouvert -->
+    <div class="mb-dropdown">
+      <a href="#" class="active">
+        Accueil
+        <i class="fas fa-chevron-right chevron"></i>
+      </a>
+      <a href="#">
+        Actualités
+        <i class="fas fa-chevron-right chevron"></i>
+      </a>
+      <a href="#">
+        Chroniques
+        <i class="fas fa-chevron-right chevron"></i>
+      </a>
+      <a href="#">
+        Playlists
+        <i class="fas fa-chevron-right chevron"></i>
+      </a>
+      <a href="#">
+        Anachroniques
+        <i class="fas fa-chevron-right chevron"></i>
+      </a>
+      <a href="#">
+        Concerts
+        <i class="fas fa-chevron-right chevron"></i>
+      </a>
+      <a href="#">
+        À propos
+        <i class="fas fa-chevron-right chevron"></i>
+      </a>
+      <div class="mb-search-bar">
+        <i class="fas fa-search"></i>
+        <input type="text" placeholder="Rechercher un article, un artiste…" readonly>
+      </div>
+    </div>
+
+    <div class="fake-page-content">← contenu page →</div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════
+     MOBILE C — BOTTOM SHEET
+══════════════════════════════════════════════════════════════════ -->
+<div class="proposal-section">
+  <div class="section-label">
+    <h2>Mobile C — Bottom sheet</h2>
+    <p class="desc">
+      Le menu monte depuis le bas de l'écran, façon drawer d'app mobile native.
+      Fond <code style="color:var(--color1)">#000B29</code> avec <strong>border-radius</strong> en haut.
+      Chaque lien est accompagné d'une <strong>icône Font Awesome</strong> dans un pastille.
+      Le fond derrière est semi-transparent. Poignée de glissement en haut du sheet.
+      Pattern moderne très répandu depuis iOS/Android.
+    </p>
+    <div class="tags">
+      <span class="tag tag-new">Bottom sheet</span>
+      <span class="tag tag-new">Icônes FA</span>
+      <span class="tag">Border-radius haut</span>
+      <span class="tag">Semi-transparent</span>
+      <span class="tag">App native</span>
+    </div>
+    <div class="pros-cons">
+      <strong>Avantages :</strong> le pattern "sheet" est familier des apps iOS/Android → conversion immédiate · les icônes aident à scanner la liste rapidement · l'overlay assombri contextualise le menu · très "premium".<br>
+      <strong>Vigilance :</strong> position depuis le bas = zone naturelle du pouce → ergonomiquement excellent · s'assurer que la poignée indique clairement l'interaction glisser · à implémenter avec touch events en production.
+    </div>
+  </div>
+
+  <!-- Simulation iPhone -->
+  <div class="iphone-wrap">
+    <div class="iphone-notch"></div>
+
+    <!-- Header Option A (validé) — visible en haut, derrière l'overlay -->
+    <div class="mc-screen-wrap">
+
+      <!-- Le "contenu de page" assombri derrière -->
+      <div style="background: var(--color4);">
+        <div class="header-logo-band" style="opacity: 0.4;">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 44'%3E%3Ctext x='160' y='34' font-family='Anton,sans-serif' font-size='30' fill='%23ffffff' text-anchor='middle' letter-spacing='1'%3EGIMMICK SHELTER%3C/text%3E%3C/svg%3E"
+               alt="Gimmick Shelter">
+        </div>
+        <div class="header-nav-bar" style="opacity: 0.4;">
+          <span class="nav-label">Navigation</span>
+          <button class="hamburger-btn" aria-label="Menu">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+      <div class="mc-page-bg">← contenu page assombri →</div>
+
+      <!-- Bottom Sheet montant du bas -->
+      <div class="mc-sheet">
+        <div class="mc-handle"></div>
+        <div class="mc-sheet-title">
+          <span>Navigation</span>
+          <button class="mc-sheet-close" aria-label="Fermer">
+            <i class="fas fa-times"></i>
+          </button>
+        </div>
+
+        <nav class="mc-nav">
+          <a href="#" class="active">
+            <span class="mc-icon"><i class="fas fa-home"></i></span>
+            <span class="mc-label">Accueil</span>
+            <i class="fas fa-chevron-right mc-arrow"></i>
+          </a>
+          <a href="#">
+            <span class="mc-icon"><i class="fas fa-newspaper"></i></span>
+            <span class="mc-label">Actualités</span>
+            <i class="fas fa-chevron-right mc-arrow"></i>
+          </a>
+          <a href="#">
+            <span class="mc-icon"><i class="fas fa-star"></i></span>
+            <span class="mc-label">Chroniques</span>
+            <i class="fas fa-chevron-right mc-arrow"></i>
+          </a>
+          <a href="#">
+            <span class="mc-icon"><i class="fas fa-music"></i></span>
+            <span class="mc-label">Playlists</span>
+            <i class="fas fa-chevron-right mc-arrow"></i>
+          </a>
+          <a href="#">
+            <span class="mc-icon"><i class="fas fa-clock"></i></span>
+            <span class="mc-label">Anachroniques</span>
+            <i class="fas fa-chevron-right mc-arrow"></i>
+          </a>
+          <a href="#">
+            <span class="mc-icon"><i class="fas fa-calendar-alt"></i></span>
+            <span class="mc-label">Concerts</span>
+            <i class="fas fa-chevron-right mc-arrow"></i>
+          </a>
+          <a href="#">
+            <span class="mc-icon"><i class="fas fa-info-circle"></i></span>
+            <span class="mc-label">À propos</span>
+            <i class="fas fa-chevron-right mc-arrow"></i>
+          </a>
+        </nav>
+
+        <div class="mc-sheet-footer">
+          <div class="mc-social">
+            <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
+          </div>
+          <div class="mc-search-pill">
+            <i class="fas fa-search"></i>
+            <span>Rechercher</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

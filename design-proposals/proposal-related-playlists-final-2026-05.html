@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proposal — Section "D'autres playlists" — Final hybride</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --color1: #E81F1F;
+    --color2: #000B29;
+    --color3: #FFFFFF;
+    --color4: #000000;
+    --color5: #6D6D64;
+    /* tokens dérivés */
+    --gs-divider-strong-dark: rgba(0, 11, 41, 0.18);
+    --gs-overlay-card: rgba(0, 0, 0, 0.85);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--color3);
+    color: var(--color2);
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    letter-spacing: 0.02rem;
+  }
+
+  .page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 24px 96px;
+  }
+
+  /* Annotation interne (UI proposal, hors DS) */
+  .doc-annotation {
+    margin: 0 0 48px;
+    padding: 14px 18px;
+    border-left: 3px solid var(--color1);
+    background: rgba(232, 31, 31, 0.04);
+    color: var(--color2);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  .doc-annotation strong {
+    font-family: 'Anton', sans-serif;
+    letter-spacing: 0.06em;
+    color: var(--color1);
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  .single-context {
+    border-top: 1px dashed var(--gs-divider-strong-dark);
+    margin: 0 0 24px;
+    padding-top: 24px;
+    color: var(--color5);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  /* ==========================================
+     HEADER de section (validé)
+     ========================================== */
+  .gs-related {
+    padding: 64px 0 24px;
+  }
+  .gs-related__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+  .gs-related__title {
+    font-family: 'Anton', sans-serif;
+    font-weight: 400;
+    color: var(--color2);
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3rem);
+    letter-spacing: 0.02em;
+    line-height: 1;
+  }
+  .gs-related__title em {
+    font-style: normal;
+    color: var(--color1);
+  }
+  .gs-related__all {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.9rem;
+    color: var(--color2);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    border-bottom: 1px solid var(--color2);
+    padding-bottom: 2px;
+    transition: color .2s ease, border-color .2s ease;
+  }
+  .gs-related__all:hover {
+    color: var(--color1);
+    border-color: var(--color1);
+  }
+
+  /* ==========================================
+     CARDS — style repris de proposal-single-playlist-2026-05
+     (.gs-card : carré, image cover, overlay gradient bas, Anton sur image)
+     ========================================== */
+  .related-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .gs-card {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1;
+    display: block;
+    text-decoration: none;
+    color: var(--color3);
+  }
+  .gs-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    transition: transform .35s ease;
+  }
+  .gs-card:hover .gs-card-img {
+    transform: scale(1.08);
+  }
+  .gs-card-img-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, var(--gs-overlay-card), transparent 50%);
+    display: flex;
+    align-items: flex-end;
+    padding: 1.2rem;
+  }
+  .gs-card-title {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.6rem;
+    color: var(--color3);
+    text-transform: uppercase;
+    line-height: 1;
+    margin: 0;
+    letter-spacing: 0.02em;
+  }
+  .gs-card-sub {
+    color: var(--color3);
+    opacity: .85;
+    font-size: .85rem;
+    font-style: italic;
+    margin-top: .4rem;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 768px) {
+    .related-grid {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    .gs-related__head {
+      margin-bottom: 28px;
+    }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <p class="doc-annotation">
+    <strong>Hybride validé</strong>
+    Header de <code>proposal-related-playlists-2026-05</code> (titre "D'autres <em style="color:var(--color1);font-style:normal;">playlists</em>" + CTA "Voir toutes les playlists →") combiné au style de cards <code>.gs-card</code> issu de <code>proposal-single-playlist-2026-05</code> (carré, image cover, overlay gradient bas, titre Anton blanc sur image). Body sur fond blanc <code>var(--color3)</code>.
+  </p>
+
+  <p class="single-context">↑ Fin du contenu single-playlists.php</p>
+
+  <section class="gs-related">
+    <header class="gs-related__head">
+      <h2 class="gs-related__title">D'autres <em>playlists</em></h2>
+      <a href="#" class="gs-related__all">Voir toutes les playlists →</a>
+    </header>
+
+    <div class="related-grid">
+      <a href="#" class="gs-card">
+        <img class="gs-card-img" alt="" src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=80">
+        <div class="gs-card-img-overlay">
+          <div>
+            <h3 class="gs-card-title">Garage Resurrection</h3>
+            <p class="gs-card-sub">Riffs sales et fuzz salvateur, dix titres pour réveiller la platine.</p>
+          </div>
+        </div>
+      </a>
+
+      <a href="#" class="gs-card">
+        <img class="gs-card-img" alt="" src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=800&q=80">
+        <div class="gs-card-img-overlay">
+          <div>
+            <h3 class="gs-card-title">Cold Wave Renaissance</h3>
+            <p class="gs-card-sub">Synthés glacés et basses tendues, plongée dans l'élégance post-punk.</p>
+          </div>
+        </div>
+      </a>
+
+      <a href="#" class="gs-card">
+        <img class="gs-card-img" alt="" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=800&q=80">
+        <div class="gs-card-img-overlay">
+          <div>
+            <h3 class="gs-card-title">Slowcore Sunday</h3>
+            <p class="gs-card-sub">Pour les dimanches gris, des chansons qui prennent leur temps.</p>
+          </div>
+        </div>
+      </a>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>

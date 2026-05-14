@@ -1,0 +1,1240 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposal — Archive Anachroniques — Gimmick Shelter</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --color1: #E81F1F;
+  --color2: #000B29;
+  --color3: #FFFFFF;
+  --color4: #000000;
+  --color5: #6D6D64;
+  --overlay-card: rgba(0,0,0,0.85);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #111;
+  font-family: 'Roboto', sans-serif;
+  color: var(--color3);
+}
+
+/* ── Nav label ──────────────────────────────────────── */
+.section-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #000;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+}
+.section-nav a {
+  padding: .9rem 1.5rem;
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--color5);
+  text-decoration: none;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+  transition: color .2s, border-color .2s;
+}
+.section-nav a:hover, .section-nav a.active {
+  color: var(--color3);
+  border-bottom-color: var(--color1);
+}
+
+/* ── Section wrapper ────────────────────────────────── */
+.proposal {
+  padding: 4rem 0 6rem;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.proposal:nth-child(even) { background: rgba(255,255,255,.015); }
+
+.proposal__header {
+  max-width: 1100px;
+  margin: 0 auto 3rem;
+  padding: 0 1.5rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+.proposal__meta { display: flex; flex-direction: column; gap: .5rem; }
+.proposal__tag {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--color5);
+}
+.proposal__title {
+  font-family: 'Anton', sans-serif;
+  font-size: 2rem;
+}
+.proposal__title em { color: var(--color1); font-style: normal; }
+.proposal__desc {
+  max-width: 520px;
+  font-size: .88rem;
+  line-height: 1.6;
+  color: rgba(255,255,255,.6);
+}
+
+/* ── Viewports ──────────────────────────────────────── */
+.viewports {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  flex-wrap: wrap;
+}
+.viewport-desktop { flex: 1; min-width: 600px; }
+.viewport-mobile  { width: 320px; flex-shrink: 0; }
+
+.viewport-label {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--color5);
+  margin-bottom: .75rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.viewport-label::before {
+  content: '';
+  display: inline-block;
+  width: 20px;
+  height: 2px;
+  background: var(--color1);
+}
+
+/* ══════════════════════════════════════════════════════
+   VARIANTE A — Grid overlay immersif
+══════════════════════════════════════════════════════ */
+
+/* Archive hero — variante A */
+.a-hero {
+  background: var(--color2);
+  padding: 3.5rem 2rem 2.5rem;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+}
+.a-hero__inner {
+  max-width: 900px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+.a-hero__kicker {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--color1);
+  margin-bottom: .6rem;
+}
+.a-hero__title {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(2.8rem, 6vw, 5rem);
+  line-height: .9;
+  color: var(--color3);
+}
+.a-hero__count {
+  font-size: .82rem;
+  color: var(--color5);
+  margin-top: .8rem;
+}
+.a-hero__count strong { color: var(--color3); }
+
+/* Filters bar */
+.a-filters {
+  background: var(--color4);
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  padding: .75rem 2rem;
+  display: flex;
+  gap: .5rem;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.a-filter-pill {
+  flex-shrink: 0;
+  padding: .3rem .85rem;
+  border-radius: 3px;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  border: 1.5px solid rgba(255,255,255,.15);
+  background: transparent;
+  color: var(--color5);
+  cursor: pointer;
+  transition: color .2s, border-color .2s;
+  white-space: nowrap;
+}
+.a-filter-pill:hover { color: var(--color3); border-color: rgba(255,255,255,.35); }
+.a-filter-pill.active { color: var(--color3); border-color: var(--color1); background: rgba(232,31,31,.1); }
+
+/* Grid */
+.a-grid {
+  background: var(--color4);
+  padding: 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .75rem;
+}
+.a-grid--mobile { grid-template-columns: 1fr; gap: .6rem; padding: 1rem; }
+
+/* Card overlay */
+.a-card {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  display: block;
+  text-decoration: none;
+  background: #222;
+}
+.a-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .4s ease;
+}
+.a-card:hover .a-card__img { transform: scale(1.07); }
+.a-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, var(--overlay-card) 0%, rgba(0,0,0,.3) 55%, transparent 100%);
+  transition: opacity .3s ease;
+}
+.a-card:hover .a-card__overlay { opacity: .9; }
+.a-card__body {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1rem;
+}
+.a-card__artist {
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--color1);
+  margin-bottom: .2rem;
+  display: block;
+}
+.a-card__title {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.1rem;
+  color: var(--color3);
+  line-height: 1.1;
+  display: block;
+}
+.a-card__meta {
+  display: flex;
+  gap: .35rem;
+  flex-wrap: wrap;
+  margin-top: .45rem;
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity .25s ease, transform .25s ease;
+}
+.a-card:hover .a-card__meta {
+  opacity: 1;
+  transform: translateY(0);
+}
+.a-pill {
+  font-size: .6rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: .15rem .45rem;
+  border-radius: 2px;
+  background: var(--color1);
+  color: var(--color3);
+}
+.a-pill--ghost {
+  background: rgba(255,255,255,.12);
+  color: rgba(255,255,255,.75);
+}
+
+/* Note étoiles */
+.a-card__note {
+  position: absolute;
+  top: .75rem;
+  right: .75rem;
+  background: var(--color1);
+  color: var(--color3);
+  font-family: 'Anton', sans-serif;
+  font-size: .7rem;
+  padding: .2rem .45rem;
+  border-radius: 2px;
+  letter-spacing: .05em;
+}
+
+/* Infinite load trigger */
+.a-load-more {
+  background: var(--color4);
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+.a-spinner {
+  width: 28px;
+  height: 28px;
+  border: 2px solid rgba(255,255,255,.1);
+  border-top-color: var(--color1);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.a-load-label {
+  font-size: .75rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--color5);
+}
+
+/* ══════════════════════════════════════════════════════
+   VARIANTE B — Liste éditoriale avec cover
+══════════════════════════════════════════════════════ */
+
+.b-hero {
+  background: var(--color2);
+  padding: 3rem 2rem;
+  position: relative;
+  overflow: hidden;
+}
+.b-hero::after {
+  content: 'REVIEWS';
+  position: absolute;
+  right: -1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(5rem, 14vw, 11rem);
+  color: rgba(255,255,255,.03);
+  pointer-events: none;
+  white-space: nowrap;
+  line-height: 1;
+}
+.b-hero__kicker {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  color: var(--color1);
+  margin-bottom: .5rem;
+}
+.b-hero__title {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  line-height: .95;
+  margin-bottom: .8rem;
+}
+.b-hero__sub {
+  font-size: .88rem;
+  color: var(--color5);
+  max-width: 420px;
+}
+
+/* Liste */
+.b-list {
+  background: var(--color4);
+  padding: 1rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.b-list--mobile { padding: .75rem; }
+
+.b-row {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  padding: .9rem 0;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+  text-decoration: none;
+  color: var(--color3);
+  transition: background .2s;
+  border-radius: 4px;
+}
+.b-row:hover { background: rgba(255,255,255,.03); padding-left: .5rem; }
+.b-row:last-child { border-bottom: none; }
+
+.b-row__num {
+  font-family: 'Anton', sans-serif;
+  font-size: 1rem;
+  color: rgba(255,255,255,.12);
+  width: 32px;
+  text-align: right;
+  flex-shrink: 0;
+}
+.b-row__cover {
+  width: 72px;
+  height: 72px;
+  object-fit: cover;
+  flex-shrink: 0;
+  display: block;
+  background: #333;
+}
+.b-row__cover--mobile { width: 58px; height: 58px; }
+.b-row__info { flex: 1; min-width: 0; }
+.b-row__artist {
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--color1);
+  margin-bottom: .15rem;
+}
+.b-row__title {
+  font-family: 'Anton', sans-serif;
+  font-size: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.b-row__sub {
+  font-size: .72rem;
+  color: var(--color5);
+  margin-top: .2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.b-row__note {
+  flex-shrink: 0;
+  font-family: 'Anton', sans-serif;
+  font-size: .9rem;
+  color: var(--color1);
+  width: 36px;
+  text-align: right;
+}
+
+/* ══════════════════════════════════════════════════════
+   VARIANTE C — Grid magazine 4 col + hero featured
+══════════════════════════════════════════════════════ */
+
+.c-hero {
+  background: var(--color2);
+  padding: 2rem 1.5rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+  border-bottom: 2px solid var(--color1);
+}
+.c-hero__left {}
+.c-hero__kicker {
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--color1);
+  margin-bottom: .35rem;
+}
+.c-hero__title {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(2.2rem, 4vw, 3.8rem);
+  line-height: .95;
+}
+.c-search {
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+  background: rgba(255,255,255,.06);
+  border: 1px solid rgba(255,255,255,.12);
+  border-radius: 3px;
+  padding: .45rem .9rem;
+}
+.c-search input {
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--color3);
+  font-family: 'Roboto', sans-serif;
+  font-size: .85rem;
+  width: 180px;
+}
+.c-search input::placeholder { color: var(--color5); }
+.c-search svg {
+  width: 15px; height: 15px;
+  stroke: var(--color5);
+  fill: none;
+  stroke-width: 2;
+}
+
+/* Featured top */
+.c-featured {
+  background: var(--color4);
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 1.5rem;
+  padding: 1.5rem;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+}
+.c-featured--mobile { grid-template-columns: 1fr; gap: 1rem; padding: 1rem; }
+
+.c-feat-main {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  display: block;
+  text-decoration: none;
+  background: #222;
+}
+.c-feat-main__img { width:100%; height:100%; object-fit:cover; display:block; transition: transform .4s; }
+.c-feat-main:hover .c-feat-main__img { transform: scale(1.05); }
+.c-feat-main__overlay {
+  position: absolute; inset:0;
+  background: linear-gradient(to top, rgba(0,0,0,.9) 0%, rgba(0,0,0,.2) 60%, transparent 100%);
+}
+.c-feat-main__badge {
+  position: absolute; top:.8rem; left:.8rem;
+  background: var(--color1);
+  color: var(--color3);
+  font-family: 'Anton', sans-serif;
+  font-size: .65rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  padding: .2rem .55rem;
+  border-radius: 2px;
+}
+.c-feat-main__body {
+  position: absolute; bottom:0; left:0; right:0; padding:1.2rem;
+}
+.c-feat-main__artist {
+  font-size: .68rem; font-weight:700; letter-spacing:.12em;
+  text-transform:uppercase; color:var(--color1); margin-bottom:.2rem; display:block;
+}
+.c-feat-main__title {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.6rem; color:var(--color3); line-height:1;
+}
+.c-feat-main__note {
+  display: inline-block; margin-top: .5rem;
+  font-family:'Anton',sans-serif; font-size:.75rem;
+  background: rgba(255,255,255,.12); color:var(--color3);
+  padding:.2rem .5rem; border-radius:2px;
+}
+
+.c-feat-side { display: flex; flex-direction: column; gap: .75rem; }
+
+.c-feat-card {
+  display: flex; gap: .85rem; align-items: center;
+  text-decoration: none; color: var(--color3);
+  padding: .6rem;
+  border-radius:4px;
+  transition: background .2s;
+}
+.c-feat-card:hover { background: rgba(255,255,255,.05); }
+.c-feat-card__img { width:64px; height:64px; object-fit:cover; flex-shrink:0; background:#333; }
+.c-feat-card__artist {
+  font-size:.62rem; font-weight:700; letter-spacing:.1em;
+  text-transform:uppercase; color:var(--color1); margin-bottom:.15rem; display:block;
+}
+.c-feat-card__title { font-family:'Anton',sans-serif; font-size:.9rem; line-height:1.1; }
+.c-feat-card__genre { font-size:.68rem; color:var(--color5); margin-top:.2rem; }
+
+/* 4-col grid */
+.c-grid {
+  background: var(--color4);
+  padding: .75rem 1.5rem 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: .6rem;
+}
+.c-grid--mobile { grid-template-columns: repeat(2, 1fr); gap: .5rem; padding: .75rem; }
+
+.c-card {
+  position: relative;
+  aspect-ratio: 1;
+  overflow: hidden;
+  display: block;
+  text-decoration: none;
+  background: #222;
+}
+.c-card__img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .35s; }
+.c-card:hover .c-card__img { transform: scale(1.08); }
+.c-card__overlay {
+  position:absolute; inset:0;
+  background: linear-gradient(to top, rgba(0,0,0,.88) 0%, transparent 55%);
+}
+.c-card__body { position:absolute; bottom:0; left:0; right:0; padding:.7rem; }
+.c-card__artist { font-size:.58rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--color1); display:block; margin-bottom:.15rem; }
+.c-card__title { font-family:'Anton',sans-serif; font-size:.88rem; color:var(--color3); line-height:1.1; }
+
+/* Section title */
+.c-section-label {
+  background: var(--color4);
+  padding: .5rem 1.5rem .25rem;
+  font-family: 'Anton', sans-serif;
+  font-size: .75rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--color5);
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+}
+.c-section-label::after {
+  content:''; flex:1; height:1px; background:rgba(255,255,255,.06);
+}
+
+/* ── Infinite scroll sentinel commun ───────────────── */
+.infinite-sentinel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .75rem;
+  padding: 2.5rem 1rem;
+  background: var(--color4);
+}
+.infinite-sentinel .spinner {
+  width: 24px; height: 24px;
+  border: 2px solid rgba(255,255,255,.08);
+  border-top-color: var(--color1);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+.infinite-sentinel .lbl {
+  font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--color5);
+}
+
+/* ── End of results ─────────────────────────────────── */
+.end-marker {
+  padding: 2rem 1rem;
+  text-align: center;
+  font-size: .75rem;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--color5);
+  background: var(--color4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+.end-marker::before, .end-marker::after {
+  content:''; flex:1; max-width:80px; height:1px; background:rgba(255,255,255,.08);
+}
+
+/* ── Verdict box ────────────────────────────────────── */
+.verdict-box {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  margin-top: 3rem;
+}
+.verdict-inner {
+  background: rgba(232,31,31,.07);
+  border-left: 3px solid var(--color1);
+  border-radius: 0 6px 6px 0;
+  padding: 1.25rem 1.5rem;
+  font-size: .85rem;
+  line-height: 1.65;
+  color: rgba(255,255,255,.75);
+}
+.verdict-inner strong {
+  display: block;
+  font-family: 'Anton', sans-serif;
+  font-size: 1rem;
+  color: var(--color3);
+  margin-bottom: .4rem;
+  letter-spacing: .03em;
+}
+.verdict-inner ul { padding-left: 1.2rem; margin-top: .5rem; display: flex; flex-direction: column; gap: .3rem; }
+
+/* ── Mobile frame ───────────────────────────────────── */
+.mobile-frame {
+  background: #111;
+  border: 2px solid rgba(255,255,255,.12);
+  border-radius: 12px;
+  overflow: hidden;
+  width: 320px;
+}
+
+/* ── Backend box ────────────────────────────────────── */
+.backend-box {
+  max-width: 1100px;
+  margin: 4rem auto 0;
+  padding: 0 1.5rem;
+}
+.backend-inner {
+  background: var(--color2);
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 8px;
+  padding: 2rem;
+}
+.backend-inner h2 {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.1rem;
+  color: var(--color1);
+  margin-bottom: 1.5rem;
+  letter-spacing: .05em;
+}
+.backend-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+@media (max-width: 700px) { .backend-grid { grid-template-columns: 1fr; } }
+.backend-item { background: rgba(255,255,255,.04); border-radius:6px; padding:1.25rem; }
+.backend-item h3 { font-size:.8rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; color:var(--color1); margin-bottom:.75rem; }
+.backend-item ul { list-style:none; display:flex; flex-direction:column; gap:.45rem; }
+.backend-item li { font-size:.8rem; color:rgba(255,255,255,.65); line-height:1.5; }
+.backend-item li code { font-family:monospace; font-size:.72rem; background:rgba(255,255,255,.07); padding:.1em .3em; border-radius:3px; color:#a8d8ea; }
+.badge-new { display:inline-block; font-size:.6rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; padding:.1rem .35rem; border-radius:2px; background:rgba(232,31,31,.25); color:var(--color1); margin-left:.35rem; vertical-align:middle; }
+.badge-exists { background:rgba(255,255,255,.1); color:var(--color5); }
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="section-nav">
+  <a href="#variante-a" class="active">A — Grid overlay</a>
+  <a href="#variante-b">B — Liste éditoriale</a>
+  <a href="#variante-c">C — Magazine featured</a>
+  <a href="#backend">Backend</a>
+</nav>
+
+<!-- ══════════════════════════════════════════════════════
+     VARIANTE A — Grid overlay immersif
+══════════════════════════════════════════════════════ -->
+<section class="proposal" id="variante-a">
+  <div class="proposal__header">
+    <div class="proposal__meta">
+      <span class="proposal__tag">Variante A</span>
+      <h2 class="proposal__title">Grid <em>Overlay</em> Immersif</h2>
+    </div>
+    <p class="proposal__desc">
+      Cohérence totale avec les cards related du single. Image plein format, overlay sombre, texte apparu au hover. Filtres genre en scrollbar horizontale. Infinite load automatique via IntersectionObserver.
+    </p>
+  </div>
+
+  <div class="viewports">
+    <!-- Desktop -->
+    <div class="viewport-desktop">
+      <div class="viewport-label">Desktop — 3 colonnes</div>
+
+      <!-- Hero -->
+      <div class="a-hero">
+        <div class="a-hero__inner">
+          <div>
+            <p class="a-hero__kicker">Gimmick Shelter</p>
+            <h1 class="a-hero__title">Reviews</h1>
+            <p class="a-hero__count"><strong>42</strong> chroniques d'albums</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters -->
+      <div class="a-filters">
+        <button class="a-filter-pill active">Tout</button>
+        <button class="a-filter-pill">Garage · Psych</button>
+        <button class="a-filter-pill">Shoegaze</button>
+        <button class="a-filter-pill">Krautrock</button>
+        <button class="a-filter-pill">Indie</button>
+        <button class="a-filter-pill">Post-punk</button>
+        <button class="a-filter-pill">Ambient</button>
+        <button class="a-filter-pill">Metal</button>
+      </div>
+
+      <!-- Grid -->
+      <div class="a-grid">
+        <!-- Card 1 -->
+        <a class="a-card" href="#">
+          <div class="a-card__img" style="background:linear-gradient(135deg,#3a2a4a,#1a1a2e);display:flex;align-items:center;justify-content:center;font-size:3rem;">🎵</div>
+          <div class="a-card__overlay"></div>
+          <span class="a-card__note">4.5 / 5</span>
+          <div class="a-card__body">
+            <span class="a-card__artist">Ghost Woman</span>
+            <span class="a-card__title">Ghost Woman</span>
+            <div class="a-card__meta">
+              <span class="a-pill">Suites Sonores</span>
+              <span class="a-pill--ghost">Shoegaze</span>
+              <span class="a-pill--ghost">2022</span>
+            </div>
+          </div>
+        </a>
+        <!-- Card 2 -->
+        <a class="a-card" href="#">
+          <div class="a-card__img" style="background:linear-gradient(135deg,#2a1a1a,#4a2020);display:flex;align-items:center;justify-content:center;font-size:3rem;">🎸</div>
+          <div class="a-card__overlay"></div>
+          <span class="a-card__note">4 / 5</span>
+          <div class="a-card__body">
+            <span class="a-card__artist">Drug Dealer</span>
+            <span class="a-card__title">Hiding in Plain Sight</span>
+            <div class="a-card__meta">
+              <span class="a-pill">Merge Records</span>
+              <span class="a-pill--ghost">Indie</span>
+              <span class="a-pill--ghost">2023</span>
+            </div>
+          </div>
+        </a>
+        <!-- Card 3 -->
+        <a class="a-card" href="#">
+          <div class="a-card__img" style="background:linear-gradient(135deg,#1a2a2a,#0a3a3a);display:flex;align-items:center;justify-content:center;font-size:3rem;">🥁</div>
+          <div class="a-card__overlay"></div>
+          <span class="a-card__note">3.5 / 5</span>
+          <div class="a-card__body">
+            <span class="a-card__artist">Baston</span>
+            <span class="a-card__title">Primates</span>
+            <div class="a-card__meta">
+              <span class="a-pill">Howlin Banana</span>
+              <span class="a-pill--ghost">Krautrock</span>
+              <span class="a-pill--ghost">2019</span>
+            </div>
+          </div>
+        </a>
+        <!-- Card 4 -->
+        <a class="a-card" href="#">
+          <div class="a-card__img" style="background:linear-gradient(135deg,#2a2a1a,#3a3a0a);display:flex;align-items:center;justify-content:center;font-size:3rem;">🎷</div>
+          <div class="a-card__overlay"></div>
+          <div class="a-card__body">
+            <span class="a-card__artist">J.W. Francis</span>
+            <span class="a-card__title">Wanderer</span>
+            <div class="a-card__meta">
+              <span class="a-pill">Captured Tracks</span>
+              <span class="a-pill--ghost">Indie Folk</span>
+              <span class="a-pill--ghost">2022</span>
+            </div>
+          </div>
+        </a>
+        <!-- Card 5 -->
+        <a class="a-card" href="#">
+          <div class="a-card__img" style="background:linear-gradient(135deg,#1a1a3a,#2a2a5a);display:flex;align-items:center;justify-content:center;font-size:3rem;">🎹</div>
+          <div class="a-card__overlay"></div>
+          <div class="a-card__body">
+            <span class="a-card__artist">Kevin Morby</span>
+            <span class="a-card__title">Sundowner</span>
+            <div class="a-card__meta">
+              <span class="a-pill">Dead Oceans</span>
+              <span class="a-pill--ghost">Indie Rock</span>
+              <span class="a-pill--ghost">2020</span>
+            </div>
+          </div>
+        </a>
+        <!-- Card 6 -->
+        <a class="a-card" href="#">
+          <div class="a-card__img" style="background:linear-gradient(135deg,#3a1a2a,#5a0a3a);display:flex;align-items:center;justify-content:center;font-size:3rem;">🔊</div>
+          <div class="a-card__overlay"></div>
+          <span class="a-card__note">5 / 5</span>
+          <div class="a-card__body">
+            <span class="a-card__artist">Osees</span>
+            <span class="a-card__title">Protean Threat</span>
+            <div class="a-card__meta">
+              <span class="a-pill">Castle Face</span>
+              <span class="a-pill--ghost">Garage</span>
+              <span class="a-pill--ghost">2020</span>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      <!-- Infinite sentinel -->
+      <div class="infinite-sentinel">
+        <div class="spinner"></div>
+        <span class="lbl">Chargement des chroniques suivantes…</span>
+      </div>
+    </div>
+
+    <!-- Mobile -->
+    <div class="viewport-mobile">
+      <div class="viewport-label">Mobile — 1 colonne</div>
+      <div class="mobile-frame">
+        <div class="a-hero" style="padding:2rem 1rem 1.5rem;">
+          <p class="a-hero__kicker">Gimmick Shelter</p>
+          <h1 class="a-hero__title" style="font-size:2.8rem;">Reviews</h1>
+          <p class="a-hero__count"><strong>42</strong> chroniques</p>
+        </div>
+        <div class="a-filters" style="padding:.6rem 1rem;">
+          <button class="a-filter-pill active">Tout</button>
+          <button class="a-filter-pill">Garage</button>
+          <button class="a-filter-pill">Shoegaze</button>
+        </div>
+        <div class="a-grid a-grid--mobile">
+          <a class="a-card" href="#" style="aspect-ratio:4/3;">
+            <div class="a-card__img" style="background:linear-gradient(135deg,#3a2a4a,#1a1a2e);display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🎵</div>
+            <div class="a-card__overlay"></div>
+            <span class="a-card__note">4.5 / 5</span>
+            <div class="a-card__body">
+              <span class="a-card__artist">Ghost Woman</span>
+              <span class="a-card__title">Ghost Woman</span>
+            </div>
+          </a>
+          <a class="a-card" href="#" style="aspect-ratio:4/3;">
+            <div class="a-card__img" style="background:linear-gradient(135deg,#2a1a1a,#4a2020);display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🎸</div>
+            <div class="a-card__overlay"></div>
+            <div class="a-card__body">
+              <span class="a-card__artist">Drug Dealer</span>
+              <span class="a-card__title">Hiding in Plain Sight</span>
+            </div>
+          </a>
+          <a class="a-card" href="#" style="aspect-ratio:4/3;">
+            <div class="a-card__img" style="background:linear-gradient(135deg,#1a2a2a,#0a3a3a);display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🥁</div>
+            <div class="a-card__overlay"></div>
+            <div class="a-card__body">
+              <span class="a-card__artist">Baston</span>
+              <span class="a-card__title">Primates</span>
+            </div>
+          </a>
+        </div>
+        <div class="infinite-sentinel" style="padding:1.5rem;">
+          <div class="spinner"></div>
+          <span class="lbl" style="font-size:.65rem;">Chargement…</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     VARIANTE B — Liste éditoriale
+══════════════════════════════════════════════════════ -->
+<section class="proposal" id="variante-b">
+  <div class="proposal__header">
+    <div class="proposal__meta">
+      <span class="proposal__tag">Variante B</span>
+      <h2 class="proposal__title">Liste <em>Éditoriale</em></h2>
+    </div>
+    <p class="proposal__desc">
+      Approche dense façon classement/tracklist. Cover à gauche, info à droite. La note est mise en avant. Lisible d'un coup d'œil, idéale pour parcourir un grand catalogue. Mobile naturel (stack vertical).
+    </p>
+  </div>
+
+  <div class="viewports">
+    <!-- Desktop -->
+    <div class="viewport-desktop">
+      <div class="viewport-label">Desktop — liste pleine largeur</div>
+
+      <div class="b-hero">
+        <p class="b-hero__kicker">Chroniques d'albums</p>
+        <h1 class="b-hero__title">Reviews</h1>
+        <p class="b-hero__sub">42 chroniques · indépendant depuis 2021</p>
+      </div>
+
+      <div class="b-list">
+        <a class="b-row" href="#">
+          <span class="b-row__num">01</span>
+          <div class="b-row__cover" style="background:linear-gradient(135deg,#3a2a4a,#1a1a2e);display:flex;align-items:center;justify-content:center;font-size:1.8rem;">🎵</div>
+          <div class="b-row__info">
+            <span class="b-row__artist">Ghost Woman</span>
+            <div class="b-row__title">Ghost Woman</div>
+            <div class="b-row__sub">Suites Sonores · Shoegaze · 2022</div>
+          </div>
+          <span class="b-row__note">4.5</span>
+        </a>
+        <a class="b-row" href="#">
+          <span class="b-row__num">02</span>
+          <div class="b-row__cover" style="background:linear-gradient(135deg,#2a1a1a,#4a2020);display:flex;align-items:center;justify-content:center;font-size:1.8rem;">🎸</div>
+          <div class="b-row__info">
+            <span class="b-row__artist">Drug Dealer</span>
+            <div class="b-row__title">Hiding in Plain Sight</div>
+            <div class="b-row__sub">Merge Records · Indie · 2023</div>
+          </div>
+          <span class="b-row__note">4</span>
+        </a>
+        <a class="b-row" href="#">
+          <span class="b-row__num">03</span>
+          <div class="b-row__cover" style="background:linear-gradient(135deg,#1a2a2a,#0a3a3a);display:flex;align-items:center;justify-content:center;font-size:1.8rem;">🥁</div>
+          <div class="b-row__info">
+            <span class="b-row__artist">Baston</span>
+            <div class="b-row__title">Primates</div>
+            <div class="b-row__sub">Howlin Banana Records · Krautrock · 2019</div>
+          </div>
+          <span class="b-row__note">3.5</span>
+        </a>
+        <a class="b-row" href="#">
+          <span class="b-row__num">04</span>
+          <div class="b-row__cover" style="background:linear-gradient(135deg,#2a2a1a,#3a3a0a);display:flex;align-items:center;justify-content:center;font-size:1.8rem;">🎷</div>
+          <div class="b-row__info">
+            <span class="b-row__artist">J.W. Francis</span>
+            <div class="b-row__title">Wanderer</div>
+            <div class="b-row__sub">Captured Tracks · Indie Folk · 2022</div>
+          </div>
+          <span class="b-row__note">4</span>
+        </a>
+        <a class="b-row" href="#">
+          <span class="b-row__num">05</span>
+          <div class="b-row__cover" style="background:linear-gradient(135deg,#3a1a2a,#5a0a3a);display:flex;align-items:center;justify-content:center;font-size:1.8rem;">🔊</div>
+          <div class="b-row__info">
+            <span class="b-row__artist">Osees</span>
+            <div class="b-row__title">Protean Threat</div>
+            <div class="b-row__sub">Castle Face Records · Garage · 2020</div>
+          </div>
+          <span class="b-row__note">5</span>
+        </a>
+      </div>
+
+      <div class="infinite-sentinel">
+        <div class="spinner"></div>
+        <span class="lbl">Chargement des chroniques suivantes…</span>
+      </div>
+    </div>
+
+    <!-- Mobile -->
+    <div class="viewport-mobile">
+      <div class="viewport-label">Mobile</div>
+      <div class="mobile-frame">
+        <div class="b-hero" style="padding:1.5rem 1rem;">
+          <p class="b-hero__kicker">Chroniques</p>
+          <h1 class="b-hero__title" style="font-size:2.2rem;">Reviews</h1>
+          <p class="b-hero__sub" style="font-size:.78rem;">42 chroniques</p>
+        </div>
+        <div class="b-list b-list--mobile">
+          <a class="b-row" href="#" style="gap:.85rem;padding:.75rem 0;">
+            <span class="b-row__num" style="font-size:.8rem;width:24px;">01</span>
+            <div class="b-row__cover b-row__cover--mobile" style="background:linear-gradient(135deg,#3a2a4a,#1a1a2e);display:flex;align-items:center;justify-content:center;font-size:1.4rem;">🎵</div>
+            <div class="b-row__info">
+              <span class="b-row__artist">Ghost Woman</span>
+              <div class="b-row__title" style="font-size:.88rem;">Ghost Woman</div>
+              <div class="b-row__sub" style="font-size:.65rem;">Shoegaze · 2022</div>
+            </div>
+            <span class="b-row__note" style="font-size:.8rem;">4.5</span>
+          </a>
+          <a class="b-row" href="#" style="gap:.85rem;padding:.75rem 0;">
+            <span class="b-row__num" style="font-size:.8rem;width:24px;">02</span>
+            <div class="b-row__cover b-row__cover--mobile" style="background:linear-gradient(135deg,#2a1a1a,#4a2020);display:flex;align-items:center;justify-content:center;font-size:1.4rem;">🎸</div>
+            <div class="b-row__info">
+              <span class="b-row__artist">Drug Dealer</span>
+              <div class="b-row__title" style="font-size:.88rem;">Hiding in Plain Sight</div>
+              <div class="b-row__sub" style="font-size:.65rem;">Indie · 2023</div>
+            </div>
+            <span class="b-row__note" style="font-size:.8rem;">4</span>
+          </a>
+          <a class="b-row" href="#" style="gap:.85rem;padding:.75rem 0;">
+            <span class="b-row__num" style="font-size:.8rem;width:24px;">03</span>
+            <div class="b-row__cover b-row__cover--mobile" style="background:linear-gradient(135deg,#1a2a2a,#0a3a3a);display:flex;align-items:center;justify-content:center;font-size:1.4rem;">🥁</div>
+            <div class="b-row__info">
+              <span class="b-row__artist">Baston</span>
+              <div class="b-row__title" style="font-size:.88rem;">Primates</div>
+              <div class="b-row__sub" style="font-size:.65rem;">Krautrock · 2019</div>
+            </div>
+            <span class="b-row__note" style="font-size:.8rem;">3.5</span>
+          </a>
+        </div>
+        <div class="infinite-sentinel" style="padding:1.5rem;">
+          <div class="spinner"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     VARIANTE C — Magazine avec featured
+══════════════════════════════════════════════════════ -->
+<section class="proposal" id="variante-c">
+  <div class="proposal__header">
+    <div class="proposal__meta">
+      <span class="proposal__tag">Variante C</span>
+      <h2 class="proposal__title">Magazine <em>Featured</em></h2>
+    </div>
+    <p class="proposal__desc">
+      Hiérarchie éditoriale forte : un "coup de cœur" en grand format, 2–3 chroniques secondaires en sidebar, puis grid 4 colonnes. Avec barre de recherche intégrée dans le hero. Le plus dense et le plus riche visuellement.
+    </p>
+  </div>
+
+  <div class="viewports">
+    <!-- Desktop -->
+    <div class="viewport-desktop">
+      <div class="viewport-label">Desktop — featured + 4 colonnes</div>
+
+      <!-- Hero + search -->
+      <div class="c-hero">
+        <div class="c-hero__left">
+          <p class="c-hero__kicker">Chroniques d'albums</p>
+          <h1 class="c-hero__title">Reviews</h1>
+        </div>
+        <div class="c-search">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" placeholder="Chercher un artiste, un album…" readonly>
+        </div>
+      </div>
+
+      <!-- Featured -->
+      <div class="c-featured">
+        <a class="c-feat-main" href="#">
+          <div style="width:100%;height:100%;background:linear-gradient(135deg,#3a2a4a,#1a1a2e);display:flex;align-items:center;justify-content:center;font-size:5rem;position:absolute;inset:0;">🎵</div>
+          <div class="c-feat-main__overlay"></div>
+          <span class="c-feat-main__badge">★ Coup de cœur</span>
+          <div class="c-feat-main__body">
+            <span class="c-feat-main__artist">Ghost Woman</span>
+            <span class="c-feat-main__title">Ghost Woman</span>
+            <span class="c-feat-main__note">4.5 / 5</span>
+          </div>
+        </a>
+        <div class="c-feat-side">
+          <a class="c-feat-card" href="#">
+            <div class="c-feat-card__img" style="background:linear-gradient(135deg,#2a1a1a,#4a2020);display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🎸</div>
+            <div>
+              <span class="c-feat-card__artist">Drug Dealer</span>
+              <div class="c-feat-card__title">Hiding in Plain Sight</div>
+              <div class="c-feat-card__genre">Merge Records · Indie · 2023</div>
+            </div>
+          </a>
+          <a class="c-feat-card" href="#">
+            <div class="c-feat-card__img" style="background:linear-gradient(135deg,#1a2a2a,#0a3a3a);display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🥁</div>
+            <div>
+              <span class="c-feat-card__artist">Baston</span>
+              <div class="c-feat-card__title">Primates</div>
+              <div class="c-feat-card__genre">Howlin Banana · Krautrock · 2019</div>
+            </div>
+          </a>
+          <a class="c-feat-card" href="#">
+            <div class="c-feat-card__img" style="background:linear-gradient(135deg,#3a1a2a,#5a0a3a);display:flex;align-items:center;justify-content:center;font-size:1.5rem;">🔊</div>
+            <div>
+              <span class="c-feat-card__artist">Osees</span>
+              <div class="c-feat-card__title">Protean Threat</div>
+              <div class="c-feat-card__genre">Castle Face · Garage · 2020</div>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <!-- All reviews label -->
+      <div class="c-section-label">Toutes les reviews</div>
+
+      <!-- 4-col grid -->
+      <div class="c-grid">
+        <a class="c-card" href="#"><div class="c-card__img" style="background:linear-gradient(135deg,#2a2a1a,#3a3a0a);display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🎷</div><div class="c-card__overlay"></div><div class="c-card__body"><span class="c-card__artist">J.W. Francis</span><span class="c-card__title">Wanderer</span></div></a>
+        <a class="c-card" href="#"><div class="c-card__img" style="background:linear-gradient(135deg,#1a1a3a,#2a2a5a);display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🎹</div><div class="c-card__overlay"></div><div class="c-card__body"><span class="c-card__artist">Kevin Morby</span><span class="c-card__title">Sundowner</span></div></a>
+        <a class="c-card" href="#"><div class="c-card__img" style="background:linear-gradient(135deg,#3a2a1a,#5a3a0a);display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🎺</div><div class="c-card__overlay"></div><div class="c-card__body"><span class="c-card__artist">Amyl</span><span class="c-card__title">Comfort to Me</span></div></a>
+        <a class="c-card" href="#"><div class="c-card__img" style="background:linear-gradient(135deg,#1a3a1a,#0a5a0a);display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🎻</div><div class="c-card__overlay"></div><div class="c-card__body"><span class="c-card__artist">Mdou Moctar</span><span class="c-card__title">Afrique Victime</span></div></a>
+        <a class="c-card" href="#"><div class="c-card__img" style="background:linear-gradient(135deg,#2a1a3a,#4a0a5a);display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🪗</div><div class="c-card__overlay"></div><div class="c-card__body"><span class="c-card__artist">Wet Leg</span><span class="c-card__title">Wet Leg</span></div></a>
+        <a class="c-card" href="#"><div class="c-card__img" style="background:linear-gradient(135deg,#3a1a1a,#5a2a0a);display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🎙</div><div class="c-card__overlay"></div><div class="c-card__body"><span class="c-card__artist">Black Midi</span><span class="c-card__title">Cavalcade</span></div></a>
+        <a class="c-card" href="#"><div class="c-card__img" style="background:linear-gradient(135deg,#1a1a1a,#2a2a2a);display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🎤</div><div class="c-card__overlay"></div><div class="c-card__body"><span class="c-card__artist">Fontaines D.C.</span><span class="c-card__title">Skinty Fia</span></div></a>
+        <a class="c-card" href="#"><div class="c-card__img" style="background:linear-gradient(135deg,#2a3a1a,#3a5a0a);display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🎵</div><div class="c-card__overlay"></div><div class="c-card__body"><span class="c-card__artist">Amyl & The Sniffers</span><span class="c-card__title">Big Attraction</span></div></a>
+      </div>
+
+      <div class="infinite-sentinel">
+        <div class="spinner"></div>
+        <span class="lbl">Chargement des chroniques suivantes…</span>
+      </div>
+    </div>
+
+    <!-- Mobile -->
+    <div class="viewport-mobile">
+      <div class="viewport-label">Mobile — 2 colonnes</div>
+      <div class="mobile-frame">
+        <div class="c-hero" style="padding:1.25rem 1rem;flex-direction:column;align-items:flex-start;gap:.75rem;border-bottom-width:1px;">
+          <div>
+            <p class="c-hero__kicker">Chroniques</p>
+            <h1 class="c-hero__title" style="font-size:2rem;">Reviews</h1>
+          </div>
+          <div class="c-search" style="width:100%;">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input type="text" placeholder="Chercher…" readonly style="width:100%;">
+          </div>
+        </div>
+        <!-- Featured mobile — cover pleine largeur -->
+        <a class="c-feat-main" href="#" style="display:block;position:relative;aspect-ratio:16/9;">
+          <div style="width:100%;height:100%;background:linear-gradient(135deg,#3a2a4a,#1a1a2e);display:flex;align-items:center;justify-content:center;font-size:3rem;position:absolute;inset:0;">🎵</div>
+          <div class="c-feat-main__overlay"></div>
+          <span class="c-feat-main__badge" style="font-size:.55rem;">★ Coup de cœur</span>
+          <div class="c-feat-main__body" style="padding:.75rem;">
+            <span class="c-feat-main__artist" style="font-size:.6rem;">Ghost Woman</span>
+            <span class="c-feat-main__title" style="font-size:1.2rem;">Ghost Woman</span>
+          </div>
+        </a>
+        <div class="c-section-label" style="font-size:.6rem;padding:.4rem 1rem .2rem;">Toutes les reviews</div>
+        <div class="c-grid c-grid--mobile">
+          <a class="c-card" href="#"><div class="c-card__img" style="background:linear-gradient(135deg,#2a1a1a,#4a2020);display:flex;align-items:center;justify-content:center;font-size:2rem;">🎸</div><div class="c-card__overlay"></div><div class="c-card__body"><span class="c-card__artist" style="font-size:.52rem;">Drug Dealer</span><span class="c-card__title" style="font-size:.75rem;">Hiding in Plain Sight</span></div></a>
+          <a class="c-card" href="#"><div class="c-card__img" style="background:linear-gradient(135deg,#1a2a2a,#0a3a3a);display:flex;align-items:center;justify-content:center;font-size:2rem;">🥁</div><div class="c-card__overlay"></div><div class="c-card__body"><span class="c-card__artist" style="font-size:.52rem;">Baston</span><span class="c-card__title" style="font-size:.75rem;">Primates</span></div></a>
+          <a class="c-card" href="#"><div class="c-card__img" style="background:linear-gradient(135deg,#3a1a2a,#5a0a3a);display:flex;align-items:center;justify-content:center;font-size:2rem;">🔊</div><div class="c-card__overlay"></div><div class="c-card__body"><span class="c-card__artist" style="font-size:.52rem;">Osees</span><span class="c-card__title" style="font-size:.75rem;">Protean Threat</span></div></a>
+          <a class="c-card" href="#"><div class="c-card__img" style="background:linear-gradient(135deg,#2a2a1a,#3a3a0a);display:flex;align-items:center;justify-content:center;font-size:2rem;">🎷</div><div class="c-card__overlay"></div><div class="c-card__body"><span class="c-card__artist" style="font-size:.52rem;">J.W. Francis</span><span class="c-card__title" style="font-size:.75rem;">Wanderer</span></div></a>
+        </div>
+        <div class="infinite-sentinel" style="padding:1.25rem;">
+          <div class="spinner"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════════
+     BACKEND
+══════════════════════════════════════════════════════ -->
+<div class="backend-box" id="backend">
+  <div class="backend-inner">
+    <h2>Backend — Possibilités disponibles &amp; à câbler</h2>
+    <div class="backend-grid">
+
+      <div class="backend-item">
+        <h3>Champs ACF disponibles</h3>
+        <ul>
+          <li><code>artiste</code> <span class="badge-exists">existant</span> — affiché en rouge caps sur les cards</li>
+          <li><code>labels</code> <span class="badge-exists">existant</span> — pill rouge ou info secondaire</li>
+          <li><code>genre</code> <span class="badge-exists">existant</span> — pill ghost, filtre possible</li>
+          <li><code>annee_sortie</code> <span class="badge-exists">existant</span> — pill ghost</li>
+          <li><code>note_generale</code> <span class="badge-exists">existant /5</span> — badge rouge sur card, colonne en liste</li>
+          <li><code>accroche</code> <span class="badge-exists">existant</span> — sous-titre optionnel sur card large</li>
+          <li><code>image_hero</code> <span class="badge-exists">existant</span> — fallback thumbnail</li>
+        </ul>
+      </div>
+
+      <div class="backend-item">
+        <h3>Infinite Scroll</h3>
+        <ul>
+          <li><code>infinite-scroll.js</code> existe mais n'est <strong>pas câblé</strong> (jQuery, pas de handler WP)</li>
+          <li>Réécriture en <strong>vanilla JS</strong> + <code>IntersectionObserver</code> recommandée</li>
+          <li>Handler AJAX à créer : <code>wp_ajax_nopriv_gs_load_more_anachroniques</code></li>
+          <li><code>wp_localize_script</code> pour passer <code>ajaxurl</code>, <code>nonce</code>, <code>posts_per_page</code></li>
+          <li>Réponse AJAX : HTML des cards (partial PHP réutilisé)</li>
+          <li>Fallback : bouton "Charger plus" si JS désactivé <span class="badge-new">A11Y</span></li>
+        </ul>
+      </div>
+
+      <div class="backend-item">
+        <h3>Features supplémentaires</h3>
+        <ul>
+          <li>Filtrage par genre <span class="badge-new">nouveau</span> — via taxonomy <code>anachroniques-categories</code> déjà enregistrée</li>
+          <li>Recherche interne <span class="badge-new">nouveau</span> — <code>WP_Query + 's'</code> param, rendu AJAX</li>
+          <li>Post featured <span class="badge-new">nouveau</span> — ACF checkbox <code>featured</code> ou WP sticky, section "Coup de cœur" (variante C)</li>
+          <li>Tri par note <span class="badge-new">nouveau</span> — <code>meta_key: note_generale, orderby: meta_value_num</code></li>
+          <li>Partial card <span class="badge-new">à créer</span> — <code>parts/card-anachronique.php</code> réutilisé en AJAX</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<div style="height:4rem;"></div>
+
+<script>
+// Nav highlight on scroll
+var sections = document.querySelectorAll('section[id], div[id]');
+var navLinks  = document.querySelectorAll('.section-nav a');
+window.addEventListener('scroll', function() {
+  var scrollY = window.scrollY + 120;
+  sections.forEach(function(s) {
+    if (s.offsetTop <= scrollY && s.offsetTop + s.offsetHeight > scrollY) {
+      navLinks.forEach(function(l) { l.classList.remove('active'); });
+      var link = document.querySelector('.section-nav a[href="#' + s.id + '"]');
+      if (link) link.classList.add('active');
+    }
+  });
+}, { passive: true });
+</script>
+
+</body>
+</html>

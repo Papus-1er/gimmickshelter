@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposal — Back to Top — Gimmick Shelter</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --color1: #E81F1F;
+    --color2: #000B29;
+    --color3: #FFFFFF;
+    --color4: #000000;
+    --color5: #6D6D64;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #1a1a2e;
+    font-family: 'Roboto', sans-serif;
+    color: var(--color3);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 3rem 2rem;
+    gap: 4rem;
+  }
+
+  h1 {
+    font-family: 'Anton', sans-serif;
+    font-size: 2.2rem;
+    text-align: center;
+    margin-bottom: .5rem;
+  }
+
+  .subtitle {
+    color: var(--color5);
+    text-align: center;
+    font-size: .9rem;
+    margin-bottom: 3rem;
+  }
+
+  /* ── Layout variantes ─────────────────────────────────── */
+
+  .variants {
+    display: flex;
+    gap: 3rem;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    max-width: 960px;
+  }
+
+  .variant-card {
+    background: var(--color2);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    width: 260px;
+    flex-shrink: 0;
+  }
+
+  .variant-card h2 {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: .05em;
+    text-align: center;
+  }
+
+  .variant-card h2 em {
+    color: var(--color1);
+    font-style: normal;
+  }
+
+  .tag {
+    font-size: .72rem;
+    font-weight: 700;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    padding: .25rem .6rem;
+    border-radius: 2px;
+    background: rgba(255,255,255,.07);
+    color: var(--color5);
+  }
+
+  .demo-area {
+    position: relative;
+    width: 100%;
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1.5rem;
+  }
+
+  .label-state {
+    font-size: .7rem;
+    color: var(--color5);
+    text-align: center;
+  }
+
+  .state-pair {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .5rem;
+  }
+
+  .desc {
+    font-size: .82rem;
+    color: rgba(255,255,255,.65);
+    line-height: 1.55;
+    text-align: center;
+  }
+
+  /* ── Variante A — Pastille rouge Anton ────────────────── */
+
+  .btt-a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 4px;
+    background: var(--color1);
+    border: none;
+    cursor: pointer;
+    gap: 2px;
+    transition: background .25s, transform .2s;
+    text-decoration: none;
+  }
+
+  .btt-a:hover {
+    background: #c41717;
+    transform: translateY(-3px);
+  }
+
+  .btt-a:focus-visible {
+    outline: 2px solid var(--color3);
+    outline-offset: 3px;
+  }
+
+  .btt-a__arrow {
+    display: block;
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-bottom: 10px solid var(--color3);
+  }
+
+  .btt-a__label {
+    font-family: 'Anton', sans-serif;
+    font-size: .6rem;
+    letter-spacing: .1em;
+    color: var(--color3);
+    line-height: 1;
+  }
+
+  /* ── Variante B — Cercle dark / liseré rouge ──────────── */
+
+  .btt-b {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--color4);
+    border: 2px solid var(--color1);
+    cursor: pointer;
+    transition: background .25s, border-color .25s, transform .2s;
+    text-decoration: none;
+  }
+
+  .btt-b svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--color3);
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: stroke .25s, transform .2s;
+  }
+
+  .btt-b:hover {
+    background: var(--color1);
+    border-color: var(--color1);
+    transform: translateY(-3px);
+  }
+
+  .btt-b:hover svg {
+    transform: translateY(-1px);
+  }
+
+  .btt-b:focus-visible {
+    outline: 2px solid var(--color3);
+    outline-offset: 3px;
+  }
+
+  /* ── Variante C — Label éditorial Anton ───────────────── */
+
+  .btt-c {
+    display: flex;
+    align-items: center;
+    gap: .45rem;
+    padding: .55rem 1rem;
+    border: 1.5px solid var(--color1);
+    border-radius: 3px;
+    background: transparent;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background .2s, color .2s, transform .2s;
+  }
+
+  .btt-c:hover {
+    background: var(--color1);
+    transform: translateY(-3px);
+  }
+
+  .btt-c:focus-visible {
+    outline: 2px solid var(--color3);
+    outline-offset: 3px;
+  }
+
+  .btt-c__text {
+    font-family: 'Anton', sans-serif;
+    font-size: .75rem;
+    letter-spacing: .15em;
+    color: var(--color3);
+    line-height: 1;
+  }
+
+  .btt-c svg {
+    width: 13px;
+    height: 13px;
+    stroke: var(--color1);
+    fill: none;
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: stroke .2s;
+    flex-shrink: 0;
+  }
+
+  .btt-c:hover svg {
+    stroke: var(--color3);
+  }
+
+  /* ── Hover states ─────────────────────────────────────── */
+
+  .btt-a.hovered { background: #c41717; transform: translateY(-3px); }
+  .btt-b.hovered { background: var(--color1); border-color: var(--color1); transform: translateY(-3px); }
+  .btt-b.hovered svg { transform: translateY(-1px); }
+  .btt-c.hovered { background: var(--color1); transform: translateY(-3px); }
+  .btt-c.hovered svg { stroke: var(--color3); }
+
+  /* ── Section animation ────────────────────────────────── */
+
+  .anim-section {
+    width: 100%;
+    max-width: 960px;
+    background: var(--color2);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 8px;
+    padding: 2rem;
+  }
+
+  .anim-section h2 {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    color: var(--color1);
+  }
+
+  .anim-grid {
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .anim-card {
+    background: rgba(255,255,255,.04);
+    border-radius: 6px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 200px;
+  }
+
+  .anim-card h3 {
+    font-family: 'Anton', sans-serif;
+    font-size: .85rem;
+    letter-spacing: .05em;
+    text-align: center;
+  }
+
+  .anim-card .desc {
+    font-size: .75rem;
+  }
+
+  /* Entrée : opacity + translateY */
+  @keyframes btt-appear {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Sortie : opacity + translateY (via reversed) */
+  .btt-demo-animate {
+    animation: btt-appear .35s cubic-bezier(.22,.68,0,1.2) forwards;
+  }
+
+  /* Section technique ────────────────────────────────────── */
+
+  .tech-section {
+    width: 100%;
+    max-width: 960px;
+    background: var(--color2);
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 8px;
+    padding: 2rem;
+  }
+
+  .tech-section h2 {
+    font-family: 'Anton', sans-serif;
+    font-size: 1.1rem;
+    margin-bottom: 1.5rem;
+    color: var(--color1);
+  }
+
+  .tech-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 600px) {
+    .tech-grid { grid-template-columns: 1fr; }
+  }
+
+  .tech-item {
+    background: rgba(255,255,255,.04);
+    border-radius: 6px;
+    padding: 1.25rem;
+  }
+
+  .tech-item h3 {
+    font-size: .82rem;
+    font-weight: 700;
+    letter-spacing: .05em;
+    color: var(--color1);
+    margin-bottom: .75rem;
+    text-transform: uppercase;
+  }
+
+  .tech-item ul {
+    padding-left: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+  }
+
+  .tech-item ul li {
+    font-size: .8rem;
+    color: rgba(255,255,255,.7);
+    line-height: 1.5;
+  }
+
+  .tech-item ul li strong {
+    color: var(--color3);
+  }
+
+  code {
+    font-family: 'Courier New', monospace;
+    font-size: .75rem;
+    background: rgba(255,255,255,.08);
+    padding: .1em .3em;
+    border-radius: 3px;
+    color: #a8d8ea;
+  }
+
+  .verdict {
+    background: rgba(232,31,31,.08);
+    border-left: 3px solid var(--color1);
+    border-radius: 0 6px 6px 0;
+    padding: 1.25rem;
+    font-size: .85rem;
+    line-height: 1.6;
+    color: rgba(255,255,255,.8);
+    margin-top: 1.5rem;
+  }
+
+  .verdict strong {
+    color: var(--color3);
+    font-family: 'Anton', sans-serif;
+    letter-spacing: .03em;
+    font-size: 1rem;
+    display: block;
+    margin-bottom: .4rem;
+  }
+</style>
+</head>
+<body>
+
+<h1>Back To Top — Proposals</h1>
+<p class="subtitle">3 variantes — Design System Gimmick Shelter — Mai 2026</p>
+
+<!-- ── Variantes ──────────────────────────────────────────── -->
+<div class="variants">
+
+  <!-- Variante A -->
+  <div class="variant-card">
+    <span class="tag">Variante A</span>
+    <h2>Pastille <em>Rouge Anton</em></h2>
+
+    <div class="demo-area">
+      <div class="state-pair">
+        <button class="btt-a" aria-label="Retour en haut de page">
+          <span class="btt-a__arrow"></span>
+          <span class="btt-a__label">TOP</span>
+        </button>
+        <span class="label-state">Repos</span>
+      </div>
+      <div class="state-pair">
+        <button class="btt-a hovered" aria-label="Retour en haut de page">
+          <span class="btt-a__arrow"></span>
+          <span class="btt-a__label">TOP</span>
+        </button>
+        <span class="label-state">Hover</span>
+      </div>
+    </div>
+
+    <p class="desc">Fond rouge GS, flèche CSS pure + label "TOP" en Anton blanc. Assure une présence forte, cohérent avec les CTA du site.</p>
+  </div>
+
+  <!-- Variante B -->
+  <div class="variant-card">
+    <span class="tag">Variante B</span>
+    <h2>Cercle <em>Dark + Liseré</em></h2>
+
+    <div class="demo-area">
+      <div class="state-pair">
+        <button class="btt-b" aria-label="Retour en haut de page">
+          <svg viewBox="0 0 24 24">
+            <polyline points="18 15 12 9 6 15"/>
+          </svg>
+        </button>
+        <span class="label-state">Repos</span>
+      </div>
+      <div class="state-pair">
+        <button class="btt-b hovered" aria-label="Retour en haut de page">
+          <svg viewBox="0 0 24 24">
+            <polyline points="18 15 12 9 6 15"/>
+          </svg>
+        </button>
+        <span class="label-state">Hover</span>
+      </div>
+    </div>
+
+    <p class="desc">Cercle noir avec liseré rouge. Discret au repos, expressif au hover (fond rouge plein). Plus élégant, moins intrusif visuellement.</p>
+  </div>
+
+  <!-- Variante C -->
+  <div class="variant-card">
+    <span class="tag">Variante C</span>
+    <h2>Label <em>Éditorial</em></h2>
+
+    <div class="demo-area">
+      <div class="state-pair">
+        <button class="btt-c" aria-label="Retour en haut de page">
+          <svg viewBox="0 0 24 24">
+            <polyline points="18 15 12 9 6 15"/>
+          </svg>
+          <span class="btt-c__text">HAUT DE PAGE</span>
+        </button>
+        <span class="label-state">Repos</span>
+      </div>
+      <div class="state-pair">
+        <button class="btt-c hovered" aria-label="Retour en haut de page">
+          <svg viewBox="0 0 24 24">
+            <polyline points="18 15 12 9 6 15"/>
+          </svg>
+          <span class="btt-c__text">HAUT DE PAGE</span>
+        </button>
+        <span class="label-state">Hover</span>
+      </div>
+    </div>
+
+    <p class="desc">Pill horizontale "↑ HAUT DE PAGE" en Anton. Border rouge, fond transparent → rouge au hover. Style éditorial / webzine.</p>
+  </div>
+
+</div>
+
+<!-- ── Animation ──────────────────────────────────────────── -->
+<div class="anim-section">
+  <h2>Animation d'apparition (commune aux 3 variantes)</h2>
+  <div class="anim-grid">
+
+    <div class="anim-card">
+      <h3>Entrée au scroll</h3>
+      <button id="demo-b" class="btt-b" aria-label="Demo" style="opacity:0">
+        <svg viewBox="0 0 24 24">
+          <polyline points="18 15 12 9 6 15"/>
+        </svg>
+      </button>
+      <button onclick="demoAnim()" style="background:var(--color1);color:#fff;border:none;padding:.4rem .9rem;border-radius:3px;cursor:pointer;font-size:.75rem;font-family:Roboto,sans-serif;">Rejouer l'animation →</button>
+      <p class="desc"><code>opacity 0→1</code> + <code>translateY(12px→0)</code><br>Easing : cubic-bezier(.22,.68,0,1.2)</p>
+    </div>
+
+    <div class="anim-card">
+      <h3>Sortie en haut de page</h3>
+      <button id="demo-b2" class="btt-b" aria-label="Demo">
+        <svg viewBox="0 0 24 24">
+          <polyline points="18 15 12 9 6 15"/>
+        </svg>
+      </button>
+      <button onclick="demoFade()" style="background:var(--color1);color:#fff;border:none;padding:.4rem .9rem;border-radius:3px;cursor:pointer;font-size:.75rem;font-family:Roboto,sans-serif;">Rejouer la sortie →</button>
+      <p class="desc"><code>opacity 1→0</code> + <code>translateY(0→8px)</code><br>Durée : 250ms — <code>ease-in</code></p>
+    </div>
+
+    <div class="anim-card">
+      <h3>prefers-reduced-motion</h3>
+      <button class="btt-b" aria-label="Demo" style="opacity:.5;cursor:default;">
+        <svg viewBox="0 0 24 24">
+          <polyline points="18 15 12 9 6 15"/>
+        </svg>
+      </button>
+      <p class="desc">Aucune animation. Apparition / disparition instantanée via <code>opacity</code> seulement. Smooth scroll désactivé → saut direct.</p>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── Spec technique ────────────────────────────────────── -->
+<div class="tech-section">
+  <h2>Corrections techniques (toutes variantes)</h2>
+
+  <div class="tech-grid">
+
+    <div class="tech-item">
+      <h3>JS — Affichage</h3>
+      <ul>
+        <li>Supprimer <code>window.onscroll</code> dans main.js — conflit avec l'event passif du header</li>
+        <li>Utiliser <code>opacity</code> + <code>pointer-events</code> au lieu de <code>display:none/block</code> → transition CSS fonctionnelle</li>
+        <li>Seuil d'apparition : <strong>300px de scroll</strong> (vs 20px actuel, trop tôt)</li>
+        <li>Merge dans le listener <code>scroll</code> existant du header GS</li>
+      </ul>
+    </div>
+
+    <div class="tech-item">
+      <h3>JS — Scroll</h3>
+      <ul>
+        <li>Remplacer <code>scrollTop = 0</code> par <strong><code>window.scrollTo({ top: 0, behavior: 'smooth' })</code></strong></li>
+        <li>Désactiver smooth sous <code>prefers-reduced-motion</code> : <code>behavior: 'instant'</code></li>
+        <li>Supprimer <code>onclick="topFunction()"</code> inline dans le PHP</li>
+        <li>Attacher l'event via <code>addEventListener('click')</code> dans main.js</li>
+      </ul>
+    </div>
+
+    <div class="tech-item">
+      <h3>CSS — Nettoyage</h3>
+      <ul>
+        <li>Retirer les 3 <code>!important</code> sur background, border, color → pas de conflit à résoudre</li>
+        <li>Retirer <code>outline: none</code> → remplacer par <code>:focus-visible</code> avec outline blanc</li>
+        <li>Utiliser <code>opacity: 0/1</code> + <code>pointer-events: none/auto</code> pour l'affichage</li>
+        <li>Transition : <code>opacity .35s, transform .35s</code> — ne jamais <code>transition: all</code></li>
+      </ul>
+    </div>
+
+    <div class="tech-item">
+      <h3>HTML / PHP</h3>
+      <ul>
+        <li>Supprimer <code>style="display:none;"</code> inline → géré en CSS (<code>opacity:0; pointer-events:none</code>)</li>
+        <li>Garder <code>aria-label="Retour en haut de page"</code> ✅</li>
+        <li>Remplacer <code>&lt;i class="fas fa-chevron-up"&gt;</code> par SVG inline (plus de dépendance Font Awesome)</li>
+        <li>Garder dans <code>parts/progress-bar.php</code> ✅</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <div class="verdict">
+    <strong>Recommandation — Variante B</strong>
+    Le cercle dark + liseré rouge est la solution la plus cohérente avec le design system : discret sans être invisible, il utilise les deux couleurs signature (noir + rouge) et s'efface derrière le contenu au repos. Le hover rouge full est une réponse claire à l'interaction. La variante A est plus assertive (bon si on veut un CTA fort) ; la variante C est plus typée "webzine print" mais peut sembler encombrante sur mobile.
+  </div>
+
+</div>
+
+<script>
+function demoAnim() {
+  var el = document.getElementById('demo-b');
+  el.style.transition = 'none';
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(12px)';
+  void el.offsetWidth;
+  el.style.transition = 'opacity .35s cubic-bezier(.22,.68,0,1.2), transform .35s cubic-bezier(.22,.68,0,1.2)';
+  el.style.opacity = '1';
+  el.style.transform = 'translateY(0)';
+}
+
+function demoFade() {
+  var el = document.getElementById('demo-b2');
+  el.style.transition = 'opacity .25s ease-in, transform .25s ease-in';
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(8px)';
+  setTimeout(function() {
+    el.style.transition = 'none';
+    el.style.opacity = '1';
+    el.style.transform = 'translateY(0)';
+  }, 1200);
+}
+
+demoAnim();
+</script>
+
+</body>
+</html>

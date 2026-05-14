@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposal Archive Reviews v2 — Gimmick Shelter</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --color1: #E81F1F;
+  --color2: #000B29;
+  --color3: #FFFFFF;
+  --color4: #000000;
+  --color5: #6D6D64;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #e8e8e8; font-family: 'Roboto', sans-serif; color: var(--color4); }
+
+/* ── Toggle nav ─────────────────────────────────────── */
+.toggle-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--color4);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  display: flex; align-items: center;
+  padding: 0 1.5rem; gap: 1.5rem;
+}
+.toggle-nav > span {
+  font-size: .7rem; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--color5); padding: .9rem 0;
+  white-space: nowrap;
+}
+.toggle-btn {
+  padding: .5rem 1.1rem; border: 1.5px solid rgba(255,255,255,.15);
+  border-radius: 3px; background: transparent; color: var(--color5);
+  font-size: .7rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  cursor: pointer; transition: color .2s, border-color .2s;
+}
+.toggle-btn.active { color: var(--color3); border-color: var(--color1); background: rgba(232,31,31,.1); }
+.section-tabs { display: flex; gap: .5rem; margin-left: auto; }
+.section-tab {
+  padding: .5rem 1.1rem; background: transparent; border: none;
+  color: var(--color5); font-size: .7rem; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; cursor: pointer;
+  border-bottom: 3px solid transparent; transition: color .2s, border-color .2s;
+}
+.section-tab.active { color: var(--color3); border-bottom-color: var(--color1); }
+
+/* ── Views ──────────────────────────────────────────── */
+.view { display: none; }
+.view.active { display: block; }
+.variant { display: none; }
+.variant.active { display: block; }
+
+/* ══════════════════════════════════════════════════════
+   HERO — commun aux 3 variantes
+══════════════════════════════════════════════════════ */
+.arc-hero {
+  position: relative;
+  min-height: 300px;
+  display: flex; align-items: flex-end;
+  overflow: hidden;
+  background: var(--color2);
+}
+.arc-hero__bg {
+  position: absolute; inset: 0;
+}
+.arc-hero__bg-img {
+  width: 100%; height: 100%; object-fit: cover;
+  filter: blur(2px) saturate(.65); transform: scale(1.04); display: block;
+  background: linear-gradient(135deg,#0a0820,#1a0a3a 40%,#0a1830 70%,#000010);
+}
+.arc-hero__overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.9) 0%, rgba(0,11,41,.6) 50%, rgba(0,0,0,.35) 100%);
+}
+.arc-hero__grain {
+  position: absolute; inset: 0; opacity: .025; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.arc-hero__divider { position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background: var(--color1); }
+.arc-hero__inner {
+  position: relative; z-index: 2; width: 100%;
+  padding: 3rem 2.5rem 2.5rem;
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem;
+}
+.arc-hero__kicker {
+  font-size: .7rem; font-weight: 700; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--color1); margin-bottom: .55rem; display: block;
+}
+.arc-hero__title {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(3.5rem, 7vw, 6rem);
+  line-height: .9; color: var(--color3);
+}
+.arc-hero__counter {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 0; flex-shrink: 0;
+}
+.arc-hero__num {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(2.8rem, 5vw, 4.5rem);
+  line-height: .85; color: var(--color3);
+}
+.arc-hero__sep { width: 100%; height: 2px; background: var(--color1); display: block; margin: .3rem 0; }
+.arc-hero__label {
+  font-size: .6rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--color5); text-align: right;
+}
+
+/* Section head commune */
+.arc-section-head {
+  display: flex; align-items: center; gap: .75rem; margin-bottom: 1.5rem;
+}
+.arc-section-head::before { content: ''; display: block; width: 22px; height: 2px; background: var(--color1); flex-shrink: 0; }
+.arc-section-head h2 {
+  font-family: 'Anton', sans-serif; font-size: .9rem;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--color5);
+}
+
+/* Flag "Coup de cœur" */
+.arc-feat-flag {
+  display: inline-block; margin-bottom: .55rem;
+  font-size: .58rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--color1); border: 1px solid var(--color1);
+  padding: .12rem .45rem; border-radius: 2px;
+}
+
+/* Pills */
+.pill-red {
+  display: inline-block; font-size: .58rem; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; padding: .15rem .42rem; border-radius: 2px;
+  background: var(--color1); color: var(--color3);
+}
+.pill-ghost-dark {
+  display: inline-block; font-size: .58rem; font-weight: 700; letter-spacing: .06em;
+  text-transform: uppercase; padding: .15rem .42rem; border-radius: 2px;
+  background: rgba(0,0,0,.07); color: var(--color5);
+}
+
+/* Pagination */
+.arc-pagination {
+  display: flex; align-items: center; justify-content: center;
+  gap: .35rem; padding: 2rem 2.5rem 3rem;
+  background: var(--color3); border-top: 1px solid rgba(0,0,0,.07);
+}
+.arc-page-item {
+  width: 36px; height: 36px; border-radius: 3px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Roboto', sans-serif; font-size: .82rem; font-weight: 700;
+  text-decoration: none; color: var(--color5);
+  border: 1.5px solid rgba(0,0,0,.12); background: transparent;
+  cursor: pointer; transition: color .2s, border-color .2s, background .2s;
+}
+.arc-page-item:hover { color: var(--color4); border-color: rgba(0,0,0,.3); }
+.arc-page-item.active { background: var(--color1); border-color: var(--color1); color: var(--color3); }
+.arc-page-item--arrow { font-size: 1rem; }
+.arc-page-item--arrow:hover { border-color: var(--color1); color: var(--color1); }
+
+/* ══════════════════════════════════════════════════════
+   VARIANTE A — Cards pochette + info sous image
+══════════════════════════════════════════════════════ */
+
+/* Featured A */
+.a-featured {
+  background: var(--color3);
+  padding: 2.5rem 2.5rem 0;
+  border-bottom: 1px solid rgba(0,0,0,.07);
+}
+.a-feat-layout {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem;
+}
+.a-feat-main {
+  display: block; text-decoration: none; color: inherit;
+  position: relative;
+}
+.a-feat-main__cover {
+  width: 100%; aspect-ratio: 1; object-fit: cover; display: block;
+  background: #ddd;
+}
+.a-feat-main__info {
+  padding: 1rem 0 1.5rem;
+  border-bottom: 3px solid var(--color1);
+}
+.a-feat-main__artist {
+  display: block; font-size: .68rem; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--color1);
+  margin-bottom: .2rem;
+}
+.a-feat-main__title {
+  font-family: 'Anton', sans-serif; font-size: 1.9rem;
+  color: var(--color4); line-height: 1; display: block; margin-bottom: .6rem;
+  transition: color .2s;
+}
+.a-feat-main:hover .a-feat-main__title { color: var(--color1); }
+.a-feat-main__pills { display: flex; gap: .35rem; flex-wrap: wrap; }
+
+.a-feat-side { display: flex; flex-direction: column; gap: 0; justify-content: space-between; }
+.a-feat-card {
+  display: flex; gap: 1rem; align-items: center;
+  text-decoration: none; color: inherit; padding: 1rem 0;
+  border-bottom: 1px solid rgba(0,0,0,.07); transition: background .2s;
+}
+.a-feat-card:last-child { border-bottom: none; }
+.a-feat-card:hover { background: rgba(0,0,0,.02); }
+.a-feat-card__cover {
+  width: 72px; height: 72px; object-fit: cover; flex-shrink: 0;
+  display: block; background: #ddd;
+}
+.a-feat-card__artist {
+  display: block; font-size: .6rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--color1); margin-bottom: .15rem;
+}
+.a-feat-card__title {
+  font-family: 'Anton', sans-serif; font-size: 1rem;
+  color: var(--color4); line-height: 1.05; transition: color .2s;
+}
+.a-feat-card:hover .a-feat-card__title { color: var(--color1); }
+.a-feat-card__sub { font-size: .7rem; color: var(--color5); margin-top: .2rem; }
+
+/* Grid A */
+.a-all { background: var(--color3); padding: 2.5rem; }
+.a-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+}
+.a-card {
+  display: block; text-decoration: none; color: inherit;
+  border-bottom: 3px solid transparent; transition: border-color .2s;
+}
+.a-card:hover { border-bottom-color: var(--color1); }
+.a-card__cover {
+  width: 100%; aspect-ratio: 1; object-fit: cover; display: block;
+  background: #ddd; margin-bottom: .8rem;
+  transition: opacity .25s;
+}
+.a-card:hover .a-card__cover { opacity: .9; }
+.a-card__artist {
+  display: block; font-size: .62rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--color1);
+  margin-bottom: .15rem;
+}
+.a-card__title {
+  font-family: 'Anton', sans-serif; font-size: 1.1rem;
+  color: var(--color4); line-height: 1.05; display: block; margin-bottom: .5rem;
+  transition: color .2s;
+}
+.a-card:hover .a-card__title { color: var(--color1); }
+.a-card__pills { display: flex; gap: .3rem; flex-wrap: wrap; }
+
+/* ══════════════════════════════════════════════════════
+   VARIANTE B — Cards avec ligne de séparation / style liste + grille mixte
+══════════════════════════════════════════════════════ */
+
+/* Featured B — grande card pleine largeur */
+.b-featured { background: var(--color3); padding: 2.5rem; border-bottom: 1px solid rgba(0,0,0,.07); }
+
+.b-feat-main {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0;
+  text-decoration: none; color: inherit;
+  border: 1px solid rgba(0,0,0,.1);
+  transition: box-shadow .25s;
+}
+.b-feat-main:hover { box-shadow: 0 4px 24px rgba(0,0,0,.1); }
+.b-feat-main__cover {
+  width: 100%; aspect-ratio: 1; object-fit: cover; display: block;
+  background: #ccc;
+}
+.b-feat-main__info {
+  padding: 2rem;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  background: var(--color3);
+  border-left: none;
+  position: relative;
+}
+.b-feat-main__info::before {
+  content: ''; position: absolute; top: 0; left: 0;
+  width: 3px; height: 100%; background: var(--color1);
+}
+.b-feat-main__artist {
+  font-size: .68rem; font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--color1);
+  display: block; margin-bottom: .35rem;
+}
+.b-feat-main__title {
+  font-family: 'Anton', sans-serif; font-size: 2.2rem;
+  color: var(--color4); line-height: .95; display: block; margin-bottom: .9rem;
+}
+.b-feat-main__pills { display: flex; gap: .35rem; flex-wrap: wrap; }
+
+/* Grid B — 4 colonnes plus petites */
+.b-all { background: var(--color3); padding: 0 2.5rem 2.5rem; }
+.b-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+
+.b-card {
+  display: block; text-decoration: none; color: inherit;
+  transition: transform .2s;
+}
+.b-card:hover { transform: translateY(-3px); }
+.b-card__cover {
+  width: 100%; aspect-ratio: 1; object-fit: cover; display: block;
+  background: #ddd; margin-bottom: .65rem;
+}
+.b-card__artist {
+  display: block; font-size: .58rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase;
+  color: var(--color1); margin-bottom: .1rem;
+}
+.b-card__title {
+  font-family: 'Anton', sans-serif; font-size: .95rem;
+  color: var(--color4); line-height: 1.05; display: block; margin-bottom: .4rem;
+  transition: color .2s;
+}
+.b-card:hover .b-card__title { color: var(--color1); }
+.b-card__label { font-size: .65rem; color: var(--color5); }
+
+/* Section separator B */
+.b-sep {
+  background: var(--color3); padding: 2.5rem 2.5rem 1.5rem;
+}
+
+/* ══════════════════════════════════════════════════════
+   VARIANTE C — Cards avec fond gris très léger + ombre
+══════════════════════════════════════════════════════ */
+
+.c-body { background: #f4f4f2; }
+
+/* Featured C */
+.c-featured { background: #f4f4f2; padding: 2.5rem; }
+.c-feat-layout { display: grid; grid-template-columns: 1.6fr 1fr; gap: 1.25rem; }
+
+.c-feat-main {
+  display: block; text-decoration: none; color: inherit;
+  background: var(--color3);
+  box-shadow: 0 2px 12px rgba(0,0,0,.08);
+  transition: box-shadow .25s, transform .25s;
+}
+.c-feat-main:hover { box-shadow: 0 6px 28px rgba(0,0,0,.14); transform: translateY(-2px); }
+.c-feat-main__cover {
+  width: 100%; aspect-ratio: 1; object-fit: cover; display: block; background: #ccc;
+}
+.c-feat-main__info { padding: 1.2rem; border-top: 3px solid var(--color1); }
+.c-feat-main__artist {
+  display: block; font-size: .65rem; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase; color: var(--color1); margin-bottom: .18rem;
+}
+.c-feat-main__title {
+  font-family: 'Anton', sans-serif; font-size: 1.6rem;
+  color: var(--color4); line-height: 1; display: block; margin-bottom: .55rem;
+}
+.c-feat-main__pills { display: flex; gap: .3rem; flex-wrap: wrap; }
+
+.c-feat-side { display: flex; flex-direction: column; gap: 1.25rem; }
+.c-feat-card {
+  display: block; text-decoration: none; color: inherit;
+  background: var(--color3);
+  box-shadow: 0 2px 10px rgba(0,0,0,.07);
+  display: flex; gap: 0;
+  transition: box-shadow .25s, transform .25s;
+}
+.c-feat-card:hover { box-shadow: 0 5px 20px rgba(0,0,0,.12); transform: translateY(-2px); }
+.c-feat-card__cover {
+  width: 90px; height: 90px; object-fit: cover; flex-shrink: 0;
+  display: block; background: #ccc;
+}
+.c-feat-card__info {
+  padding: .85rem 1rem; flex: 1;
+  border-left: 3px solid var(--color1);
+  display: flex; flex-direction: column; justify-content: center;
+}
+.c-feat-card__artist {
+  display: block; font-size: .58rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--color1); margin-bottom: .12rem;
+}
+.c-feat-card__title {
+  font-family: 'Anton', sans-serif; font-size: .95rem; color: var(--color4); line-height: 1.05;
+}
+.c-feat-card__sub { font-size: .65rem; color: var(--color5); margin-top: .2rem; }
+
+/* Grid C */
+.c-all { background: #f4f4f2; padding: 0 2.5rem 2.5rem; }
+.c-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
+
+.c-card {
+  display: block; text-decoration: none; color: inherit;
+  background: var(--color3);
+  box-shadow: 0 1px 6px rgba(0,0,0,.07);
+  transition: box-shadow .25s, transform .2s;
+}
+.c-card:hover { box-shadow: 0 4px 18px rgba(0,0,0,.13); transform: translateY(-3px); }
+.c-card__cover {
+  width: 100%; aspect-ratio: 1; object-fit: cover; display: block; background: #ddd;
+}
+.c-card__info { padding: .85rem; border-top: 2px solid transparent; transition: border-color .2s; }
+.c-card:hover .c-card__info { border-top-color: var(--color1); }
+.c-card__artist {
+  display: block; font-size: .6rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--color1); margin-bottom: .12rem;
+}
+.c-card__title {
+  font-family: 'Anton', sans-serif; font-size: 1rem;
+  color: var(--color4); line-height: 1.05; display: block; margin-bottom: .45rem;
+}
+.c-card__pills { display: flex; gap: .28rem; flex-wrap: wrap; }
+
+/* ── Mobile commons ─────────────────────────────────── */
+.mobile-wrap {
+  display: flex; justify-content: center; padding: 2rem 1rem; background: #e0e0e0;
+}
+.mobile-frame {
+  width: 375px; background: var(--color3);
+  border: 1.5px solid rgba(0,0,0,.15);
+  border-radius: 12px; overflow: hidden;
+}
+
+/* Hero mobile */
+.arc-hero--mob { min-height: 200px; }
+.arc-hero__inner--mob { padding: 1.5rem 1.25rem 2rem; }
+
+/* A mobile grid */
+.a-grid--mob { grid-template-columns: 1fr; gap: 1rem; }
+.a-all--mob { padding: 1.25rem; }
+.a-featured--mob { padding: 1.25rem; }
+.a-feat-layout--mob { grid-template-columns: 1fr; gap: 0; }
+.a-feat-main__info--mob { padding: .85rem 0 1.25rem; }
+
+/* B mobile */
+.b-feat-main--mob { grid-template-columns: 1fr; }
+.b-feat-main__info--mob { padding: 1.25rem; }
+.b-grid--mob { grid-template-columns: repeat(2, 1fr); gap: .85rem; }
+.b-all--mob { padding: 0 1.25rem 1.25rem; }
+.b-sep--mob { padding: 1.25rem; }
+.b-featured--mob { padding: 1.25rem; }
+
+/* C mobile */
+.c-feat-layout--mob { grid-template-columns: 1fr; }
+.c-feat-side--mob { gap: .85rem; }
+.c-grid--mob { grid-template-columns: repeat(2, 1fr); gap: .85rem; }
+.c-featured--mob { padding: 1.25rem; }
+.c-all--mob { padding: 0 1.25rem 1.25rem; }
+</style>
+</head>
+<body>
+
+<nav class="toggle-nav">
+  <span>Vue</span>
+  <button class="toggle-btn active" onclick="setView('desktop',this)">Desktop</button>
+  <button class="toggle-btn" onclick="setView('mobile',this)">Mobile</button>
+  <div class="section-tabs">
+    <button class="section-tab active" onclick="setVariant('a',this)">A — Cover + info</button>
+    <button class="section-tab" onclick="setVariant('b',this)">B — Grande featured</button>
+    <button class="section-tab" onclick="setVariant('c',this)">C — Cards ombre</button>
+  </div>
+</nav>
+
+
+<!-- ═══════════════════ DESKTOP ═══════════════════════ -->
+<div class="view active" id="view-desktop">
+
+  <!-- VARIANTE A -->
+  <div class="variant active" id="var-a">
+
+    <div class="arc-hero">
+      <div class="arc-hero__bg"><div class="arc-hero__bg-img"></div></div>
+      <div class="arc-hero__overlay"></div>
+      <div class="arc-hero__grain"></div>
+      <div class="arc-hero__divider"></div>
+      <div class="arc-hero__inner">
+        <div>
+          <span class="arc-hero__kicker">Gimmick Shelter</span>
+          <h1 class="arc-hero__title">Reviews</h1>
+        </div>
+        <div class="arc-hero__counter">
+          <span class="arc-hero__num">42</span>
+          <span class="arc-hero__sep"></span>
+          <span class="arc-hero__label">Chroniques publiées</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="a-featured">
+      <div class="arc-section-head"><h2>Coup de cœur</h2></div>
+      <div class="a-feat-layout">
+        <a class="a-feat-main" href="#">
+          <div class="a-feat-main__cover" style="background:linear-gradient(135deg,#3a2a4a,#1a0a3a);display:flex;align-items:center;justify-content:center;font-size:5rem;">🎵</div>
+          <div class="a-feat-main__info">
+            <span class="arc-feat-flag">Coup de cœur</span>
+            <span class="a-feat-main__artist">Ghost Woman</span>
+            <span class="a-feat-main__title">Ghost Woman</span>
+            <div class="a-feat-main__pills">
+              <span class="pill-red">Suites Sonores</span>
+              <span class="pill-ghost-dark">Shoegaze</span>
+              <span class="pill-ghost-dark">2022</span>
+            </div>
+          </div>
+        </a>
+        <div class="a-feat-side">
+          <a class="a-feat-card" href="#">
+            <div class="a-feat-card__cover" style="background:linear-gradient(135deg,#2a1a1a,#4a2020);display:flex;align-items:center;justify-content:center;font-size:2rem;">🎸</div>
+            <div>
+              <span class="arc-feat-flag">Coup de cœur</span>
+              <span class="a-feat-card__artist">Drug Dealer</span>
+              <span class="a-feat-card__title">Hiding in Plain Sight</span>
+              <div class="a-feat-card__sub">Merge Records · Indie · 2023</div>
+            </div>
+          </a>
+          <a class="a-feat-card" href="#">
+            <div class="a-feat-card__cover" style="background:linear-gradient(135deg,#3a1a2a,#5a0a3a);display:flex;align-items:center;justify-content:center;font-size:2rem;">🔊</div>
+            <div>
+              <span class="arc-feat-flag">Coup de cœur</span>
+              <span class="a-feat-card__artist">Osees</span>
+              <span class="a-feat-card__title">Protean Threat</span>
+              <div class="a-feat-card__sub">Castle Face · Garage · 2020</div>
+            </div>
+          </a>
+          <a class="a-feat-card" href="#">
+            <div class="a-feat-card__cover" style="background:linear-gradient(135deg,#1a2a1a,#0a3a1a);display:flex;align-items:center;justify-content:center;font-size:2rem;">🎻</div>
+            <div>
+              <span class="arc-feat-flag">Coup de cœur</span>
+              <span class="a-feat-card__artist">Mdou Moctar</span>
+              <span class="a-feat-card__title">Afrique Victime</span>
+              <div class="a-feat-card__sub">Matador · Desert Blues · 2021</div>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="a-all">
+      <div class="arc-section-head"><h2>Toutes les reviews</h2></div>
+      <div class="a-grid">
+        <a class="a-card" href="#"><div class="a-card__cover" style="background:linear-gradient(135deg,#1a2a2a,#0a3a3a);display:flex;align-items:center;justify-content:center;font-size:3rem;">🥁</div><span class="a-card__artist">Baston</span><span class="a-card__title">Primates</span><div class="a-card__pills"><span class="pill-red">Howlin Banana</span><span class="pill-ghost-dark">Krautrock</span><span class="pill-ghost-dark">2019</span></div></a>
+        <a class="a-card" href="#"><div class="a-card__cover" style="background:linear-gradient(135deg,#2a2a1a,#3a3a0a);display:flex;align-items:center;justify-content:center;font-size:3rem;">🎷</div><span class="a-card__artist">J.W. Francis</span><span class="a-card__title">Wanderer</span><div class="a-card__pills"><span class="pill-red">Captured Tracks</span><span class="pill-ghost-dark">Indie Folk</span></div></a>
+        <a class="a-card" href="#"><div class="a-card__cover" style="background:linear-gradient(135deg,#1a1a3a,#2a2a5a);display:flex;align-items:center;justify-content:center;font-size:3rem;">🎹</div><span class="a-card__artist">Kevin Morby</span><span class="a-card__title">Sundowner</span><div class="a-card__pills"><span class="pill-red">Dead Oceans</span><span class="pill-ghost-dark">Indie Rock</span></div></a>
+        <a class="a-card" href="#"><div class="a-card__cover" style="background:linear-gradient(135deg,#2a1a3a,#4a0a5a);display:flex;align-items:center;justify-content:center;font-size:3rem;">🪗</div><span class="a-card__artist">Wet Leg</span><span class="a-card__title">Wet Leg</span><div class="a-card__pills"><span class="pill-red">Domino</span><span class="pill-ghost-dark">Indie</span></div></a>
+        <a class="a-card" href="#"><div class="a-card__cover" style="background:linear-gradient(135deg,#1a1a1a,#2a2a2a);display:flex;align-items:center;justify-content:center;font-size:3rem;">🎤</div><span class="a-card__artist">Fontaines D.C.</span><span class="a-card__title">Skinty Fia</span><div class="a-card__pills"><span class="pill-red">Partisan</span><span class="pill-ghost-dark">Post-Punk</span></div></a>
+        <a class="a-card" href="#"><div class="a-card__cover" style="background:linear-gradient(135deg,#3a1a1a,#5a2a0a);display:flex;align-items:center;justify-content:center;font-size:3rem;">🎙</div><span class="a-card__artist">Black Midi</span><span class="a-card__title">Cavalcade</span><div class="a-card__pills"><span class="pill-red">Rough Trade</span><span class="pill-ghost-dark">Avant-rock</span></div></a>
+      </div>
+    </div>
+
+    <div class="arc-pagination">
+      <a class="arc-page-item arc-page-item--arrow" href="#">‹</a>
+      <a class="arc-page-item active" href="#">1</a>
+      <a class="arc-page-item" href="#">2</a>
+      <a class="arc-page-item" href="#">3</a>
+      <span class="arc-page-item" style="border:none;cursor:default;">…</span>
+      <a class="arc-page-item" href="#">8</a>
+      <a class="arc-page-item arc-page-item--arrow" href="#">›</a>
+    </div>
+
+  </div><!-- /var-a -->
+
+
+  <!-- VARIANTE B -->
+  <div class="variant" id="var-b">
+
+    <div class="arc-hero">
+      <div class="arc-hero__bg"><div class="arc-hero__bg-img"></div></div>
+      <div class="arc-hero__overlay"></div><div class="arc-hero__grain"></div><div class="arc-hero__divider"></div>
+      <div class="arc-hero__inner">
+        <div><span class="arc-hero__kicker">Gimmick Shelter</span><h1 class="arc-hero__title">Reviews</h1></div>
+        <div class="arc-hero__counter"><span class="arc-hero__num">42</span><span class="arc-hero__sep"></span><span class="arc-hero__label">Chroniques publiées</span></div>
+      </div>
+    </div>
+
+    <div class="b-featured">
+      <div class="arc-section-head"><h2>Coup de cœur</h2></div>
+      <a class="b-feat-main" href="#">
+        <div class="b-feat-main__cover" style="background:linear-gradient(135deg,#3a2a4a,#1a0a3a);display:flex;align-items:center;justify-content:center;font-size:6rem;">🎵</div>
+        <div class="b-feat-main__info">
+          <span class="arc-feat-flag">Coup de cœur</span>
+          <span class="b-feat-main__artist">Ghost Woman</span>
+          <span class="b-feat-main__title">Ghost Woman</span>
+          <div class="b-feat-main__pills">
+            <span class="pill-red">Suites Sonores</span>
+            <span class="pill-ghost-dark">Shoegaze</span>
+            <span class="pill-ghost-dark">2022</span>
+          </div>
+        </div>
+      </a>
+    </div>
+
+    <div class="b-sep">
+      <div class="arc-section-head"><h2>Toutes les reviews</h2></div>
+    </div>
+    <div class="b-all">
+      <div class="b-grid">
+        <a class="b-card" href="#"><div class="b-card__cover" style="background:linear-gradient(135deg,#2a1a1a,#4a2020);display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🎸</div><span class="b-card__artist">Drug Dealer</span><span class="b-card__title">Hiding in Plain Sight</span><div class="b-card__label">Merge Records · 2023</div></a>
+        <a class="b-card" href="#"><div class="b-card__cover" style="background:linear-gradient(135deg,#1a2a2a,#0a3a3a);display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🥁</div><span class="b-card__artist">Baston</span><span class="b-card__title">Primates</span><div class="b-card__label">Howlin Banana · 2019</div></a>
+        <a class="b-card" href="#"><div class="b-card__cover" style="background:linear-gradient(135deg,#3a1a2a,#5a0a3a);display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🔊</div><span class="b-card__artist">Osees</span><span class="b-card__title">Protean Threat</span><div class="b-card__label">Castle Face · 2020</div></a>
+        <a class="b-card" href="#"><div class="b-card__cover" style="background:linear-gradient(135deg,#2a2a1a,#3a3a0a);display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🎷</div><span class="b-card__artist">J.W. Francis</span><span class="b-card__title">Wanderer</span><div class="b-card__label">Captured Tracks · 2022</div></a>
+        <a class="b-card" href="#"><div class="b-card__cover" style="background:linear-gradient(135deg,#1a1a3a,#2a2a5a);display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🎹</div><span class="b-card__artist">Kevin Morby</span><span class="b-card__title">Sundowner</span><div class="b-card__label">Dead Oceans · 2020</div></a>
+        <a class="b-card" href="#"><div class="b-card__cover" style="background:linear-gradient(135deg,#2a1a3a,#4a0a5a);display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🪗</div><span class="b-card__artist">Wet Leg</span><span class="b-card__title">Wet Leg</span><div class="b-card__label">Domino · 2022</div></a>
+        <a class="b-card" href="#"><div class="b-card__cover" style="background:linear-gradient(135deg,#1a1a1a,#2a2a2a);display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🎤</div><span class="b-card__artist">Fontaines D.C.</span><span class="b-card__title">Skinty Fia</span><div class="b-card__label">Partisan · 2022</div></a>
+        <a class="b-card" href="#"><div class="b-card__cover" style="background:linear-gradient(135deg,#1a3a1a,#0a5a0a);display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🎻</div><span class="b-card__artist">Mdou Moctar</span><span class="b-card__title">Afrique Victime</span><div class="b-card__label">Matador · 2021</div></a>
+      </div>
+    </div>
+
+    <div class="arc-pagination">
+      <a class="arc-page-item arc-page-item--arrow" href="#">‹</a>
+      <a class="arc-page-item active" href="#">1</a>
+      <a class="arc-page-item" href="#">2</a>
+      <a class="arc-page-item" href="#">3</a>
+      <span class="arc-page-item" style="border:none;cursor:default;">…</span>
+      <a class="arc-page-item" href="#">8</a>
+      <a class="arc-page-item arc-page-item--arrow" href="#">›</a>
+    </div>
+
+  </div><!-- /var-b -->
+
+
+  <!-- VARIANTE C -->
+  <div class="variant c-body" id="var-c">
+
+    <div class="arc-hero">
+      <div class="arc-hero__bg"><div class="arc-hero__bg-img"></div></div>
+      <div class="arc-hero__overlay"></div><div class="arc-hero__grain"></div><div class="arc-hero__divider"></div>
+      <div class="arc-hero__inner">
+        <div><span class="arc-hero__kicker">Gimmick Shelter</span><h1 class="arc-hero__title">Reviews</h1></div>
+        <div class="arc-hero__counter"><span class="arc-hero__num">42</span><span class="arc-hero__sep"></span><span class="arc-hero__label">Chroniques publiées</span></div>
+      </div>
+    </div>
+
+    <div class="c-featured">
+      <div class="arc-section-head"><h2>Coup de cœur</h2></div>
+      <div class="c-feat-layout">
+        <a class="c-feat-main" href="#">
+          <div class="c-feat-main__cover" style="background:linear-gradient(135deg,#3a2a4a,#1a0a3a);display:flex;align-items:center;justify-content:center;font-size:5rem;">🎵</div>
+          <div class="c-feat-main__info">
+            <span class="arc-feat-flag">Coup de cœur</span>
+            <span class="c-feat-main__artist">Ghost Woman</span>
+            <span class="c-feat-main__title">Ghost Woman</span>
+            <div class="c-feat-main__pills"><span class="pill-red">Suites Sonores</span><span class="pill-ghost-dark">Shoegaze</span><span class="pill-ghost-dark">2022</span></div>
+          </div>
+        </a>
+        <div class="c-feat-side">
+          <a class="c-feat-card" href="#">
+            <div class="c-feat-card__cover" style="background:linear-gradient(135deg,#2a1a1a,#4a2020);display:flex;align-items:center;justify-content:center;font-size:1.8rem;">🎸</div>
+            <div class="c-feat-card__info"><span class="arc-feat-flag" style="font-size:.52rem;">Coup de cœur</span><span class="c-feat-card__artist">Drug Dealer</span><span class="c-feat-card__title">Hiding in Plain Sight</span><div class="c-feat-card__sub">Merge Records · Indie · 2023</div></div>
+          </a>
+          <a class="c-feat-card" href="#">
+            <div class="c-feat-card__cover" style="background:linear-gradient(135deg,#3a1a2a,#5a0a3a);display:flex;align-items:center;justify-content:center;font-size:1.8rem;">🔊</div>
+            <div class="c-feat-card__info"><span class="arc-feat-flag" style="font-size:.52rem;">Coup de cœur</span><span class="c-feat-card__artist">Osees</span><span class="c-feat-card__title">Protean Threat</span><div class="c-feat-card__sub">Castle Face · Garage · 2020</div></div>
+          </a>
+          <a class="c-feat-card" href="#">
+            <div class="c-feat-card__cover" style="background:linear-gradient(135deg,#1a2a1a,#0a3a1a);display:flex;align-items:center;justify-content:center;font-size:1.8rem;">🎻</div>
+            <div class="c-feat-card__info"><span class="arc-feat-flag" style="font-size:.52rem;">Coup de cœur</span><span class="c-feat-card__artist">Mdou Moctar</span><span class="c-feat-card__title">Afrique Victime</span><div class="c-feat-card__sub">Matador · Desert Blues</div></div>
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="c-all">
+      <div class="arc-section-head" style="padding-top:2.5rem;"><h2>Toutes les reviews</h2></div>
+      <div class="c-grid">
+        <a class="c-card" href="#"><div class="c-card__cover" style="background:linear-gradient(135deg,#1a2a2a,#0a3a3a);display:flex;align-items:center;justify-content:center;font-size:3rem;">🥁</div><div class="c-card__info"><span class="c-card__artist">Baston</span><span class="c-card__title">Primates</span><div class="c-card__pills"><span class="pill-red">Howlin Banana</span><span class="pill-ghost-dark">Krautrock</span></div></div></a>
+        <a class="c-card" href="#"><div class="c-card__cover" style="background:linear-gradient(135deg,#2a2a1a,#3a3a0a);display:flex;align-items:center;justify-content:center;font-size:3rem;">🎷</div><div class="c-card__info"><span class="c-card__artist">J.W. Francis</span><span class="c-card__title">Wanderer</span><div class="c-card__pills"><span class="pill-red">Captured Tracks</span><span class="pill-ghost-dark">Folk</span></div></div></a>
+        <a class="c-card" href="#"><div class="c-card__cover" style="background:linear-gradient(135deg,#1a1a3a,#2a2a5a);display:flex;align-items:center;justify-content:center;font-size:3rem;">🎹</div><div class="c-card__info"><span class="c-card__artist">Kevin Morby</span><span class="c-card__title">Sundowner</span><div class="c-card__pills"><span class="pill-red">Dead Oceans</span><span class="pill-ghost-dark">Indie</span></div></div></a>
+        <a class="c-card" href="#"><div class="c-card__cover" style="background:linear-gradient(135deg,#2a1a3a,#4a0a5a);display:flex;align-items:center;justify-content:center;font-size:3rem;">🪗</div><div class="c-card__info"><span class="c-card__artist">Wet Leg</span><span class="c-card__title">Wet Leg</span><div class="c-card__pills"><span class="pill-red">Domino</span><span class="pill-ghost-dark">Indie</span></div></div></a>
+        <a class="c-card" href="#"><div class="c-card__cover" style="background:linear-gradient(135deg,#1a1a1a,#2a2a2a);display:flex;align-items:center;justify-content:center;font-size:3rem;">🎤</div><div class="c-card__info"><span class="c-card__artist">Fontaines D.C.</span><span class="c-card__title">Skinty Fia</span><div class="c-card__pills"><span class="pill-red">Partisan</span><span class="pill-ghost-dark">Post-Punk</span></div></div></a>
+        <a class="c-card" href="#"><div class="c-card__cover" style="background:linear-gradient(135deg,#3a1a1a,#5a2a0a);display:flex;align-items:center;justify-content:center;font-size:3rem;">🎙</div><div class="c-card__info"><span class="c-card__artist">Black Midi</span><span class="c-card__title">Cavalcade</span><div class="c-card__pills"><span class="pill-red">Rough Trade</span><span class="pill-ghost-dark">Avant-rock</span></div></div></a>
+      </div>
+    </div>
+
+    <div class="arc-pagination" style="background:#f4f4f2;">
+      <a class="arc-page-item arc-page-item--arrow" href="#">‹</a>
+      <a class="arc-page-item active" href="#">1</a>
+      <a class="arc-page-item" href="#">2</a>
+      <a class="arc-page-item" href="#">3</a>
+      <span class="arc-page-item" style="border:none;cursor:default;">…</span>
+      <a class="arc-page-item" href="#">8</a>
+      <a class="arc-page-item arc-page-item--arrow" href="#">›</a>
+    </div>
+
+  </div><!-- /var-c -->
+
+</div><!-- /desktop -->
+
+
+<!-- ═══════════════════ MOBILE ════════════════════════ -->
+<div class="view" id="view-mobile">
+
+  <!-- A mobile -->
+  <div class="variant active mobile-wrap" id="mob-var-a">
+    <div class="mobile-frame">
+      <div class="arc-hero arc-hero--mob">
+        <div class="arc-hero__bg"><div class="arc-hero__bg-img"></div></div>
+        <div class="arc-hero__overlay"></div><div class="arc-hero__grain"></div><div class="arc-hero__divider"></div>
+        <div class="arc-hero__inner arc-hero__inner--mob">
+          <div><span class="arc-hero__kicker" style="font-size:.6rem;">Gimmick Shelter</span><h1 class="arc-hero__title" style="font-size:3rem;">Reviews</h1></div>
+          <div class="arc-hero__counter"><span class="arc-hero__num" style="font-size:2.6rem;">42</span><span class="arc-hero__sep"></span><span class="arc-hero__label" style="font-size:.52rem;">Chroniques</span></div>
+        </div>
+      </div>
+      <div class="a-featured a-featured--mob">
+        <div class="arc-section-head" style="margin-bottom:1rem;"><h2 style="font-size:.8rem;">Coup de cœur</h2></div>
+        <a class="a-feat-main" href="#">
+          <div class="a-feat-main__cover" style="background:linear-gradient(135deg,#3a2a4a,#1a0a3a);display:flex;align-items:center;justify-content:center;font-size:4rem;aspect-ratio:1;"></div>
+          <div class="a-feat-main__info a-feat-main__info--mob">
+            <span class="arc-feat-flag" style="font-size:.52rem;">Coup de cœur</span>
+            <span class="a-feat-main__artist" style="font-size:.6rem;">Ghost Woman</span>
+            <span class="a-feat-main__title" style="font-size:1.5rem;">Ghost Woman</span>
+            <div class="a-feat-main__pills"><span class="pill-red" style="font-size:.52rem;">Suites Sonores</span><span class="pill-ghost-dark" style="font-size:.52rem;">Shoegaze</span></div>
+          </div>
+        </a>
+      </div>
+      <div class="a-all a-all--mob">
+        <div class="arc-section-head" style="margin-bottom:1rem;"><h2 style="font-size:.8rem;">Toutes les reviews</h2></div>
+        <div class="a-grid a-grid--mob">
+          <a class="a-card" href="#"><div class="a-card__cover" style="background:linear-gradient(135deg,#2a1a1a,#4a2020);display:flex;align-items:center;justify-content:center;font-size:2.5rem;aspect-ratio:1;"></div><span class="a-card__artist" style="font-size:.55rem;">Drug Dealer</span><span class="a-card__title" style="font-size:.95rem;">Hiding in Plain Sight</span><div class="a-card__pills"><span class="pill-red" style="font-size:.52rem;">Merge</span><span class="pill-ghost-dark" style="font-size:.52rem;">Indie</span></div></a>
+          <a class="a-card" href="#"><div class="a-card__cover" style="background:linear-gradient(135deg,#1a2a2a,#0a3a3a);display:flex;align-items:center;justify-content:center;font-size:2.5rem;aspect-ratio:1;"></div><span class="a-card__artist" style="font-size:.55rem;">Baston</span><span class="a-card__title" style="font-size:.95rem;">Primates</span><div class="a-card__pills"><span class="pill-red" style="font-size:.52rem;">Howlin</span><span class="pill-ghost-dark" style="font-size:.52rem;">Krautrock</span></div></a>
+          <a class="a-card" href="#"><div class="a-card__cover" style="background:linear-gradient(135deg,#2a2a1a,#3a3a0a);display:flex;align-items:center;justify-content:center;font-size:2.5rem;aspect-ratio:1;"></div><span class="a-card__artist" style="font-size:.55rem;">J.W. Francis</span><span class="a-card__title" style="font-size:.95rem;">Wanderer</span><div class="a-card__pills"><span class="pill-red" style="font-size:.52rem;">Captured</span><span class="pill-ghost-dark" style="font-size:.52rem;">Folk</span></div></a>
+        </div>
+      </div>
+      <div class="arc-pagination" style="padding:1.25rem;gap:.25rem;">
+        <a class="arc-page-item arc-page-item--arrow" href="#" style="width:32px;height:32px;">‹</a>
+        <a class="arc-page-item active" href="#" style="width:32px;height:32px;font-size:.75rem;">1</a>
+        <a class="arc-page-item" href="#" style="width:32px;height:32px;font-size:.75rem;">2</a>
+        <a class="arc-page-item" href="#" style="width:32px;height:32px;font-size:.75rem;">3</a>
+        <a class="arc-page-item arc-page-item--arrow" href="#" style="width:32px;height:32px;">›</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- B mobile -->
+  <div class="variant mobile-wrap" id="mob-var-b">
+    <div class="mobile-frame">
+      <div class="arc-hero arc-hero--mob">
+        <div class="arc-hero__bg"><div class="arc-hero__bg-img"></div></div>
+        <div class="arc-hero__overlay"></div><div class="arc-hero__grain"></div><div class="arc-hero__divider"></div>
+        <div class="arc-hero__inner arc-hero__inner--mob">
+          <div><span class="arc-hero__kicker" style="font-size:.6rem;">Gimmick Shelter</span><h1 class="arc-hero__title" style="font-size:3rem;">Reviews</h1></div>
+          <div class="arc-hero__counter"><span class="arc-hero__num" style="font-size:2.6rem;">42</span><span class="arc-hero__sep"></span><span class="arc-hero__label" style="font-size:.52rem;">Chroniques</span></div>
+        </div>
+      </div>
+      <div class="b-featured b-featured--mob">
+        <div class="arc-section-head" style="margin-bottom:1rem;"><h2 style="font-size:.8rem;">Coup de cœur</h2></div>
+        <a class="b-feat-main b-feat-main--mob" href="#" style="display:grid;">
+          <div class="b-feat-main__cover" style="background:linear-gradient(135deg,#3a2a4a,#1a0a3a);display:flex;align-items:center;justify-content:center;font-size:4rem;aspect-ratio:1;"></div>
+          <div class="b-feat-main__info b-feat-main__info--mob">
+            <span class="arc-feat-flag" style="font-size:.52rem;">Coup de cœur</span>
+            <span class="b-feat-main__artist" style="font-size:.6rem;">Ghost Woman</span>
+            <span class="b-feat-main__title" style="font-size:1.6rem;">Ghost Woman</span>
+            <div class="b-feat-main__pills"><span class="pill-red" style="font-size:.52rem;">Suites Sonores</span><span class="pill-ghost-dark" style="font-size:.52rem;">Shoegaze</span></div>
+          </div>
+        </a>
+      </div>
+      <div class="b-sep b-sep--mob">
+        <div class="arc-section-head" style="margin-bottom:0;"><h2 style="font-size:.8rem;">Toutes les reviews</h2></div>
+      </div>
+      <div class="b-all b-all--mob">
+        <div class="b-grid b-grid--mob">
+          <a class="b-card" href="#"><div class="b-card__cover" style="background:linear-gradient(135deg,#2a1a1a,#4a2020);display:flex;align-items:center;justify-content:center;font-size:2rem;aspect-ratio:1;"></div><span class="b-card__artist" style="font-size:.52rem;">Drug Dealer</span><span class="b-card__title" style="font-size:.82rem;">Hiding in Plain Sight</span></a>
+          <a class="b-card" href="#"><div class="b-card__cover" style="background:linear-gradient(135deg,#1a2a2a,#0a3a3a);display:flex;align-items:center;justify-content:center;font-size:2rem;aspect-ratio:1;"></div><span class="b-card__artist" style="font-size:.52rem;">Baston</span><span class="b-card__title" style="font-size:.82rem;">Primates</span></a>
+          <a class="b-card" href="#"><div class="b-card__cover" style="background:linear-gradient(135deg,#3a1a2a,#5a0a3a);display:flex;align-items:center;justify-content:center;font-size:2rem;aspect-ratio:1;"></div><span class="b-card__artist" style="font-size:.52rem;">Osees</span><span class="b-card__title" style="font-size:.82rem;">Protean Threat</span></a>
+          <a class="b-card" href="#"><div class="b-card__cover" style="background:linear-gradient(135deg,#2a2a1a,#3a3a0a);display:flex;align-items:center;justify-content:center;font-size:2rem;aspect-ratio:1;"></div><span class="b-card__artist" style="font-size:.52rem;">J.W. Francis</span><span class="b-card__title" style="font-size:.82rem;">Wanderer</span></a>
+        </div>
+      </div>
+      <div class="arc-pagination" style="padding:1.25rem;gap:.25rem;">
+        <a class="arc-page-item arc-page-item--arrow" href="#" style="width:32px;height:32px;">‹</a>
+        <a class="arc-page-item active" href="#" style="width:32px;height:32px;font-size:.75rem;">1</a>
+        <a class="arc-page-item" href="#" style="width:32px;height:32px;font-size:.75rem;">2</a>
+        <a class="arc-page-item" href="#" style="width:32px;height:32px;font-size:.75rem;">3</a>
+        <a class="arc-page-item arc-page-item--arrow" href="#" style="width:32px;height:32px;">›</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- C mobile -->
+  <div class="variant mobile-wrap c-body" id="mob-var-c">
+    <div class="mobile-frame" style="background:#f4f4f2;">
+      <div class="arc-hero arc-hero--mob">
+        <div class="arc-hero__bg"><div class="arc-hero__bg-img"></div></div>
+        <div class="arc-hero__overlay"></div><div class="arc-hero__grain"></div><div class="arc-hero__divider"></div>
+        <div class="arc-hero__inner arc-hero__inner--mob">
+          <div><span class="arc-hero__kicker" style="font-size:.6rem;">Gimmick Shelter</span><h1 class="arc-hero__title" style="font-size:3rem;">Reviews</h1></div>
+          <div class="arc-hero__counter"><span class="arc-hero__num" style="font-size:2.6rem;">42</span><span class="arc-hero__sep"></span><span class="arc-hero__label" style="font-size:.52rem;">Chroniques</span></div>
+        </div>
+      </div>
+      <div class="c-featured c-featured--mob">
+        <div class="arc-section-head" style="margin-bottom:1rem;"><h2 style="font-size:.8rem;">Coup de cœur</h2></div>
+        <div class="c-feat-layout c-feat-layout--mob">
+          <a class="c-feat-main" href="#">
+            <div class="c-feat-main__cover" style="background:linear-gradient(135deg,#3a2a4a,#1a0a3a);display:flex;align-items:center;justify-content:center;font-size:3.5rem;aspect-ratio:1;"></div>
+            <div class="c-feat-main__info" style="padding:.85rem;">
+              <span class="arc-feat-flag" style="font-size:.52rem;">Coup de cœur</span>
+              <span class="c-feat-main__artist" style="font-size:.6rem;">Ghost Woman</span>
+              <span class="c-feat-main__title" style="font-size:1.35rem;">Ghost Woman</span>
+              <div class="c-feat-main__pills"><span class="pill-red" style="font-size:.52rem;">Suites Sonores</span><span class="pill-ghost-dark" style="font-size:.52rem;">Shoegaze</span></div>
+            </div>
+          </a>
+          <div class="c-feat-side c-feat-side--mob">
+            <a class="c-feat-card" href="#"><div class="c-feat-card__cover" style="background:linear-gradient(135deg,#2a1a1a,#4a2020);display:flex;align-items:center;justify-content:center;font-size:1.4rem;width:70px;height:70px;"></div><div class="c-feat-card__info" style="padding:.6rem .75rem;"><span class="c-feat-card__artist" style="font-size:.52rem;">Drug Dealer</span><span class="c-feat-card__title" style="font-size:.8rem;">Hiding in Plain Sight</span></div></a>
+            <a class="c-feat-card" href="#"><div class="c-feat-card__cover" style="background:linear-gradient(135deg,#3a1a2a,#5a0a3a);display:flex;align-items:center;justify-content:center;font-size:1.4rem;width:70px;height:70px;"></div><div class="c-feat-card__info" style="padding:.6rem .75rem;"><span class="c-feat-card__artist" style="font-size:.52rem;">Osees</span><span class="c-feat-card__title" style="font-size:.8rem;">Protean Threat</span></div></a>
+          </div>
+        </div>
+      </div>
+      <div class="c-all c-all--mob" style="padding-top:1.25rem;">
+        <div class="arc-section-head" style="margin-bottom:1rem;"><h2 style="font-size:.8rem;">Toutes les reviews</h2></div>
+        <div class="c-grid c-grid--mob">
+          <a class="c-card" href="#"><div class="c-card__cover" style="background:linear-gradient(135deg,#1a2a2a,#0a3a3a);display:flex;align-items:center;justify-content:center;font-size:2rem;aspect-ratio:1;"></div><div class="c-card__info" style="padding:.6rem;"><span class="c-card__artist" style="font-size:.52rem;">Baston</span><span class="c-card__title" style="font-size:.85rem;">Primates</span></div></a>
+          <a class="c-card" href="#"><div class="c-card__cover" style="background:linear-gradient(135deg,#2a2a1a,#3a3a0a);display:flex;align-items:center;justify-content:center;font-size:2rem;aspect-ratio:1;"></div><div class="c-card__info" style="padding:.6rem;"><span class="c-card__artist" style="font-size:.52rem;">J.W. Francis</span><span class="c-card__title" style="font-size:.85rem;">Wanderer</span></div></a>
+          <a class="c-card" href="#"><div class="c-card__cover" style="background:linear-gradient(135deg,#1a1a3a,#2a2a5a);display:flex;align-items:center;justify-content:center;font-size:2rem;aspect-ratio:1;"></div><div class="c-card__info" style="padding:.6rem;"><span class="c-card__artist" style="font-size:.52rem;">Kevin Morby</span><span class="c-card__title" style="font-size:.85rem;">Sundowner</span></div></a>
+          <a class="c-card" href="#"><div class="c-card__cover" style="background:linear-gradient(135deg,#2a1a3a,#4a0a5a);display:flex;align-items:center;justify-content:center;font-size:2rem;aspect-ratio:1;"></div><div class="c-card__info" style="padding:.6rem;"><span class="c-card__artist" style="font-size:.52rem;">Wet Leg</span><span class="c-card__title" style="font-size:.85rem;">Wet Leg</span></div></a>
+        </div>
+      </div>
+      <div class="arc-pagination" style="background:#f4f4f2;padding:1.25rem;gap:.25rem;">
+        <a class="arc-page-item arc-page-item--arrow" href="#" style="width:32px;height:32px;">‹</a>
+        <a class="arc-page-item active" href="#" style="width:32px;height:32px;font-size:.75rem;">1</a>
+        <a class="arc-page-item" href="#" style="width:32px;height:32px;font-size:.75rem;">2</a>
+        <a class="arc-page-item" href="#" style="width:32px;height:32px;font-size:.75rem;">3</a>
+        <a class="arc-page-item arc-page-item--arrow" href="#" style="width:32px;height:32px;">›</a>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /mobile -->
+
+<script>
+function setView(v, btn) {
+  document.querySelectorAll('.view').forEach(function(el) { el.classList.remove('active'); });
+  document.querySelectorAll('.toggle-btn').forEach(function(el) { el.classList.remove('active'); });
+  document.getElementById('view-' + v).classList.add('active');
+  btn.classList.add('active');
+}
+function setVariant(v, btn) {
+  // Desktop
+  document.querySelectorAll('#view-desktop .variant').forEach(function(el) { el.classList.remove('active'); });
+  var dt = document.getElementById('var-' + v);
+  if (dt) dt.classList.add('active');
+  // Mobile
+  document.querySelectorAll('#view-mobile .variant').forEach(function(el) { el.classList.remove('active'); });
+  var mob = document.getElementById('mob-var-' + v);
+  if (mob) mob.classList.add('active');
+  // Tabs
+  document.querySelectorAll('.section-tab').forEach(function(el) { el.classList.remove('active'); });
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>

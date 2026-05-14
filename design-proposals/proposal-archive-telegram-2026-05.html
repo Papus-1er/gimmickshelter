@@ -1,0 +1,596 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Proposition — Archive Telegram (Gimmick Shelter)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+/* =========================================================
+   Tokens DS Gimmick Shelter
+   ========================================================= */
+:root{
+  --color1:#E81F1F;  /* Rouge GS */
+  --color2:#000B29;  /* Bleu GS */
+  --color3:#FFFFFF;
+  --color4:#000000;
+  --color5:#6D6D64;
+
+  --gs-nav-bg:var(--color4);
+  --gs-nav-bg-scrolled:var(--color2);
+  --gs-nav-border-scrolled:var(--color1);
+  --gs-nav-height:52px;
+  --gs-divider-soft:rgba(255,255,255,0.05);
+  --gs-divider-medium:rgba(255,255,255,0.08);
+  --gs-overlay-card:rgba(0,0,0,0.85);
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--color2);color:var(--color3);font-family:'Roboto',sans-serif;font-size:16px;line-height:1.6;letter-spacing:.02rem}
+h1,h2,h3,h4,h5,h6{font-family:'Anton',sans-serif;font-weight:400;letter-spacing:.02em;margin:0}
+a{color:var(--color3);text-decoration:none}
+a:hover{color:var(--color1)}
+p{margin:0 0 1rem;text-align:justify}
+
+/* Sommaire global de la proposition */
+.proposal-toc{position:sticky;top:0;z-index:50;background:var(--color4);border-bottom:1px solid var(--gs-divider-medium);padding:.75rem 1.25rem;display:flex;gap:1rem;align-items:center;flex-wrap:wrap}
+.proposal-toc strong{font-family:'Anton',sans-serif;letter-spacing:.05em;color:var(--color1)}
+.proposal-toc a{color:var(--color3);font-size:.9rem;padding:.25rem .6rem;border:1px solid var(--gs-divider-medium);border-radius:3px}
+.proposal-toc a:hover{border-color:var(--color1);color:var(--color1)}
+
+/* Faux header GS simulé (simplifié, fidèle aux classes du thème) */
+.gs-header__logo-band{background:var(--color1);padding:.75rem 1rem;display:flex;align-items:center;gap:1rem}
+.gs-header__logo-img{width:44px;height:44px;background:var(--color3);border-radius:50%;display:grid;place-items:center;color:var(--color1);font-family:'Anton',sans-serif;font-size:1.4rem}
+.gs-header__tagline{font-family:'Roboto',sans-serif;font-size:.8rem;letter-spacing:.1em;text-transform:uppercase;color:var(--color3);opacity:.9}
+.gs-header__nav-bar{background:var(--gs-nav-bg);height:var(--gs-nav-height);padding:0 1rem;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--gs-divider-medium)}
+.gs-nav-desktop__list{list-style:none;margin:0;padding:0;display:flex;gap:1.5rem}
+.gs-nav-desktop__list a{font-size:.9rem;letter-spacing:.05em}
+.gs-nav-desktop__list .is-active{color:var(--color1)}
+
+/* Sections de variantes */
+.variant{padding:2.5rem 0 4rem;border-bottom:6px solid var(--color4)}
+.variant-tag{display:inline-block;background:var(--color1);color:var(--color3);font-family:'Anton',sans-serif;letter-spacing:.08em;padding:.25rem .75rem;font-size:.85rem;margin-bottom:1rem}
+.variant-note{max-width:780px;margin:0 auto 2rem;padding:1rem 1.25rem;background:var(--color4);border-left:3px solid var(--color1);font-size:.92rem;color:var(--color3)}
+.variant-note em{color:var(--color5);font-style:normal;font-size:.85rem;display:block;margin-top:.35rem}
+
+.container{max-width:1200px;margin:0 auto;padding:0 1.25rem}
+
+/* =========================================================
+   En-tête de rubrique commun aux 3 variantes
+   ========================================================= */
+.telegram-intro{padding:3rem 0 2rem;text-align:center;border-bottom:1px solid var(--gs-divider-medium);margin-bottom:2.5rem;position:relative}
+.telegram-intro__kicker{display:inline-flex;align-items:center;gap:.5rem;color:var(--color1);font-family:'Anton',sans-serif;letter-spacing:.2em;font-size:.85rem;margin-bottom:.5rem}
+.telegram-intro__kicker::before,
+.telegram-intro__kicker::after{content:"";display:block;width:32px;height:1px;background:var(--color1)}
+.telegram-intro__title{font-size:clamp(3rem,7vw,5.5rem);line-height:.95;color:var(--color3)}
+.telegram-intro__title em{color:var(--color1);font-style:normal}
+.telegram-intro__lead{max-width:640px;margin:1rem auto 0;color:var(--color5);font-size:1.05rem;text-align:center}
+
+/* Pagination commune */
+.gs-pagination{display:flex;justify-content:center;gap:.5rem;margin:3rem 0 0}
+.gs-pagination .page-item{list-style:none}
+.gs-pagination .page-link{display:inline-flex;align-items:center;justify-content:center;min-width:42px;height:42px;padding:0 .8rem;border:1px solid var(--gs-divider-medium);color:var(--color3);font-family:'Roboto',sans-serif;background:transparent;transition:all .2s}
+.gs-pagination .page-link:hover{border-color:var(--color1);color:var(--color1)}
+.gs-pagination .gs-active .page-link{background:var(--color1);border-color:var(--color1);color:var(--color3)}
+.gs-pagination-list{display:flex;gap:.5rem;list-style:none;padding:0;margin:0}
+
+.load-more{display:flex;justify-content:center;margin-top:2.5rem}
+.load-more button{background:transparent;border:1px solid var(--color3);color:var(--color3);font-family:'Anton',sans-serif;letter-spacing:.15em;padding:.85rem 2rem;font-size:1rem;cursor:pointer;transition:.2s}
+.load-more button:hover{background:var(--color1);border-color:var(--color1)}
+
+/* =========================================================
+   VARIANTE A — Flux ticker rapide
+   Liste verticale dense, type fil d'actu
+   ========================================================= */
+#variant-a{background:linear-gradient(180deg,var(--color2) 0%,#000516 100%)}
+
+.ticker{max-width:880px;margin:0 auto;border-top:1px solid var(--gs-divider-medium)}
+.ticker__item{display:grid;grid-template-columns:120px 1fr auto;gap:1.5rem;align-items:start;padding:1.4rem 1rem;border-bottom:1px solid var(--gs-divider-medium);transition:background .2s}
+.ticker__item:hover{background:rgba(232,31,31,0.04)}
+.ticker__item:hover .ticker__title{color:var(--color1)}
+
+.ticker__date{font-family:'Anton',sans-serif;color:var(--color5);font-size:.9rem;letter-spacing:.1em;display:flex;flex-direction:column;gap:.15rem}
+.ticker__date .day{color:var(--color3);font-size:2rem;line-height:1}
+.ticker__date .month{font-size:.75rem}
+.ticker__date .year{font-size:.7rem;color:var(--color5)}
+
+.ticker__body{display:flex;flex-direction:column;gap:.5rem}
+.ticker__tag{display:inline-flex;align-self:flex-start;background:var(--color1);color:var(--color3);font-family:'Anton',sans-serif;letter-spacing:.1em;font-size:.7rem;padding:.15rem .55rem;text-transform:uppercase}
+.ticker__tag--label{background:transparent;border:1px solid var(--color5);color:var(--color5)}
+.ticker__title{font-size:1.35rem;line-height:1.15;color:var(--color3);font-family:'Anton',sans-serif;letter-spacing:.01em;transition:color .2s}
+.ticker__excerpt{font-size:.92rem;color:var(--color5);line-height:1.5;margin:0}
+.ticker__meta{font-size:.75rem;color:var(--color5);letter-spacing:.05em;display:flex;gap:.75rem;align-items:center;text-transform:uppercase}
+.ticker__meta .dot{width:3px;height:3px;background:var(--color5);border-radius:50%}
+
+.ticker__cta{align-self:center;display:grid;place-items:center;width:42px;height:42px;border:1px solid var(--gs-divider-medium);color:var(--color3);font-family:'Anton',sans-serif;transition:.2s}
+.ticker__cta::after{content:"→"}
+.ticker__item:hover .ticker__cta{background:var(--color1);border-color:var(--color1)}
+
+@media(max-width:768px){
+  .ticker__item{grid-template-columns:70px 1fr;gap:1rem;padding:1.1rem .5rem}
+  .ticker__cta{display:none}
+  .ticker__date .day{font-size:1.5rem}
+  .ticker__title{font-size:1.1rem}
+}
+
+/* =========================================================
+   VARIANTE B — Cards éclatées masonry
+   Tailles variables, certaines avec image, certaines texte only
+   ========================================================= */
+#variant-b{background:var(--color2)}
+
+.masonry{column-count:3;column-gap:1.25rem}
+@media(max-width:992px){.masonry{column-count:2}}
+@media(max-width:600px){.masonry{column-count:1}}
+
+.brick{break-inside:avoid;margin:0 0 1.25rem;background:var(--color4);border:1px solid var(--gs-divider-medium);transition:transform .25s ease,border-color .2s;display:block;color:var(--color3);overflow:hidden;position:relative}
+.brick:hover{transform:translateY(-3px);border-color:var(--color1);color:var(--color3)}
+.brick__img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;background:#111}
+.brick--square .brick__img{aspect-ratio:1/1}
+.brick--portrait .brick__img{aspect-ratio:4/5}
+.brick__body{padding:1.1rem 1.2rem 1.3rem}
+.brick__kicker{display:inline-block;font-family:'Anton',sans-serif;letter-spacing:.12em;font-size:.7rem;color:var(--color1);margin-bottom:.5rem;text-transform:uppercase}
+.brick__title{font-size:1.45rem;line-height:1.1;margin:0 0 .6rem;color:var(--color3)}
+.brick__excerpt{font-size:.92rem;color:var(--color5);margin:0 0 .8rem;text-align:left}
+.brick__meta{font-size:.7rem;color:var(--color5);text-transform:uppercase;letter-spacing:.1em;display:flex;gap:.6rem;align-items:center}
+.brick__meta .dot{width:3px;height:3px;background:var(--color5);border-radius:50%}
+
+/* Brique texte-only, accentuée */
+.brick--text{background:var(--color1);color:var(--color3)}
+.brick--text .brick__kicker{color:var(--color3);opacity:.85}
+.brick--text .brick__title{color:var(--color3)}
+.brick--text .brick__excerpt{color:rgba(255,255,255,.85)}
+.brick--text .brick__meta{color:rgba(255,255,255,.7)}
+
+/* Brique large : titre seul, géant */
+.brick--hero{background:var(--color4);padding:0}
+.brick--hero .brick__body{padding:1.5rem 1.4rem 1.8rem}
+.brick--hero .brick__title{font-size:2rem;line-height:1.05}
+
+/* =========================================================
+   VARIANTE C — Timeline éditoriale
+   Ligne centrale, items alternés
+   ========================================================= */
+#variant-c{background:var(--color2)}
+
+.timeline{position:relative;max-width:1040px;margin:0 auto;padding:1rem 0}
+.timeline::before{content:"";position:absolute;left:50%;top:0;bottom:0;width:2px;background:linear-gradient(180deg,transparent 0,var(--color1) 5%,var(--color1) 95%,transparent 100%);transform:translateX(-50%)}
+
+.tl-month{display:flex;justify-content:center;margin:2rem 0 1.5rem;position:relative;z-index:2}
+.tl-month span{background:var(--color2);padding:.4rem 1.2rem;border:1px solid var(--color1);color:var(--color1);font-family:'Anton',sans-serif;letter-spacing:.2em;font-size:.85rem;text-transform:uppercase}
+
+.tl-item{display:grid;grid-template-columns:1fr 60px 1fr;gap:0;align-items:start;margin-bottom:2rem;position:relative}
+.tl-item__dot{grid-column:2;width:14px;height:14px;background:var(--color1);border:3px solid var(--color2);border-radius:50%;margin:1.5rem auto 0;position:relative;z-index:2}
+.tl-item__card{background:var(--color4);border:1px solid var(--gs-divider-medium);padding:1.25rem 1.4rem;transition:.25s;text-align:left;color:var(--color3);display:block}
+.tl-item__card:hover{border-color:var(--color1);transform:translateY(-2px);color:var(--color3)}
+.tl-item__date{font-family:'Anton',sans-serif;color:var(--color5);letter-spacing:.1em;font-size:.8rem;margin-bottom:.4rem;text-transform:uppercase}
+.tl-item__title{font-size:1.4rem;line-height:1.1;margin:0 0 .6rem;color:var(--color3)}
+.tl-item__excerpt{font-size:.9rem;color:var(--color5);margin:0 0 .7rem}
+.tl-item__tag{display:inline-block;background:transparent;border:1px solid var(--color1);color:var(--color1);font-family:'Anton',sans-serif;font-size:.65rem;letter-spacing:.12em;padding:.15rem .55rem;text-transform:uppercase}
+
+/* Alternance gauche/droite */
+.tl-item--left .tl-item__card{grid-column:1;margin-right:1.5rem;text-align:right}
+.tl-item--right .tl-item__card{grid-column:3;margin-left:1.5rem;text-align:left}
+
+@media(max-width:768px){
+  .timeline::before{left:24px}
+  .tl-item{grid-template-columns:48px 1fr;gap:0}
+  .tl-item__dot{grid-column:1;margin:1.5rem 0 0}
+  .tl-item--left .tl-item__card,
+  .tl-item--right .tl-item__card{grid-column:2;margin:0 0 0 1rem;text-align:left}
+}
+
+/* =========================================================
+   Footer simulé
+   ========================================================= */
+.gs-footer{background:var(--color4);padding:2.5rem 1.25rem;text-align:center;color:var(--color5);font-size:.85rem;letter-spacing:.05em;border-top:3px solid var(--color1);margin-top:0}
+.gs-footer strong{color:var(--color3);font-family:'Anton',sans-serif;letter-spacing:.15em;display:block;margin-bottom:.5rem}
+
+</style>
+</head>
+<body>
+
+<!-- ============================================
+     SOMMAIRE PROPOSITION
+============================================ -->
+<nav class="proposal-toc" aria-label="Sommaire de la proposition">
+  <strong>PROPOSITION — Archive Telegram</strong>
+  <a href="#variant-a">A · Flux ticker</a>
+  <a href="#variant-b">B · Masonry éclaté</a>
+  <a href="#variant-c">C · Timeline</a>
+</nav>
+
+<!-- ============================================
+     FAUX HEADER GS (commun)
+============================================ -->
+<header class="gs-header" role="banner">
+  <div class="gs-header__logo-band">
+    <span class="gs-header__logo-img">G</span>
+    <span class="gs-header__tagline">Prédicateur rock et indépendant depuis 2021</span>
+  </div>
+  <div class="gs-header__nav-bar">
+    <nav class="gs-nav-desktop" aria-label="Menu principal">
+      <ul class="gs-nav-desktop__list">
+        <li><a href="#">Home</a></li>
+        <li><a href="#" class="is-active" aria-current="page">Telegram</a></li>
+        <li><a href="#">Review</a></li>
+        <li><a href="#">Playlist</a></li>
+        <li><a href="#">Agenda</a></li>
+      </ul>
+    </nav>
+    <span style="color:var(--color3);font-size:.9rem">🔍</span>
+  </div>
+</header>
+
+<!-- ============================================================
+     VARIANTE A — FLUX TICKER RAPIDE
+============================================================ -->
+<section class="variant" id="variant-a">
+  <div class="container">
+
+    <div class="variant-note">
+      <strong style="font-family:'Anton',sans-serif;letter-spacing:.1em;color:var(--color1)">VARIANTE A — FLUX TICKER</strong>
+      Liste dense type fil d'actualité. Date proéminente à gauche, titre + extrait à droite, tag de format, flèche de redirection. Scan ultra rapide, idéal si Telegram devient une vraie rubrique de brèves.
+      <em>Apport : lisibilité maximale, sensation de fraîcheur. Compromis : moins photogénique, pas de mise en avant visuelle pour les articles plus riches.</em>
+    </div>
+
+    <header class="telegram-intro">
+      <span class="telegram-intro__kicker">RUBRIQUE</span>
+      <h1 class="telegram-intro__title"><em>Telegram</em></h1>
+      <p class="telegram-intro__lead">Brèves musicales, info-flash et explainers express. Le rock indé en bouchées rapides — sorties, signatures, annonces live et décryptages de genres.</p>
+    </header>
+
+    <ul class="ticker" role="list" aria-label="Fil de brèves Telegram">
+
+      <li class="ticker__item">
+        <div class="ticker__date">
+          <span class="day">09</span><span class="month">MAI</span><span class="year">2026</span>
+        </div>
+        <div class="ticker__body">
+          <span class="ticker__tag">Sortie</span>
+          <h3 class="ticker__title">Slift annonce un troisième album studio pour septembre</h3>
+          <p class="ticker__excerpt">Le trio toulousain de space-rock dévoile « Ilion » sur Sub Pop. Une première extrait de 11 minutes circule déjà.</p>
+          <div class="ticker__meta"><span>Brève</span><span class="dot"></span><span>Sub Pop</span><span class="dot"></span><span>1 min de lecture</span></div>
+        </div>
+        <span class="ticker__cta" aria-hidden="true"></span>
+      </li>
+
+      <li class="ticker__item">
+        <div class="ticker__date">
+          <span class="day">07</span><span class="month">MAI</span><span class="year">2026</span>
+        </div>
+        <div class="ticker__body">
+          <span class="ticker__tag ticker__tag--label">Explainer</span>
+          <h3 class="ticker__title">C'est quoi le shoegaze nouveau ? Petit guide 2026</h3>
+          <p class="ticker__excerpt">Wisp, Julie, They Are Gutting a Body of Water… la jeune scène redéfinit le mur de guitares avec un pied dans le digicore.</p>
+          <div class="ticker__meta"><span>Guide</span><span class="dot"></span><span>4 min</span></div>
+        </div>
+        <span class="ticker__cta" aria-hidden="true"></span>
+      </li>
+
+      <li class="ticker__item">
+        <div class="ticker__date">
+          <span class="day">04</span><span class="month">MAI</span><span class="year">2026</span>
+        </div>
+        <div class="ticker__body">
+          <span class="ticker__tag">Live</span>
+          <h3 class="ticker__title">King Gizzard annonce une date unique au Zénith de Paris</h3>
+          <p class="ticker__excerpt">Trois heures de set promis, billetterie ouverte vendredi 10h.</p>
+          <div class="ticker__meta"><span>Brève</span><span class="dot"></span><span>30 sec</span></div>
+        </div>
+        <span class="ticker__cta" aria-hidden="true"></span>
+      </li>
+
+      <li class="ticker__item">
+        <div class="ticker__date">
+          <span class="day">02</span><span class="month">MAI</span><span class="year">2026</span>
+        </div>
+        <div class="ticker__body">
+          <span class="ticker__tag">Signature</span>
+          <h3 class="ticker__title">We Hate You Please Die rejoint le label belge Hands and Arms</h3>
+          <p class="ticker__excerpt">Le quintet rouennais quitte Vicious Circle, un nouvel EP est attendu pour l'automne.</p>
+          <div class="ticker__meta"><span>Brève</span><span class="dot"></span><span>1 min</span></div>
+        </div>
+        <span class="ticker__cta" aria-hidden="true"></span>
+      </li>
+
+      <li class="ticker__item">
+        <div class="ticker__date">
+          <span class="day">28</span><span class="month">AVR</span><span class="year">2026</span>
+        </div>
+        <div class="ticker__body">
+          <span class="ticker__tag ticker__tag--label">Listicle</span>
+          <h3 class="ticker__title">5 groupes français à découvrir au printemps 2026</h3>
+          <p class="ticker__excerpt">De Bordeaux à Strasbourg : noise, post-punk et un peu de cold wave pour les beaux jours.</p>
+          <div class="ticker__meta"><span>Guide</span><span class="dot"></span><span>6 min</span></div>
+        </div>
+        <span class="ticker__cta" aria-hidden="true"></span>
+      </li>
+
+      <li class="ticker__item">
+        <div class="ticker__date">
+          <span class="day">25</span><span class="month">AVR</span><span class="year">2026</span>
+        </div>
+        <div class="ticker__body">
+          <span class="ticker__tag">Reformation</span>
+          <h3 class="ticker__title">Les Thugs préparent une tournée pour les 40 ans du groupe</h3>
+          <p class="ticker__excerpt">Six dates confirmées, dont la Maroquinerie en octobre. Aucun nouveau disque prévu pour l'instant.</p>
+          <div class="ticker__meta"><span>Brève</span><span class="dot"></span><span>1 min</span></div>
+        </div>
+        <span class="ticker__cta" aria-hidden="true"></span>
+      </li>
+
+      <li class="ticker__item">
+        <div class="ticker__date">
+          <span class="day">22</span><span class="month">AVR</span><span class="year">2026</span>
+        </div>
+        <div class="ticker__body">
+          <span class="ticker__tag ticker__tag--label">Explainer</span>
+          <h3 class="ticker__title">C'est quoi le stoner ? Origines, codes et héritiers</h3>
+          <p class="ticker__excerpt">De Kyuss à Slift, retour sur 30 ans de rock du désert et de fuzz lourde.</p>
+          <div class="ticker__meta"><span>Guide</span><span class="dot"></span><span>5 min</span></div>
+        </div>
+        <span class="ticker__cta" aria-hidden="true"></span>
+      </li>
+
+      <li class="ticker__item">
+        <div class="ticker__date">
+          <span class="day">19</span><span class="month">AVR</span><span class="year">2026</span>
+        </div>
+        <div class="ticker__body">
+          <span class="ticker__tag">Clip</span>
+          <h3 class="ticker__title">Idles dévoile un nouveau morceau, « Pop Pop Pop »</h3>
+          <p class="ticker__excerpt">Premier extrait depuis « Tangk », clip réalisé par Michel Gondry.</p>
+          <div class="ticker__meta"><span>Brève</span><span class="dot"></span><span>30 sec</span></div>
+        </div>
+        <span class="ticker__cta" aria-hidden="true"></span>
+      </li>
+
+    </ul>
+
+    <nav class="gs-pagination" aria-label="Pagination">
+      <ul class="gs-pagination-list">
+        <li class="page-item gs-active"><span class="page-link" aria-current="page">1</span></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">»</a></li>
+      </ul>
+    </nav>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     VARIANTE B — CARDS ÉCLATÉES MASONRY
+============================================================ -->
+<section class="variant" id="variant-b">
+  <div class="container">
+
+    <div class="variant-note">
+      <strong style="font-family:'Anton',sans-serif;letter-spacing:.1em;color:var(--color1)">VARIANTE B — MASONRY ÉCLATÉ</strong>
+      Grille colonnes Pinterest-like. Tailles variables : photos pour les contenus riches, briques rouges texte pour les flashs courts, briques noires titre-seul pour les explainers. Plus vivant visuellement.
+      <em>Apport : différencie le poids éditorial de chaque item, énergie graphique forte. Compromis : ordre chronologique moins lisible, scan plus lent qu'un fil.</em>
+    </div>
+
+    <header class="telegram-intro">
+      <span class="telegram-intro__kicker">RUBRIQUE</span>
+      <h1 class="telegram-intro__title"><em>Telegram</em></h1>
+      <p class="telegram-intro__lead">Brèves musicales, info-flash et explainers express. Le rock indé en bouchées rapides — sorties, signatures, annonces live et décryptages de genres.</p>
+    </header>
+
+    <div class="masonry">
+
+      <a class="brick" href="#">
+        <div style="background:linear-gradient(135deg,#4a1818,#1a0606);aspect-ratio:16/10" class="brick__img" aria-hidden="true"></div>
+        <div class="brick__body">
+          <span class="brick__kicker">Sortie · 09 mai</span>
+          <h3 class="brick__title">Slift annonce un troisième album pour septembre</h3>
+          <p class="brick__excerpt">Le trio toulousain dévoile « Ilion » sur Sub Pop. Un premier extrait de 11 minutes circule déjà.</p>
+          <div class="brick__meta"><span>Brève</span><span class="dot"></span><span>1 min</span></div>
+        </div>
+      </a>
+
+      <a class="brick brick--text" href="#">
+        <div class="brick__body">
+          <span class="brick__kicker">Live · 04 mai</span>
+          <h3 class="brick__title">King Gizzard au Zénith</h3>
+          <p class="brick__excerpt">Date unique parisienne, trois heures de set promis. Billetterie vendredi 10h.</p>
+          <div class="brick__meta"><span>Brève · 30 sec</span></div>
+        </div>
+      </a>
+
+      <a class="brick" href="#">
+        <div style="background:linear-gradient(135deg,#2a2a4a,#0a0a1a);aspect-ratio:1/1" class="brick__img brick--square" aria-hidden="true"></div>
+        <div class="brick__body">
+          <span class="brick__kicker">Explainer · 07 mai</span>
+          <h3 class="brick__title">C'est quoi le shoegaze nouveau ?</h3>
+          <p class="brick__excerpt">Wisp, Julie, They Are Gutting a Body of Water… petit guide de la nouvelle vague.</p>
+          <div class="brick__meta"><span>Guide</span><span class="dot"></span><span>4 min</span></div>
+        </div>
+      </a>
+
+      <a class="brick brick--hero" href="#">
+        <div class="brick__body">
+          <span class="brick__kicker">Listicle · 28 avril</span>
+          <h2 class="brick__title">5 groupes français à découvrir au printemps 2026</h2>
+          <p class="brick__excerpt">De Bordeaux à Strasbourg : noise, post-punk et un peu de cold wave pour les beaux jours.</p>
+          <div class="brick__meta"><span>Guide</span><span class="dot"></span><span>6 min</span></div>
+        </div>
+      </a>
+
+      <a class="brick" href="#">
+        <div style="background:linear-gradient(135deg,#1a2a1a,#000);aspect-ratio:4/5" class="brick__img brick--portrait" aria-hidden="true"></div>
+        <div class="brick__body">
+          <span class="brick__kicker">Signature · 02 mai</span>
+          <h3 class="brick__title">We Hate You Please Die signe chez Hands and Arms</h3>
+          <p class="brick__excerpt">Le quintet rouennais quitte Vicious Circle. EP attendu pour l'automne.</p>
+          <div class="brick__meta"><span>Brève</span><span class="dot"></span><span>1 min</span></div>
+        </div>
+      </a>
+
+      <a class="brick brick--text" href="#">
+        <div class="brick__body">
+          <span class="brick__kicker">Reformation · 25 avril</span>
+          <h3 class="brick__title">Les Thugs fêtent leurs 40 ans</h3>
+          <p class="brick__excerpt">Six dates confirmées, dont la Maroquinerie en octobre.</p>
+          <div class="brick__meta"><span>Brève · 1 min</span></div>
+        </div>
+      </a>
+
+      <a class="brick" href="#">
+        <div style="background:linear-gradient(135deg,#3a1a1a,#0a0505);aspect-ratio:16/10" class="brick__img" aria-hidden="true"></div>
+        <div class="brick__body">
+          <span class="brick__kicker">Explainer · 22 avril</span>
+          <h3 class="brick__title">C'est quoi le stoner ?</h3>
+          <p class="brick__excerpt">De Kyuss à Slift, 30 ans de rock du désert et de fuzz lourde décryptés.</p>
+          <div class="brick__meta"><span>Guide</span><span class="dot"></span><span>5 min</span></div>
+        </div>
+      </a>
+
+      <a class="brick" href="#">
+        <div style="background:linear-gradient(135deg,#2a2a2a,#000);aspect-ratio:1/1" class="brick__img brick--square" aria-hidden="true"></div>
+        <div class="brick__body">
+          <span class="brick__kicker">Clip · 19 avril</span>
+          <h3 class="brick__title">Idles dévoile « Pop Pop Pop », réalisé par Gondry</h3>
+          <p class="brick__excerpt">Premier extrait depuis « Tangk ».</p>
+          <div class="brick__meta"><span>Brève</span><span class="dot"></span><span>30 sec</span></div>
+        </div>
+      </a>
+
+    </div>
+
+    <div class="load-more">
+      <button type="button">CHARGER PLUS</button>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============================================================
+     VARIANTE C — TIMELINE ÉDITORIALE
+============================================================ -->
+<section class="variant" id="variant-c">
+  <div class="container">
+
+    <div class="variant-note">
+      <strong style="font-family:'Anton',sans-serif;letter-spacing:.1em;color:var(--color1)">VARIANTE C — TIMELINE</strong>
+      Ligne verticale rouge, items alternant gauche/droite, séparateurs mensuels. La fraîcheur du flux est tangible, on sent le temps qui passe. Format éditorial fort.
+      <em>Apport : narration chronologique très claire, identité visuelle marquante. Compromis : moins dense, prend plus de scroll pour parcourir 10 items.</em>
+    </div>
+
+    <header class="telegram-intro">
+      <span class="telegram-intro__kicker">RUBRIQUE</span>
+      <h1 class="telegram-intro__title"><em>Telegram</em></h1>
+      <p class="telegram-intro__lead">Brèves musicales, info-flash et explainers express. Le rock indé en bouchées rapides — sorties, signatures, annonces live et décryptages de genres.</p>
+    </header>
+
+    <div class="timeline">
+
+      <div class="tl-month"><span>MAI 2026</span></div>
+
+      <article class="tl-item tl-item--left">
+        <a class="tl-item__card" href="#">
+          <div class="tl-item__date">09 MAI · SORTIE</div>
+          <h3 class="tl-item__title">Slift annonce un troisième album pour septembre</h3>
+          <p class="tl-item__excerpt">Le trio toulousain dévoile « Ilion » sur Sub Pop.</p>
+          <span class="tl-item__tag">Brève</span>
+        </a>
+        <span class="tl-item__dot" aria-hidden="true"></span>
+      </article>
+
+      <article class="tl-item tl-item--right">
+        <span class="tl-item__dot" aria-hidden="true"></span>
+        <a class="tl-item__card" href="#">
+          <div class="tl-item__date">07 MAI · EXPLAINER</div>
+          <h3 class="tl-item__title">C'est quoi le shoegaze nouveau ?</h3>
+          <p class="tl-item__excerpt">Petit guide de la nouvelle vague Wisp / Julie / TAGABOW.</p>
+          <span class="tl-item__tag">Guide</span>
+        </a>
+      </article>
+
+      <article class="tl-item tl-item--left">
+        <a class="tl-item__card" href="#">
+          <div class="tl-item__date">04 MAI · LIVE</div>
+          <h3 class="tl-item__title">King Gizzard au Zénith de Paris</h3>
+          <p class="tl-item__excerpt">Trois heures de set, billetterie vendredi 10h.</p>
+          <span class="tl-item__tag">Brève</span>
+        </a>
+        <span class="tl-item__dot" aria-hidden="true"></span>
+      </article>
+
+      <article class="tl-item tl-item--right">
+        <span class="tl-item__dot" aria-hidden="true"></span>
+        <a class="tl-item__card" href="#">
+          <div class="tl-item__date">02 MAI · SIGNATURE</div>
+          <h3 class="tl-item__title">We Hate You Please Die rejoint Hands and Arms</h3>
+          <p class="tl-item__excerpt">EP attendu pour l'automne sur le label belge.</p>
+          <span class="tl-item__tag">Brève</span>
+        </a>
+      </article>
+
+      <div class="tl-month"><span>AVRIL 2026</span></div>
+
+      <article class="tl-item tl-item--left">
+        <a class="tl-item__card" href="#">
+          <div class="tl-item__date">28 AVR · LISTICLE</div>
+          <h3 class="tl-item__title">5 groupes français à découvrir au printemps</h3>
+          <p class="tl-item__excerpt">Noise, post-punk et cold wave pour les beaux jours.</p>
+          <span class="tl-item__tag">Guide</span>
+        </a>
+        <span class="tl-item__dot" aria-hidden="true"></span>
+      </article>
+
+      <article class="tl-item tl-item--right">
+        <span class="tl-item__dot" aria-hidden="true"></span>
+        <a class="tl-item__card" href="#">
+          <div class="tl-item__date">25 AVR · REFORMATION</div>
+          <h3 class="tl-item__title">Les Thugs préparent une tournée 40 ans</h3>
+          <p class="tl-item__excerpt">Six dates dont la Maroquinerie en octobre.</p>
+          <span class="tl-item__tag">Brève</span>
+        </a>
+      </article>
+
+      <article class="tl-item tl-item--left">
+        <a class="tl-item__card" href="#">
+          <div class="tl-item__date">22 AVR · EXPLAINER</div>
+          <h3 class="tl-item__title">C'est quoi le stoner ?</h3>
+          <p class="tl-item__excerpt">De Kyuss à Slift, 30 ans de rock du désert.</p>
+          <span class="tl-item__tag">Guide</span>
+        </a>
+        <span class="tl-item__dot" aria-hidden="true"></span>
+      </article>
+
+      <article class="tl-item tl-item--right">
+        <span class="tl-item__dot" aria-hidden="true"></span>
+        <a class="tl-item__card" href="#">
+          <div class="tl-item__date">19 AVR · CLIP</div>
+          <h3 class="tl-item__title">Idles dévoile « Pop Pop Pop »</h3>
+          <p class="tl-item__excerpt">Premier extrait depuis « Tangk », réalisé par Gondry.</p>
+          <span class="tl-item__tag">Brève</span>
+        </a>
+      </article>
+
+    </div>
+
+    <nav class="gs-pagination" aria-label="Pagination">
+      <ul class="gs-pagination-list">
+        <li class="page-item gs-active"><span class="page-link" aria-current="page">1</span></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">»</a></li>
+      </ul>
+    </nav>
+
+  </div>
+</section>
+
+<!-- ============================================
+     FOOTER simulé
+============================================ -->
+<footer class="gs-footer">
+  <strong>GIMMICK SHELTER</strong>
+  Prédicateur rock et indépendant depuis 2021
+</footer>
+
+</body>
+</html>

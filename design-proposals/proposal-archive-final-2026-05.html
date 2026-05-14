@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Proposal Final — Archive Reviews — Gimmick Shelter</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --color1: #E81F1F;
+  --color2: #000B29;
+  --color3: #FFFFFF;
+  --color4: #000000;
+  --color5: #6D6D64;
+  --overlay-card: rgba(0,0,0,0.85);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: #0d0d0d; font-family: 'Roboto', sans-serif; color: var(--color3); }
+
+/* ── Toggle nav ─────────────────────────────────────── */
+.toggle-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: #000;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  display: flex; align-items: center;
+  padding: 0 1.5rem; gap: 1.5rem;
+}
+.toggle-nav span {
+  font-size: .7rem; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; color: var(--color5); padding: .9rem 0;
+  white-space: nowrap;
+}
+.toggle-btn {
+  padding: .55rem 1.2rem; border: 1.5px solid rgba(255,255,255,.15);
+  border-radius: 3px; background: transparent; color: var(--color5);
+  font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+  cursor: pointer; transition: color .2s, border-color .2s;
+}
+.toggle-btn.active { color: var(--color3); border-color: var(--color1); background: rgba(232,31,31,.08); }
+.toggle-btn:hover:not(.active) { color: var(--color3); border-color: rgba(255,255,255,.3); }
+
+/* ── Views ──────────────────────────────────────────── */
+.view { display: none; }
+.view.active { display: block; }
+
+/* ══════════════════════════════════════════════════════
+   HERO ARCHIVE
+══════════════════════════════════════════════════════ */
+.arc-hero {
+  position: relative;
+  min-height: 320px;
+  display: flex; align-items: flex-end;
+  overflow: hidden;
+  background: var(--color2);
+}
+.arc-hero--mobile { min-height: 220px; }
+
+/* Image de fond (ACF image_hero_archive) */
+.arc-hero__bg {
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, #1a0a2e 0%, #2a1a3a 40%, #0a1a2e 100%);
+}
+.arc-hero__bg img {
+  width: 100%; height: 100%; object-fit: cover; object-position: center;
+  filter: blur(2px) saturate(.7);
+  transform: scale(1.04);
+  display: block;
+}
+
+/* Overlay double couche */
+.arc-hero__overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,.88) 0%,
+    rgba(0,11,41,.65) 50%,
+    rgba(0,0,0,.4) 100%
+  );
+}
+
+/* Grain */
+.arc-hero__grain {
+  position: absolute; inset: 0; opacity: .025; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+/* Divider rouge bas */
+.arc-hero__divider {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  height: 3px; background: var(--color1);
+}
+
+/* Contenu hero */
+.arc-hero__inner {
+  position: relative; z-index: 2;
+  width: 100%; padding: 3rem 2.5rem 2.5rem;
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem;
+}
+.arc-hero__inner--mobile { padding: 1.5rem 1.25rem 2rem; }
+
+.arc-hero__left {}
+
+.arc-hero__kicker {
+  font-size: .72rem; font-weight: 700; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--color1);
+  margin-bottom: .6rem; display: block;
+}
+
+.arc-hero__title {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(3.5rem, 8vw, 6.5rem);
+  line-height: .9; color: var(--color3);
+}
+.arc-hero__title--mobile { font-size: 3.2rem; }
+
+/* Compteur — traitement typographique distinct */
+.arc-hero__counter {
+  display: flex; flex-direction: column; align-items: flex-end;
+  gap: .1rem; flex-shrink: 0;
+}
+.arc-hero__count-num {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(3rem, 6vw, 5rem);
+  line-height: .85; color: var(--color3);
+  letter-spacing: -.02em;
+}
+.arc-hero__count-num--mobile { font-size: 2.8rem; }
+.arc-hero__count-sep {
+  width: 100%; height: 2px;
+  background: var(--color1);
+  display: block; margin: .3rem 0;
+}
+.arc-hero__count-label {
+  font-size: .62rem; font-weight: 700; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--color5);
+  text-align: right;
+}
+
+/* ══════════════════════════════════════════════════════
+   SECTION COUP DE CŒUR
+══════════════════════════════════════════════════════ */
+.arc-featured {
+  background: var(--color4);
+  padding: 2rem 2.5rem;
+  border-bottom: 1px solid rgba(255,255,255,.05);
+}
+.arc-featured--mobile { padding: 1.25rem; }
+
+.arc-section-head {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+.arc-section-title {
+  font-family: 'Anton', sans-serif;
+  font-size: 1rem; letter-spacing: .1em; text-transform: uppercase;
+  color: var(--color5);
+  display: flex; align-items: center; gap: .75rem;
+}
+.arc-section-title::before {
+  content: ''; display: block; width: 24px; height: 2px; background: var(--color1);
+}
+
+/* Layout featured : 1 grand + 2 petits */
+.arc-featured__layout {
+  display: grid;
+  grid-template-columns: 1.7fr 1fr;
+  gap: .75rem;
+}
+.arc-featured__layout--mobile {
+  grid-template-columns: 1fr;
+  gap: .6rem;
+}
+
+/* Grande card featured */
+.arc-feat-main {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  display: block; text-decoration: none;
+  background: #222;
+}
+.arc-feat-main--mobile { aspect-ratio: 16 / 9; }
+.arc-feat-main__img {
+  width: 100%; height: 100%; object-fit: cover;
+  display: block; transition: transform .45s ease;
+}
+.arc-feat-main:hover .arc-feat-main__img { transform: scale(1.05); }
+.arc-feat-main__overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.9) 0%, rgba(0,0,0,.2) 55%, transparent 100%);
+}
+.arc-feat-main__body {
+  position: absolute; bottom: 0; left: 0; right: 0; padding: 1.4rem;
+}
+.arc-feat-flag {
+  display: inline-block; margin-bottom: .6rem;
+  font-size: .6rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--color1);
+  border: 1px solid var(--color1);
+  padding: .15rem .5rem; border-radius: 2px;
+}
+.arc-feat-main__artist {
+  display: block; font-size: .7rem; font-weight: 700;
+  letter-spacing: .12em; text-transform: uppercase;
+  color: var(--color1); margin-bottom: .2rem;
+}
+.arc-feat-main__title {
+  font-family: 'Anton', sans-serif; font-size: 1.8rem;
+  color: var(--color3); line-height: 1; display: block;
+}
+.arc-feat-main__title--mobile { font-size: 1.4rem; }
+.arc-feat-main__meta {
+  display: flex; gap: .35rem; flex-wrap: wrap; margin-top: .55rem;
+}
+
+/* Petites cards featured */
+.arc-feat-side {
+  display: flex; flex-direction: column; gap: .75rem;
+}
+.arc-feat-side--mobile {
+  flex-direction: row; gap: .6rem;
+}
+
+.arc-feat-card {
+  position: relative; flex: 1;
+  overflow: hidden; display: flex; align-items: flex-end;
+  text-decoration: none; background: #222;
+  aspect-ratio: 1;
+}
+.arc-feat-card--mobile { aspect-ratio: 1; }
+.arc-feat-card__img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform .4s ease;
+}
+.arc-feat-card:hover .arc-feat-card__img { transform: scale(1.06); }
+.arc-feat-card__overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.88) 0%, transparent 60%);
+}
+.arc-feat-card__body {
+  position: relative; z-index: 1; padding: .8rem;
+}
+.arc-feat-card__artist {
+  display: block; font-size: .58rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--color1);
+  margin-bottom: .15rem;
+}
+.arc-feat-card__title {
+  font-family: 'Anton', sans-serif; font-size: 1rem;
+  color: var(--color3); line-height: 1.05;
+}
+.arc-feat-card__title--mobile { font-size: .85rem; }
+
+/* Pills */
+.arc-pill {
+  font-size: .58rem; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+  padding: .15rem .42rem; border-radius: 2px;
+  background: var(--color1); color: var(--color3);
+}
+.arc-pill--ghost {
+  background: rgba(255,255,255,.12); color: rgba(255,255,255,.7);
+}
+
+
+/* ══════════════════════════════════════════════════════
+   SECTION TOUTES LES REVIEWS
+══════════════════════════════════════════════════════ */
+.arc-all {
+  background: var(--color4);
+  padding: 2rem 2.5rem;
+}
+.arc-all--mobile { padding: 1.25rem; }
+
+/* Grid 3 col */
+.arc-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: .75rem;
+  margin-top: 1.25rem;
+}
+.arc-grid--mobile { grid-template-columns: 1fr; gap: .6rem; }
+
+/* Card overlay */
+.arc-card {
+  position: relative; aspect-ratio: 1;
+  overflow: hidden; display: block; text-decoration: none;
+  background: #222;
+}
+.arc-card__img {
+  width: 100%; height: 100%; object-fit: cover;
+  display: block; transition: transform .4s ease;
+}
+.arc-card:hover .arc-card__img { transform: scale(1.07); }
+.arc-card__overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, var(--overlay-card) 0%, rgba(0,0,0,.25) 55%, transparent 100%);
+  transition: opacity .3s;
+}
+.arc-card:hover .arc-card__overlay { opacity: .9; }
+.arc-card__body {
+  position: absolute; bottom: 0; left: 0; right: 0; padding: .9rem;
+}
+.arc-card__artist {
+  display: block; font-size: .62rem; font-weight: 700;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--color1);
+  margin-bottom: .18rem;
+}
+.arc-card__title {
+  font-family: 'Anton', sans-serif; font-size: 1.05rem;
+  color: var(--color3); line-height: 1.05; display: block;
+}
+.arc-card__meta {
+  display: flex; gap: .3rem; flex-wrap: wrap; margin-top: .4rem;
+  opacity: 0; transform: translateY(4px);
+  transition: opacity .25s, transform .25s;
+}
+.arc-card:hover .arc-card__meta { opacity: 1; transform: translateY(0); }
+
+/* ══════════════════════════════════════════════════════
+   PAGINATION CLASSIQUE
+══════════════════════════════════════════════════════ */
+.arc-pagination {
+  background: var(--color4);
+  padding: 1.5rem 2.5rem 2.5rem;
+  display: flex; align-items: center; justify-content: center;
+  gap: .35rem;
+  border-top: 1px solid rgba(255,255,255,.05);
+}
+.arc-pagination--mobile { padding: 1.25rem; }
+
+.arc-page-item {
+  width: 36px; height: 36px; border-radius: 3px;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Roboto', sans-serif; font-size: .82rem; font-weight: 700;
+  text-decoration: none; color: var(--color5);
+  border: 1.5px solid rgba(255,255,255,.1);
+  background: transparent;
+  cursor: pointer; transition: color .2s, border-color .2s, background .2s;
+}
+.arc-page-item:hover { color: var(--color3); border-color: rgba(255,255,255,.3); }
+.arc-page-item.active {
+  background: var(--color1); border-color: var(--color1);
+  color: var(--color3);
+}
+.arc-page-item--arrow { font-size: 1rem; color: var(--color5); }
+.arc-page-item--arrow:hover { color: var(--color3); border-color: var(--color1); }
+
+/* ── ACF note ───────────────────────────────────────── */
+.acf-note {
+  max-width: 960px; margin: 3rem auto;
+  padding: 0 1.5rem;
+}
+.acf-note-inner {
+  background: var(--color2);
+  border: 1px solid rgba(255,255,255,.08);
+  border-left: 3px solid var(--color1);
+  border-radius: 0 6px 6px 0;
+  padding: 1.5rem;
+}
+.acf-note-inner h2 {
+  font-family: 'Anton', sans-serif; font-size: 1rem;
+  color: var(--color1); letter-spacing: .05em; margin-bottom: 1rem;
+}
+.acf-note-inner ul { list-style: none; display: flex; flex-direction: column; gap: .5rem; }
+.acf-note-inner li { font-size: .83rem; color: rgba(255,255,255,.7); line-height: 1.55; }
+.acf-note-inner code {
+  font-family: monospace; font-size: .75rem;
+  background: rgba(255,255,255,.08); padding: .1em .35em; border-radius: 3px; color: #a8d8ea;
+}
+.badge { display: inline-block; font-size: .58rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: .06em; padding: .1rem .35rem; border-radius: 2px; margin-left: .3rem;
+  vertical-align: middle; }
+.badge-new { background: rgba(232,31,31,.2); color: var(--color1); }
+.badge-exists { background: rgba(255,255,255,.1); color: var(--color5); }
+</style>
+</head>
+<body>
+
+<!-- Toggle desktop / mobile -->
+<nav class="toggle-nav">
+  <span>Aperçu</span>
+  <button class="toggle-btn active" onclick="setView('desktop')">Desktop</button>
+  <button class="toggle-btn" onclick="setView('mobile')">Mobile 375px</button>
+</nav>
+
+<!-- ══════════════════════════════════════════════════
+     VUE DESKTOP
+══════════════════════════════════════════════════════ -->
+<div class="view active" id="view-desktop">
+
+  <!-- HERO -->
+  <div class="arc-hero">
+    <div class="arc-hero__bg">
+      <!-- Image placeholder (sera l'image du slider retiré) -->
+      <div style="width:100%;height:100%;background:linear-gradient(135deg,#0a0820 0%,#1a0a3a 35%,#0a1830 70%,#000010 100%);display:flex;align-items:center;justify-content:center;">
+        <span style="font-size:6rem;opacity:.15;">🎵</span>
+      </div>
+    </div>
+    <div class="arc-hero__overlay"></div>
+    <div class="arc-hero__grain"></div>
+    <div class="arc-hero__divider"></div>
+
+    <div class="arc-hero__inner">
+      <div class="arc-hero__left">
+        <span class="arc-hero__kicker">Gimmick Shelter</span>
+        <h1 class="arc-hero__title">Reviews</h1>
+      </div>
+      <div class="arc-hero__counter">
+        <span class="arc-hero__count-num">42</span>
+        <span class="arc-hero__count-sep"></span>
+        <span class="arc-hero__count-label">Chroniques publiées</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- COUP DE CŒUR -->
+  <div class="arc-featured">
+    <div class="arc-section-head">
+      <span class="arc-section-title">Coup de cœur</span>
+    </div>
+    <div class="arc-featured__layout">
+
+      <!-- Grande card -->
+      <a class="arc-feat-main" href="#">
+        <div class="arc-feat-main__img" style="background:linear-gradient(135deg,#3a2a4a,#1a1a2e);display:flex;align-items:center;justify-content:center;font-size:5rem;position:absolute;inset:0;width:100%;height:100%;">🎵</div>
+        <div class="arc-feat-main__overlay"></div>
+        <div class="arc-feat-main__body">
+          <span class="arc-feat-flag">Coup de cœur</span>
+          <span class="arc-feat-main__artist">Ghost Woman</span>
+          <span class="arc-feat-main__title">Ghost Woman</span>
+          <div class="arc-feat-main__meta">
+            <span class="arc-pill">Suites Sonores</span>
+            <span class="arc-pill--ghost">Shoegaze</span>
+            <span class="arc-pill--ghost">2022</span>
+          </div>
+        </div>
+      </a>
+
+      <!-- 2 petites cards -->
+      <div class="arc-feat-side">
+        <a class="arc-feat-card" href="#">
+          <div class="arc-feat-card__img" style="background:linear-gradient(135deg,#2a1a1a,#4a2020);display:flex;align-items:center;justify-content:center;font-size:3rem;position:absolute;inset:0;width:100%;height:100%;">🎸</div>
+          <div class="arc-feat-card__overlay"></div>
+          <div class="arc-feat-card__body">
+            <span class="arc-feat-card__artist">Drug Dealer</span>
+            <span class="arc-feat-card__title">Hiding in Plain Sight</span>
+          </div>
+        </a>
+        <a class="arc-feat-card" href="#">
+          <div class="arc-feat-card__img" style="background:linear-gradient(135deg,#3a1a2a,#5a0a3a);display:flex;align-items:center;justify-content:center;font-size:3rem;position:absolute;inset:0;width:100%;height:100%;">🔊</div>
+          <div class="arc-feat-card__overlay"></div>
+          <div class="arc-feat-card__body">
+            <span class="arc-feat-card__artist">Osees</span>
+            <span class="arc-feat-card__title">Protean Threat</span>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- TOUTES LES REVIEWS -->
+  <div class="arc-all">
+    <div class="arc-section-head">
+      <span class="arc-section-title">Toutes les reviews</span>
+    </div>
+    <div class="arc-grid">
+      <a class="arc-card" href="#"><div class="arc-card__img" style="background:linear-gradient(135deg,#1a2a2a,#0a3a3a);display:flex;align-items:center;justify-content:center;font-size:3.5rem;">🥁</div><div class="arc-card__overlay"></div><div class="arc-card__body"><span class="arc-card__artist">Baston</span><span class="arc-card__title">Primates</span><div class="arc-card__meta"><span class="arc-pill">Howlin Banana</span><span class="arc-pill--ghost">Krautrock</span><span class="arc-pill--ghost">2019</span></div></div></a>
+      <a class="arc-card" href="#"><div class="arc-card__img" style="background:linear-gradient(135deg,#2a2a1a,#3a3a0a);display:flex;align-items:center;justify-content:center;font-size:3.5rem;">🎷</div><div class="arc-card__overlay"></div><div class="arc-card__body"><span class="arc-card__artist">J.W. Francis</span><span class="arc-card__title">Wanderer</span><div class="arc-card__meta"><span class="arc-pill">Captured Tracks</span><span class="arc-pill--ghost">Indie Folk</span></div></div></a>
+      <a class="arc-card" href="#"><div class="arc-card__img" style="background:linear-gradient(135deg,#1a1a3a,#2a2a5a);display:flex;align-items:center;justify-content:center;font-size:3.5rem;">🎹</div><div class="arc-card__overlay"></div><div class="arc-card__body"><span class="arc-card__artist">Kevin Morby</span><span class="arc-card__title">Sundowner</span><div class="arc-card__meta"><span class="arc-pill">Dead Oceans</span><span class="arc-pill--ghost">Indie Rock</span></div></div></a>
+      <a class="arc-card" href="#"><div class="arc-card__img" style="background:linear-gradient(135deg,#3a2a1a,#5a3a0a);display:flex;align-items:center;justify-content:center;font-size:3.5rem;">🎺</div><div class="arc-card__overlay"></div><div class="arc-card__body"><span class="arc-card__artist">Amyl</span><span class="arc-card__title">Comfort to Me</span><div class="arc-card__meta"><span class="arc-pill">Rough Trade</span><span class="arc-pill--ghost">Punk</span></div></div></a>
+      <a class="arc-card" href="#"><div class="arc-card__img" style="background:linear-gradient(135deg,#1a3a1a,#0a5a0a);display:flex;align-items:center;justify-content:center;font-size:3.5rem;">🎻</div><div class="arc-card__overlay"></div><div class="arc-card__body"><span class="arc-card__artist">Mdou Moctar</span><span class="arc-card__title">Afrique Victime</span><div class="arc-card__meta"><span class="arc-pill">Matador</span><span class="arc-pill--ghost">Desert Blues</span></div></div></a>
+      <a class="arc-card" href="#"><div class="arc-card__img" style="background:linear-gradient(135deg,#2a1a3a,#4a0a5a);display:flex;align-items:center;justify-content:center;font-size:3.5rem;">🪗</div><div class="arc-card__overlay"></div><div class="arc-card__body"><span class="arc-card__artist">Wet Leg</span><span class="arc-card__title">Wet Leg</span><div class="arc-card__meta"><span class="arc-pill">Domino</span><span class="arc-pill--ghost">Indie</span></div></div></a>
+      <a class="arc-card" href="#"><div class="arc-card__img" style="background:linear-gradient(135deg,#1a1a1a,#2a2a2a);display:flex;align-items:center;justify-content:center;font-size:3.5rem;">🎤</div><div class="arc-card__overlay"></div><div class="arc-card__body"><span class="arc-card__artist">Fontaines D.C.</span><span class="arc-card__title">Skinty Fia</span><div class="arc-card__meta"><span class="arc-pill">Partisan</span><span class="arc-pill--ghost">Post-Punk</span></div></div></a>
+      <a class="arc-card" href="#"><div class="arc-card__img" style="background:linear-gradient(135deg,#3a1a1a,#5a2a0a);display:flex;align-items:center;justify-content:center;font-size:3.5rem;">🎙</div><div class="arc-card__overlay"></div><div class="arc-card__body"><span class="arc-card__artist">Black Midi</span><span class="arc-card__title">Cavalcade</span><div class="arc-card__meta"><span class="arc-pill">Rough Trade</span><span class="arc-pill--ghost">Avant-rock</span></div></div></a>
+      <a class="arc-card" href="#"><div class="arc-card__img" style="background:linear-gradient(135deg,#2a3a1a,#3a5a0a);display:flex;align-items:center;justify-content:center;font-size:3.5rem;">🎵</div><div class="arc-card__overlay"></div><div class="arc-card__body"><span class="arc-card__artist">Big Thief</span><span class="arc-card__title">Dragon New Warm Mountain</span><div class="arc-card__meta"><span class="arc-pill">4AD</span><span class="arc-pill--ghost">Folk Rock</span></div></div></a>
+    </div>
+  </div>
+
+  <!-- PAGINATION -->
+  <div class="arc-pagination">
+    <a class="arc-page-item arc-page-item--arrow" href="#">‹</a>
+    <a class="arc-page-item active" href="#">1</a>
+    <a class="arc-page-item" href="#">2</a>
+    <a class="arc-page-item" href="#">3</a>
+    <span class="arc-page-item" style="border:none;color:var(--color5);cursor:default;">…</span>
+    <a class="arc-page-item" href="#">8</a>
+    <a class="arc-page-item arc-page-item--arrow" href="#">›</a>
+  </div>
+
+</div><!-- /desktop -->
+
+
+<!-- ══════════════════════════════════════════════════
+     VUE MOBILE
+══════════════════════════════════════════════════════ -->
+<div class="view" id="view-mobile">
+  <div style="display:flex;justify-content:center;padding:2rem 1rem;background:#0d0d0d;">
+  <div style="width:375px;background:var(--color4);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;overflow:hidden;">
+
+    <!-- Hero mobile -->
+    <div class="arc-hero arc-hero--mobile">
+      <div class="arc-hero__bg">
+        <div style="width:100%;height:100%;background:linear-gradient(135deg,#0a0820 0%,#1a0a3a 35%,#0a1830 70%,#000010 100%);display:flex;align-items:center;justify-content:center;">
+          <span style="font-size:4rem;opacity:.1;">🎵</span>
+        </div>
+      </div>
+      <div class="arc-hero__overlay"></div>
+      <div class="arc-hero__grain"></div>
+      <div class="arc-hero__divider"></div>
+      <div class="arc-hero__inner arc-hero__inner--mobile">
+        <div class="arc-hero__left">
+          <span class="arc-hero__kicker" style="font-size:.62rem;">Gimmick Shelter</span>
+          <h1 class="arc-hero__title arc-hero__title--mobile">Reviews</h1>
+        </div>
+        <div class="arc-hero__counter">
+          <span class="arc-hero__count-num arc-hero__count-num--mobile">42</span>
+          <span class="arc-hero__count-sep"></span>
+          <span class="arc-hero__count-label" style="font-size:.55rem;">Chroniques</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Coup de cœur mobile -->
+    <div class="arc-featured arc-featured--mobile">
+      <div class="arc-section-head" style="margin-bottom:1rem;">
+        <span class="arc-section-title" style="font-size:.82rem;">Coup de cœur</span>
+      </div>
+      <!-- Grande card mobile 16:9 -->
+      <a class="arc-feat-main arc-feat-main--mobile" href="#" style="display:block;position:relative;overflow:hidden;margin-bottom:.6rem;">
+        <div class="arc-feat-main__img" style="background:linear-gradient(135deg,#3a2a4a,#1a1a2e);display:flex;align-items:center;justify-content:center;font-size:3.5rem;position:absolute;inset:0;width:100%;height:100%;">🎵</div>
+        <div class="arc-feat-main__overlay"></div>
+        <div class="arc-feat-main__body" style="padding:.9rem;">
+          <span class="arc-feat-flag" style="font-size:.55rem;margin-bottom:.4rem;">Coup de cœur</span>
+          <span class="arc-feat-main__artist" style="font-size:.6rem;">Ghost Woman</span>
+          <span class="arc-feat-main__title arc-feat-main__title--mobile">Ghost Woman</span>
+        </div>
+      </a>
+      <!-- 2 petites côte à côte -->
+      <div class="arc-feat-side arc-feat-side--mobile">
+        <a class="arc-feat-card arc-feat-card--mobile" href="#" style="position:relative;overflow:hidden;">
+          <div class="arc-feat-card__img" style="background:linear-gradient(135deg,#2a1a1a,#4a2020);display:flex;align-items:center;justify-content:center;font-size:2rem;position:absolute;inset:0;width:100%;height:100%;">🎸</div>
+          <div class="arc-feat-card__overlay"></div>
+          <div class="arc-feat-card__body" style="padding:.6rem;">
+            <span class="arc-feat-card__artist" style="font-size:.52rem;">Drug Dealer</span>
+            <span class="arc-feat-card__title arc-feat-card__title--mobile">Hiding in Plain Sight</span>
+          </div>
+        </a>
+        <a class="arc-feat-card arc-feat-card--mobile" href="#" style="position:relative;overflow:hidden;">
+          <div class="arc-feat-card__img" style="background:linear-gradient(135deg,#3a1a2a,#5a0a3a);display:flex;align-items:center;justify-content:center;font-size:2rem;position:absolute;inset:0;width:100%;height:100%;">🔊</div>
+          <div class="arc-feat-card__overlay"></div>
+          <div class="arc-feat-card__body" style="padding:.6rem;">
+            <span class="arc-feat-card__artist" style="font-size:.52rem;">Osees</span>
+            <span class="arc-feat-card__title arc-feat-card__title--mobile">Protean Threat</span>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Toutes les reviews mobile -->
+    <div class="arc-all arc-all--mobile">
+      <div class="arc-section-head" style="margin-bottom:1rem;">
+        <span class="arc-section-title" style="font-size:.82rem;">Toutes les reviews</span>
+      </div>
+      <div class="arc-grid arc-grid--mobile">
+        <a class="arc-card" href="#" style="aspect-ratio:4/3;"><div class="arc-card__img" style="background:linear-gradient(135deg,#1a2a2a,#0a3a3a);display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🥁</div><div class="arc-card__overlay"></div><div class="arc-card__body" style="padding:.65rem;"><span class="arc-card__artist" style="font-size:.55rem;">Baston</span><span class="arc-card__title" style="font-size:.9rem;">Primates</span></div></a>
+        <a class="arc-card" href="#" style="aspect-ratio:4/3;"><div class="arc-card__img" style="background:linear-gradient(135deg,#2a2a1a,#3a3a0a);display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🎷</div><div class="arc-card__overlay"></div><div class="arc-card__body" style="padding:.65rem;"><span class="arc-card__artist" style="font-size:.55rem;">J.W. Francis</span><span class="arc-card__title" style="font-size:.9rem;">Wanderer</span></div></a>
+        <a class="arc-card" href="#" style="aspect-ratio:4/3;"><div class="arc-card__img" style="background:linear-gradient(135deg,#1a1a3a,#2a2a5a);display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🎹</div><div class="arc-card__overlay"></div><div class="arc-card__body" style="padding:.65rem;"><span class="arc-card__artist" style="font-size:.55rem;">Kevin Morby</span><span class="arc-card__title" style="font-size:.9rem;">Sundowner</span></div></a>
+      </div>
+    </div>
+
+    <!-- Pagination mobile -->
+    <div class="arc-pagination arc-pagination--mobile" style="gap:.25rem;">
+      <a class="arc-page-item arc-page-item--arrow" href="#" style="width:32px;height:32px;font-size:.9rem;">‹</a>
+      <a class="arc-page-item active" href="#" style="width:32px;height:32px;font-size:.75rem;">1</a>
+      <a class="arc-page-item" href="#" style="width:32px;height:32px;font-size:.75rem;">2</a>
+      <a class="arc-page-item" href="#" style="width:32px;height:32px;font-size:.75rem;">3</a>
+      <a class="arc-page-item arc-page-item--arrow" href="#" style="width:32px;height:32px;font-size:.9rem;">›</a>
+    </div>
+
+  </div>
+  </div>
+</div><!-- /mobile -->
+
+<!-- ACF note -->
+<div class="acf-note">
+  <div class="acf-note-inner">
+    <h2>ACF — Champs à créer pour cette archive</h2>
+    <ul>
+      <li>
+        <code>image_hero_archive</code> <span class="badge badge-new">nouveau</span>
+        — Type : Image, retour URL, groupe Options (location : "Options page").
+        Image de fond du hero archive (remplace le slider). Une seule image pour tout le site.
+      </li>
+      <li>
+        <code>featured</code> <span class="badge badge-new">nouveau</span>
+        — Type : True/False, groupe "Anachroniques personnalisation" (group_60749d813b67e).
+        Flag "Coup de cœur" : activé sur chaque post depuis l'admin. La section "Coup de cœur" n'affiche que les posts avec ce champ = 1.
+      </li>
+    </ul>
+  </div>
+</div>
+
+<div style="height:3rem;background:#0d0d0d;"></div>
+
+<script>
+function setView(v) {
+  document.querySelectorAll('.view').forEach(function(el) { el.classList.remove('active'); });
+  document.querySelectorAll('.toggle-btn').forEach(function(el) { el.classList.remove('active'); });
+  document.getElementById('view-' + v).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+</body>
+</html>

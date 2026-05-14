@@ -1,0 +1,1120 @@
+<!--
+  MAQUETTE — Homepage Gimmick Shelter
+  Style    : editorial-premium (base) + soft-brutalism (inflexion)
+  DS       : #E81F1F · #000B29 · #FFFFFF · #000000 · #6D6D64
+  Polices  : Anton (titres) · Roboto (corps) — Google Fonts
+  Date     : 2026-05
+  Agent    : Designer
+
+  CONTENU FAUX — À remplacer par données WP réelles avant intégration
+
+  ──────────────────────────────────────────────
+  VARIANTE A — "Editorial Slab" (recommandée)
+    Hero éditorial tall, grille asymétrique 7/5,
+    section chroniques split sur fond bleu nuit
+  ──────────────────────────────────────────────
+  VARIANTE B — "Split Lead"
+    Hero 60/40 texte-image, articles alternés
+  ──────────────────────────────────────────────
+  VARIANTE C — "L'Écran"
+    Hero plein écran cinématique, marquee animé, masonry
+  ──────────────────────────────────────────────
+-->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maquette Homepage — Gimmick Shelter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* ─── RESET + TOKENS ─────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --c1: #E81F1F;
+  --c2: #000B29;
+  --c3: #FFFFFF;
+  --c4: #000000;
+  --c5: #6D6D64;
+  --font-display: 'Anton', sans-serif;
+  --font-body: 'Roboto', sans-serif;
+}
+html { scroll-behavior: smooth; }
+body {
+  background: var(--c4);
+  color: var(--c3);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+a { color: inherit; text-decoration: none; }
+img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* ─── NAV SIMULÉE (commune aux 3 variantes) ─────────────── */
+.gs-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--c4);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 52px;
+}
+.gs-nav__logo {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  letter-spacing: .04em;
+  color: var(--c3);
+  text-transform: uppercase;
+}
+.gs-nav__logo span { color: var(--c1); }
+.gs-nav__links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+  font-size: .75rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-weight: 600;
+}
+.gs-nav__links a { color: var(--c5); transition: color .2s; }
+.gs-nav__links a:hover { color: var(--c3); }
+.gs-nav__links .active a { color: var(--c1); }
+
+/* ─── LABEL RUBRIQUE ─────────────────────────────────────── */
+.gs-label {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-size: .65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  color: var(--c1);
+  border: 1px solid var(--c1);
+  padding: 2px 8px;
+}
+.gs-label--filled {
+  background: var(--c1);
+  color: var(--c3);
+}
+
+/* ─── SÉPARATEUR DE SECTION ──────────────────────────────── */
+.gs-section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+.gs-section-head h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+}
+.gs-section-head h2 em { color: var(--c1); font-style: normal; }
+.gs-section-head__line {
+  flex: 1;
+  height: 1px;
+  background: rgba(255,255,255,0.1);
+}
+.gs-section-head__all {
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  color: var(--c5);
+  transition: color .2s;
+  white-space: nowrap;
+}
+.gs-section-head__all:hover { color: var(--c3); }
+
+/* ─── TAXONOMY RAIL ──────────────────────────────────────── */
+.gs-tax-rail {
+  display: flex;
+  gap: 0;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.gs-tax-rail::-webkit-scrollbar { display: none; }
+.gs-tax-rail__item {
+  flex: 1;
+  min-width: 120px;
+  padding: 1rem 1.5rem;
+  text-align: center;
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-weight: 700;
+  color: var(--c5);
+  border-right: 1px solid rgba(255,255,255,0.08);
+  transition: color .2s, background .2s;
+  cursor: pointer;
+}
+.gs-tax-rail__item:last-child { border-right: none; }
+.gs-tax-rail__item:hover { color: var(--c3); background: rgba(255,255,255,0.03); }
+.gs-tax-rail__item.active {
+  color: var(--c1);
+  border-bottom: 2px solid var(--c1);
+}
+
+/* ─── ÉTIQUETTE DE VARIANTE ──────────────────────────────── */
+.variant-header {
+  padding: 3rem 2rem 1.5rem;
+  background: var(--c2);
+  border-left: 3px solid var(--c1);
+  margin-bottom: 0;
+}
+.variant-header h3 {
+  font-family: var(--font-display);
+  font-size: 1.75rem;
+  letter-spacing: .04em;
+  color: var(--c1);
+  margin-bottom: .5rem;
+}
+.variant-header p {
+  font-size: .8rem;
+  color: var(--c5);
+  line-height: 1.5;
+}
+.variant-divider {
+  height: 3px;
+  background: var(--c1);
+  margin: 4rem 0 0;
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/*  VARIANTE A — EDITORIAL SLAB                               */
+/* ─────────────────────────────────────────────────────────── */
+
+/* HERO A */
+.va-hero {
+  position: relative;
+  height: min(90vh, 720px);
+  overflow: hidden;
+  background: var(--c4);
+}
+.va-hero__img {
+  position: absolute;
+  inset: 0;
+  opacity: .7;
+}
+.va-hero__img img { object-position: center 30%; }
+.va-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba(0,0,0,.85) 0%,
+    rgba(0,0,0,.5) 55%,
+    rgba(0,0,0,.15) 100%
+  );
+}
+.va-hero__content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 3rem 2.5rem;
+  max-width: 680px;
+  animation: fadeSlideUp .8s ease both;
+}
+.va-hero__meta {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  margin-bottom: 1rem;
+}
+.va-hero__date {
+  font-size: .65rem;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: var(--c5);
+}
+.va-hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: 400;
+  line-height: .95;
+  letter-spacing: .01em;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+}
+.va-hero__dek {
+  font-size: 1rem;
+  color: rgba(255,255,255,.75);
+  line-height: 1.55;
+  max-width: 52ch;
+  margin-bottom: 1.75rem;
+}
+.va-hero__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-weight: 700;
+  color: var(--c3);
+  border-bottom: 1px solid var(--c1);
+  padding-bottom: 2px;
+  transition: gap .2s;
+}
+.va-hero__cta:hover { gap: .85rem; }
+.va-hero__cta::after { content: "→"; color: var(--c1); }
+.va-hero__scroll {
+  position: absolute;
+  bottom: 2rem;
+  right: 2.5rem;
+  font-size: .6rem;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  color: var(--c5);
+  writing-mode: vertical-rl;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.va-hero__scroll::before {
+  content: '';
+  width: 1px;
+  height: 40px;
+  background: var(--c1);
+  display: block;
+}
+
+/* GRILLE A LA UNE */
+.va-section {
+  padding: 3rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.va-grid {
+  display: grid;
+  grid-template-columns: 7fr 5fr;
+  grid-template-rows: auto;
+  gap: 1.5px;
+  background: rgba(255,255,255,0.06);
+}
+.va-grid__main {
+  position: relative;
+  height: 480px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.va-grid__main img { transition: transform .5s ease; }
+.va-grid__main:hover img { transform: scale(1.04); }
+.va-grid__main-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.88) 0%, transparent 55%);
+}
+.va-grid__main-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.75rem;
+}
+.va-grid__main-content h3 {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3vw, 2.25rem);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  line-height: .95;
+  margin: .5rem 0 .75rem;
+}
+.va-grid__main-meta {
+  font-size: .7rem;
+  color: var(--c5);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+.va-grid__side {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5px;
+}
+.va-grid__small {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+}
+.va-grid__small img { transition: transform .5s ease; }
+.va-grid__small:hover img { transform: scale(1.06); }
+.va-grid__small-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.85) 0%, transparent 60%);
+}
+.va-grid__small-content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.25rem;
+}
+.va-grid__small-content h4 {
+  font-family: var(--font-display);
+  font-size: 1.1rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: .02em;
+  line-height: .97;
+  margin: .4rem 0 .5rem;
+}
+
+/* SECTION ANACHRONIQUES */
+.va-anachro {
+  background: var(--c2);
+  padding: 3rem 2rem;
+}
+.va-anachro-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+.va-anachro-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  background: rgba(255,255,255,0.05);
+  margin-top: 2rem;
+}
+.va-anachro-item {
+  display: flex;
+  gap: 1.25rem;
+  padding: 1.5rem;
+  background: var(--c2);
+  cursor: pointer;
+  transition: background .2s;
+}
+.va-anachro-item:hover { background: rgba(255,255,255,0.03); }
+.va-anachro-item__img {
+  flex-shrink: 0;
+  width: 90px;
+  height: 90px;
+  overflow: hidden;
+}
+.va-anachro-item__img img { object-position: center; }
+.va-anachro-item__body { flex: 1; min-width: 0; }
+.va-anachro-item__artist {
+  font-size: .65rem;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: var(--c1);
+  margin-bottom: .3rem;
+}
+.va-anachro-item__title {
+  font-family: var(--font-display);
+  font-size: 1rem;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 1;
+  letter-spacing: .02em;
+  color: var(--c3);
+  margin-bottom: .5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.va-anachro-item__note {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  color: var(--c1);
+  line-height: 1;
+}
+.va-anachro-item__note span {
+  font-family: var(--font-body);
+  font-size: .65rem;
+  color: var(--c5);
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/*  VARIANTE B — SPLIT LEAD                                    */
+/* ─────────────────────────────────────────────────────────── */
+
+.vb-hero {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  min-height: min(80vh, 640px);
+}
+.vb-hero__img {
+  position: relative;
+  overflow: hidden;
+}
+.vb-hero__img img { object-position: center 20%; }
+.vb-hero__img::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, transparent 60%, var(--c2) 100%);
+}
+.vb-hero__text {
+  background: var(--c2);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 3rem 2.5rem;
+  position: relative;
+}
+.vb-hero__text::before {
+  content: '';
+  position: absolute;
+  top: 3rem;
+  left: 0;
+  width: 3px;
+  height: 40px;
+  background: var(--c1);
+}
+.vb-hero__eyebrow {
+  font-size: .65rem;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  color: var(--c1);
+  margin-bottom: .75rem;
+  padding-left: 1rem;
+}
+.vb-hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 4vw, 3.25rem);
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: .93;
+  letter-spacing: .01em;
+  margin-bottom: 1.25rem;
+}
+.vb-hero__dek {
+  font-size: .9rem;
+  color: rgba(255,255,255,.65);
+  line-height: 1.55;
+  max-width: 38ch;
+  margin-bottom: 1.75rem;
+}
+.vb-hero__author {
+  font-size: .7rem;
+  color: var(--c5);
+  text-transform: uppercase;
+  letter-spacing: .1em;
+}
+.vb-hero__author strong { color: var(--c3); }
+
+/* ARTICLES ALTERNÉS B */
+.vb-section { padding: 2.5rem 2rem; max-width: 1400px; margin: 0 auto; }
+.vb-article {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  padding: 2.5rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  cursor: pointer;
+}
+.vb-article:last-child { border-bottom: none; }
+.vb-article--reverse { direction: rtl; }
+.vb-article--reverse > * { direction: ltr; }
+.vb-article__img {
+  aspect-ratio: 16/10;
+  overflow: hidden;
+  position: relative;
+}
+.vb-article__img img { transition: transform .6s ease; }
+.vb-article:hover .vb-article__img img { transform: scale(1.04); }
+.vb-article__body {}
+.vb-article__body .gs-label { margin-bottom: 1rem; }
+.vb-article__title {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: .95;
+  letter-spacing: .02em;
+  margin-bottom: 1rem;
+  transition: color .2s;
+}
+.vb-article:hover .vb-article__title { color: rgba(255,255,255,.8); }
+.vb-article__excerpt {
+  font-size: .875rem;
+  color: var(--c5);
+  line-height: 1.6;
+  max-width: 48ch;
+  margin-bottom: 1rem;
+}
+.vb-article__meta {
+  font-size: .65rem;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--c5);
+}
+
+/* ─────────────────────────────────────────────────────────── */
+/*  VARIANTE C — L'ÉCRAN (Cinématique + Marquee)              */
+/* ─────────────────────────────────────────────────────────── */
+
+.vc-hero {
+  position: relative;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.vc-hero__bg {
+  position: absolute;
+  inset: 0;
+}
+.vc-hero__bg img { object-position: center 35%; }
+.vc-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,.62);
+}
+.vc-hero__content {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 2rem;
+  animation: fadeIn 1s ease both;
+}
+.vc-hero__kicker {
+  font-size: .65rem;
+  text-transform: uppercase;
+  letter-spacing: .22em;
+  color: var(--c5);
+  margin-bottom: 1.5rem;
+}
+.vc-hero__title {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: .88;
+  letter-spacing: .02em;
+  max-width: 14ch;
+  margin: 0 auto 1.5rem;
+}
+.vc-hero__title em { color: var(--c1); font-style: normal; }
+.vc-hero__dek {
+  font-size: 1rem;
+  color: rgba(255,255,255,.7);
+  max-width: 44ch;
+  margin: 0 auto 2.5rem;
+  line-height: 1.55;
+}
+.vc-hero__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: .75rem;
+  font-size: .7rem;
+  text-transform: uppercase;
+  letter-spacing: .16em;
+  font-weight: 700;
+  background: var(--c1);
+  color: var(--c3);
+  padding: .85rem 2rem;
+  transition: opacity .2s;
+}
+.vc-hero__cta:hover { opacity: .85; }
+.vc-hero__scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .5rem;
+  color: var(--c5);
+  font-size: .6rem;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  animation: bounce 2s ease infinite;
+}
+.vc-hero__scroll-hint::after {
+  content: '↓';
+  font-size: 1rem;
+  color: var(--c1);
+}
+
+/* MARQUEE */
+.vc-marquee {
+  background: var(--c1);
+  overflow: hidden;
+  padding: .75rem 0;
+  white-space: nowrap;
+}
+.vc-marquee__track {
+  display: inline-flex;
+  animation: marqueeScroll 22s linear infinite;
+}
+.vc-marquee__item {
+  display: inline-flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0 2rem;
+  font-family: var(--font-display);
+  font-size: .85rem;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--c3);
+}
+.vc-marquee__sep {
+  color: rgba(255,255,255,.4);
+  font-size: .5rem;
+}
+
+/* MASONRY C */
+.vc-section { padding: 3rem 2rem; max-width: 1400px; margin: 0 auto; }
+.vc-masonry {
+  columns: 3;
+  column-gap: 1.5px;
+  background: rgba(255,255,255,0.05);
+}
+.vc-card {
+  break-inside: avoid;
+  display: block;
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  margin-bottom: 1.5px;
+}
+.vc-card--tall { aspect-ratio: 4/5; }
+.vc-card--square { aspect-ratio: 1; }
+.vc-card--wide { aspect-ratio: 16/9; }
+.vc-card__img { width: 100%; height: 100%; }
+.vc-card__img img { transition: transform .5s ease; }
+.vc-card:hover .vc-card__img img { transform: scale(1.06); }
+.vc-card__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,.85) 0%, transparent 60%);
+}
+.vc-card__content {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 1.25rem;
+}
+.vc-card__title {
+  font-family: var(--font-display);
+  font-size: clamp(.9rem, 2vw, 1.25rem);
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: .97;
+  letter-spacing: .02em;
+  margin: .4rem 0 .3rem;
+}
+
+/* ─── ANIMATIONS ─────────────────────────────────────────── */
+@keyframes fadeSlideUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+@keyframes bounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50%       { transform: translateX(-50%) translateY(6px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0s !important; transition-duration: 0s !important; }
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .gs-nav__links { display: none; }
+  .va-hero { height: min(70vh, 560px); }
+  .va-hero__title { font-size: 2.25rem; }
+  .va-grid { grid-template-columns: 1fr; }
+  .va-grid__main { height: 300px; }
+  .va-anachro-list { grid-template-columns: 1fr; }
+  .vb-hero { grid-template-columns: 1fr; }
+  .vb-hero__img { height: 280px; }
+  .vb-hero__img::after { display: none; }
+  .vb-article { grid-template-columns: 1fr; gap: 1.5rem; }
+  .vb-article--reverse { direction: ltr; }
+  .vc-masonry { columns: 1; }
+  .vc-hero__title { font-size: 3.5rem; }
+}
+@media (min-width: 768px) and (max-width: 992px) {
+  .va-grid { grid-template-columns: 1fr; }
+  .va-grid__main { height: 380px; }
+  .va-anachro-list { grid-template-columns: 1fr; }
+  .vc-masonry { columns: 2; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV (commune) -->
+<nav class="gs-nav">
+  <div class="gs-nav__logo">
+    <span>Gimmick</span> Shelter
+  </div>
+  <ul class="gs-nav__links">
+    <li class="active"><a href="#">Chroniques</a></li>
+    <li><a href="#">Playlists</a></li>
+    <li><a href="#">Live</a></li>
+    <li><a href="#">Agenda</a></li>
+    <li><a href="#">À propos</a></li>
+  </ul>
+</nav>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  VARIANTE A — EDITORIAL SLAB                          -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<div class="variant-header">
+  <h3>Variante A — Editorial Slab</h3>
+  <p>
+    Hero éditorial tall à gauche · Grille asymétrique 7/5 · Section chroniques split<br>
+    <strong>Recommandée</strong> — correspond le mieux à la voix éditoriale de GS et à la lecture long-form.
+  </p>
+</div>
+
+<!-- HERO A -->
+<section class="va-hero">
+  <div class="va-hero__img">
+    <img src="https://picsum.photos/seed/rock-concert-gs/1400/800" alt="Concert rock" loading="eager">
+  </div>
+  <div class="va-hero__overlay"></div>
+  <div class="va-hero__content">
+    <div class="va-hero__meta">
+      <span class="gs-label gs-label--filled">Chronique</span>
+      <span class="va-hero__date">10 mai 2026</span>
+    </div>
+    <h1 class="va-hero__title">La nuit<br>où tout<br>a brûlé</h1>
+    <p class="va-hero__dek">
+      Nick Cave and the Bad Seeds reviennent avec <em>Wild God</em>,
+      un disque qui réconcilie la foi et le deuil sans jamais chercher à plaire.
+    </p>
+    <a href="#" class="va-hero__cta">Lire la chronique</a>
+  </div>
+  <div class="va-hero__scroll">Défiler</div>
+</section>
+
+<!-- TAXONOMY RAIL A -->
+<div class="gs-tax-rail">
+  <div class="gs-tax-rail__item active">Tous</div>
+  <div class="gs-tax-rail__item">Chroniques</div>
+  <div class="gs-tax-rail__item">Playlists</div>
+  <div class="gs-tax-rail__item">Live</div>
+  <div class="gs-tax-rail__item">Agenda</div>
+</div>
+
+<!-- À LA UNE A -->
+<section class="va-section">
+  <div class="gs-section-head">
+    <h2>À la <em>une</em></h2>
+    <div class="gs-section-head__line"></div>
+    <a href="#" class="gs-section-head__all">Voir tout →</a>
+  </div>
+
+  <div class="va-grid">
+    <!-- Article principal -->
+    <div class="va-grid__main">
+      <img src="https://picsum.photos/seed/rock-band-live/800/600" alt="Groupe sur scène">
+      <div class="va-grid__main-overlay"></div>
+      <div class="va-grid__main-content">
+        <span class="gs-label">Live</span>
+        <h3>Fontaines D.C.<br>Olympia, Paris</h3>
+        <div class="va-grid__main-meta">Par Adrien M. · 8 mai 2026</div>
+      </div>
+    </div>
+
+    <!-- Articles secondaires -->
+    <div class="va-grid__side">
+      <div class="va-grid__small">
+        <img src="https://picsum.photos/seed/vinyl-record-gs/600/400" alt="Vinyle">
+        <div class="va-grid__small-overlay"></div>
+        <div class="va-grid__small-content">
+          <span class="gs-label">Chronique</span>
+          <h4>Amyl and the Sniffers — Cartoon Darkness</h4>
+          <div class="va-grid__main-meta" style="font-size:.6rem; color:var(--c5);">5 mai 2026</div>
+        </div>
+      </div>
+      <div class="va-grid__small">
+        <img src="https://picsum.photos/seed/music-festival/600/400" alt="Festival">
+        <div class="va-grid__small-overlay"></div>
+        <div class="va-grid__small-content">
+          <span class="gs-label">Playlist</span>
+          <h4>10 titres pour survivre au mois de mai</h4>
+          <div class="va-grid__main-meta" style="font-size:.6rem; color:var(--c5);">3 mai 2026</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ANACHRONIQUES A -->
+<section class="va-anachro">
+  <div class="va-anachro-inner">
+    <div class="gs-section-head">
+      <h2>Dernières <em>chroniques</em></h2>
+      <div class="gs-section-head__line"></div>
+      <a href="#" class="gs-section-head__all">Archive chroniques →</a>
+    </div>
+    <div class="va-anachro-list">
+      <div class="va-anachro-item">
+        <div class="va-anachro-item__img">
+          <img src="https://picsum.photos/seed/album-cover-1/200/200" alt="Album">
+        </div>
+        <div class="va-anachro-item__body">
+          <div class="va-anachro-item__artist">Nick Cave &amp; The Bad Seeds</div>
+          <div class="va-anachro-item__title">Wild God</div>
+          <div class="va-anachro-item__note">8<span>/10</span></div>
+        </div>
+      </div>
+      <div class="va-anachro-item">
+        <div class="va-anachro-item__img">
+          <img src="https://picsum.photos/seed/album-cover-2/200/200" alt="Album">
+        </div>
+        <div class="va-anachro-item__body">
+          <div class="va-anachro-item__artist">Mdou Moctar</div>
+          <div class="va-anachro-item__title">Funeral for Justice</div>
+          <div class="va-anachro-item__note">9<span>/10</span></div>
+        </div>
+      </div>
+      <div class="va-anachro-item">
+        <div class="va-anachro-item__img">
+          <img src="https://picsum.photos/seed/album-cover-3/200/200" alt="Album">
+        </div>
+        <div class="va-anachro-item__body">
+          <div class="va-anachro-item__artist">Osees</div>
+          <div class="va-anachro-item__title">Intercepted Message</div>
+          <div class="va-anachro-item__note">7<span>/10</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  VARIANTE B — SPLIT LEAD                              -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<div class="variant-divider"></div>
+<div class="variant-header">
+  <h3>Variante B — Split Lead</h3>
+  <p>
+    Hero 60/40 image–texte · Articles alternés gauche/droite<br>
+    Plus structuré, bon pour valoriser un unique article fort en une.
+  </p>
+</div>
+
+<!-- HERO B -->
+<section class="vb-hero">
+  <div class="vb-hero__img">
+    <img src="https://picsum.photos/seed/guitar-player-dark/900/640" alt="Guitariste">
+  </div>
+  <div class="vb-hero__text">
+    <div class="vb-hero__eyebrow">Chronique · Album de la semaine</div>
+    <h2 class="vb-hero__title">Osees —<br>Intercepted<br>Message</h2>
+    <p class="vb-hero__dek">
+      John Dwyer sort de nulle part avec un nouveau brûlot garage-kraut
+      de 48 minutes qui ne laisse rien debout.
+    </p>
+    <a href="#" class="va-hero__cta">Lire la chronique</a>
+    <div class="vb-hero__author" style="margin-top:2rem;">
+      Par <strong>Lucas Bernard</strong> · Note : <strong style="color:var(--c1)">7/10</strong>
+    </div>
+  </div>
+</section>
+
+<!-- TAXONOMY RAIL B -->
+<div class="gs-tax-rail">
+  <div class="gs-tax-rail__item">Tous</div>
+  <div class="gs-tax-rail__item active">Chroniques</div>
+  <div class="gs-tax-rail__item">Playlists</div>
+  <div class="gs-tax-rail__item">Live</div>
+  <div class="gs-tax-rail__item">Agenda</div>
+</div>
+
+<!-- ARTICLES ALTERNÉS B -->
+<section class="vb-section">
+  <div class="gs-section-head">
+    <h2>À la <em>une</em></h2>
+    <div class="gs-section-head__line"></div>
+    <a href="#" class="gs-section-head__all">Voir tout →</a>
+  </div>
+
+  <article class="vb-article">
+    <div class="vb-article__img">
+      <img src="https://picsum.photos/seed/concert-crowd/700/440" alt="Concert">
+    </div>
+    <div class="vb-article__body">
+      <span class="gs-label">Live Report</span>
+      <h3 class="vb-article__title">Fontaines D.C. — L'Olympia, Paris</h3>
+      <p class="vb-article__excerpt">
+        Une heure quarante sans temps mort. Le groupe dublinois prouve
+        que la rage peut aussi rimer avec précision.
+      </p>
+      <div class="vb-article__meta">Par Adrien M. · 8 mai 2026</div>
+    </div>
+  </article>
+
+  <article class="vb-article vb-article--reverse">
+    <div class="vb-article__img">
+      <img src="https://picsum.photos/seed/vinyl-stack/700/440" alt="Vinyles">
+    </div>
+    <div class="vb-article__body">
+      <span class="gs-label gs-label--filled">Playlist</span>
+      <h3 class="vb-article__title">10 titres pour survivre au mois de mai</h3>
+      <p class="vb-article__excerpt">
+        Du kraut au punk tunisien en passant par le rock malgache —
+        la playlist mensuelle de la rédaction.
+      </p>
+      <div class="vb-article__meta">Rédaction GS · 3 mai 2026</div>
+    </div>
+  </article>
+
+  <article class="vb-article">
+    <div class="vb-article__img">
+      <img src="https://picsum.photos/seed/album-artwork/700/440" alt="Artiste">
+    </div>
+    <div class="vb-article__body">
+      <span class="gs-label">Portrait</span>
+      <h3 class="vb-article__title">Mdou Moctar — Le justicier de Niamey</h3>
+      <p class="vb-article__excerpt">
+        Retour sur le parcours du guitariste touareg avant son passage à Paris
+        en juin. Portrait d'un artiste qui joue pour ceux qui ne peuvent pas parler.
+      </p>
+      <div class="vb-article__meta">Par Camille R. · 1er mai 2026</div>
+    </div>
+  </article>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════ -->
+<!--  VARIANTE C — L'ÉCRAN (Cinématique + Marquee)         -->
+<!-- ═══════════════════════════════════════════════════════ -->
+
+<div class="variant-divider"></div>
+<div class="variant-header">
+  <h3>Variante C — L'Écran</h3>
+  <p>
+    Hero plein écran cinématique · Marquee animé rubriques · Grille masonry<br>
+    La plus bold — à réserver si GS veut pousser l'identité visuelle au maximum.
+  </p>
+</div>
+
+<!-- HERO C -->
+<section class="vc-hero">
+  <div class="vc-hero__bg">
+    <img src="https://picsum.photos/seed/dark-stage-lights/1400/900" alt="Scène rock">
+  </div>
+  <div class="vc-hero__overlay"></div>
+  <div class="vc-hero__content">
+    <div class="vc-hero__kicker">Webzine rock indépendant depuis 2018</div>
+    <h1 class="vc-hero__title">Le rock ne<br>se rend <em>pas.</em></h1>
+    <p class="vc-hero__dek">
+      Chroniques, playlists, lives et portraits — tout ce qui compte
+      dans la scène alternative et underground.
+    </p>
+    <a href="#" class="vc-hero__cta">Lire la dernière chronique</a>
+  </div>
+  <div class="vc-hero__scroll-hint">Défiler</div>
+</section>
+
+<!-- MARQUEE C -->
+<div class="vc-marquee" aria-hidden="true">
+  <div class="vc-marquee__track">
+    <span class="vc-marquee__item">Chroniques<span class="vc-marquee__sep">✦</span></span>
+    <span class="vc-marquee__item">Playlists<span class="vc-marquee__sep">✦</span></span>
+    <span class="vc-marquee__item">Live Reports<span class="vc-marquee__sep">✦</span></span>
+    <span class="vc-marquee__item">Portraits<span class="vc-marquee__sep">✦</span></span>
+    <span class="vc-marquee__item">Agenda<span class="vc-marquee__sep">✦</span></span>
+    <span class="vc-marquee__item">Chroniques<span class="vc-marquee__sep">✦</span></span>
+    <span class="vc-marquee__item">Playlists<span class="vc-marquee__sep">✦</span></span>
+    <span class="vc-marquee__item">Live Reports<span class="vc-marquee__sep">✦</span></span>
+    <span class="vc-marquee__item">Portraits<span class="vc-marquee__sep">✦</span></span>
+    <span class="vc-marquee__item">Agenda<span class="vc-marquee__sep">✦</span></span>
+  </div>
+</div>
+
+<!-- MASONRY C -->
+<section class="vc-section">
+  <div class="gs-section-head">
+    <h2>À la <em>une</em></h2>
+    <div class="gs-section-head__line"></div>
+    <a href="#" class="gs-section-head__all">Voir tout →</a>
+  </div>
+  <div class="vc-masonry">
+    <div class="vc-card vc-card--tall">
+      <div class="vc-card__img"><img src="https://picsum.photos/seed/vc-card1/500/625" alt="Concert"></div>
+      <div class="vc-card__overlay"></div>
+      <div class="vc-card__content">
+        <span class="gs-label">Live</span>
+        <h4 class="vc-card__title">Fontaines D.C. — Olympia</h4>
+        <div style="font-size:.6rem; color:var(--c5); margin-top:.3rem; text-transform:uppercase; letter-spacing:.1em;">8 mai 2026</div>
+      </div>
+    </div>
+
+    <div class="vc-card vc-card--square">
+      <div class="vc-card__img"><img src="https://picsum.photos/seed/vc-card2/500/500" alt="Album"></div>
+      <div class="vc-card__overlay"></div>
+      <div class="vc-card__content">
+        <span class="gs-label gs-label--filled">Chronique</span>
+        <h4 class="vc-card__title">Wild God — Nick Cave</h4>
+      </div>
+    </div>
+
+    <div class="vc-card vc-card--wide">
+      <div class="vc-card__img"><img src="https://picsum.photos/seed/vc-card3/600/338" alt="Festival"></div>
+      <div class="vc-card__overlay"></div>
+      <div class="vc-card__content">
+        <span class="gs-label">Playlist</span>
+        <h4 class="vc-card__title">10 titres pour le mois de mai</h4>
+      </div>
+    </div>
+
+    <div class="vc-card vc-card--square">
+      <div class="vc-card__img"><img src="https://picsum.photos/seed/vc-card4/500/500" alt="Portrait artiste"></div>
+      <div class="vc-card__overlay"></div>
+      <div class="vc-card__content">
+        <span class="gs-label">Portrait</span>
+        <h4 class="vc-card__title">Mdou Moctar</h4>
+      </div>
+    </div>
+
+    <div class="vc-card vc-card--tall">
+      <div class="vc-card__img"><img src="https://picsum.photos/seed/vc-card5/500/625" alt="Guitariste"></div>
+      <div class="vc-card__overlay"></div>
+      <div class="vc-card__content">
+        <span class="gs-label gs-label--filled">Chronique</span>
+        <h4 class="vc-card__title">Osees — Intercepted Message</h4>
+      </div>
+    </div>
+
+    <div class="vc-card vc-card--wide">
+      <div class="vc-card__img"><img src="https://picsum.photos/seed/vc-card6/600/338" alt="Salle de concert"></div>
+      <div class="vc-card__overlay"></div>
+      <div class="vc-card__content">
+        <span class="gs-label">Agenda</span>
+        <h4 class="vc-card__title">À ne pas manquer en juin</h4>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

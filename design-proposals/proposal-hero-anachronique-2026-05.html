@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proposal — Hero Single Anachronique v3 · Gimmick Shelter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+
+    /* ── RESET & BASE ───────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color1: #E81F1F;
+      --color2: #000B29;
+      --color3: #FFFFFF;
+      --color4: #000000;
+      --color5: #6D6D64;
+      --gs-nav-height: 52px;
+      --hero-surface: #0c0c10;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #111;
+      color: var(--color3);
+    }
+
+    /* ── LABELS DE SECTION ─────────────────────────────── */
+    .preview-label {
+      font-family: 'Roboto', sans-serif;
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--color1);
+      padding: 1.5rem 2rem .75rem;
+      opacity: .7;
+    }
+
+    /* ── FAUX HEADER desktop ───────────────────────────── */
+    .fake-nav {
+      height: var(--gs-nav-height);
+      background: var(--color4);
+      display: flex;
+      align-items: center;
+      padding: 0 2rem;
+      gap: 2rem;
+      font-family: 'Roboto', sans-serif;
+      font-size: .85rem;
+      color: rgba(255,255,255,.7);
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .fake-nav span { color: var(--color1); font-weight: 700; }
+
+    /* ── FAUX HEADER mobile ────────────────────────────── */
+    .fake-nav--mobile {
+      height: var(--gs-nav-height);
+      background: var(--color4);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1rem;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+    .fake-nav--mobile span { color: var(--color1); font-weight: 700; font-size: .75rem; font-family: 'Roboto', sans-serif; }
+    .fake-nav--mobile .burger { display: flex; flex-direction: column; gap: 4px; }
+    .fake-nav--mobile .burger i { width: 20px; height: 2px; background: #fff; display: block; }
+
+    /* ══════════════════════════════════════════════════════
+       HERO — composant partagé desktop + mobile
+       Champs WP/ACF :
+         · get_field('image_hero')           → fond flouté [NOUVEAU]
+         · the_post_thumbnail('card-square') → pochette nette
+         · get_field('labels')               → artiste
+         · the_title()                       → titre album
+         · get_field('genre')                → pills genre
+         · get_field('annee_sortie')         → [NOUVEAU]
+         · get_field('accroche')             → [NOUVEAU]
+         · get_the_author() / get_the_date() → byline
+         Fallback fond : si image_hero vide → the_post_thumbnail('lrg_size')
+    ══════════════════════════════════════════════════════ */
+    .an-hero {
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      background: var(--hero-surface);
+      overflow: hidden;
+    }
+
+    /* ── desktop ── */
+    .an-hero--desktop {
+      min-height: min(85vh, 680px);
+      padding-top: var(--gs-nav-height);
+    }
+
+    /* ── mobile (dans le cadre) ── */
+    .an-hero--mobile {
+      min-height: 580px;
+      padding-top: var(--gs-nav-height);
+    }
+
+    .an-hero__bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    .an-hero__bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: blur(6px) saturate(.6) brightness(.45);
+      transform: scale(1.06);
+    }
+
+    .an-hero__overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(
+        to top,
+        var(--color2) 0%,
+        rgba(0,11,41,.75) 45%,
+        rgba(0,0,0,.3) 100%
+      );
+    }
+
+    .an-hero__grain {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      opacity: .04;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 200px;
+      pointer-events: none;
+    }
+
+    .an-hero__divider {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, rgba(232,31,31,.45) 20%, rgba(232,31,31,.45) 80%, transparent);
+      z-index: 3;
+    }
+
+    .an-hero__inner {
+      position: relative;
+      z-index: 3;
+      width: 100%;
+    }
+
+    /* ── desktop inner ── */
+    .an-hero--desktop .an-hero__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 3rem 2rem 3.5rem;
+    }
+
+    /* ── mobile inner ── */
+    .an-hero--mobile .an-hero__inner {
+      padding: 2rem 1.25rem 2.5rem;
+    }
+
+
+    /* ── LAYOUT DESKTOP : pochette gauche / info droite ── */
+    .an-hero--desktop .an-hero__layout {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 3rem;
+      align-items: flex-end;
+    }
+
+    /* ── LAYOUT MOBILE : colonne unique ── */
+    .an-hero--mobile .an-hero__layout {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+    }
+
+    /* ── POCHETTE desktop ── */
+    .an-hero--desktop .an-hero__cover-wrap { position: relative; }
+    .an-hero--desktop .an-hero__cover {
+      width: 260px;
+      height: 260px;
+      object-fit: cover;
+      display: block;
+      box-shadow: 0 20px 60px rgba(0,0,0,.7), 0 0 0 1px rgba(255,255,255,.08);
+    }
+
+    /* ── POCHETTE mobile : flottante haut-droite ── */
+    .an-hero--mobile .an-hero__cover-wrap {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 5;
+    }
+    .an-hero--mobile .an-hero__cover {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      display: block;
+      box-shadow: 0 8px 24px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.08);
+    }
+
+    /* ── INFO ── */
+    .an-hero__info {
+      display: flex;
+      flex-direction: column;
+    }
+    .an-hero--desktop .an-hero__info { gap: .8rem; padding-bottom: .25rem; }
+    .an-hero--mobile  .an-hero__info { gap: .6rem; padding-left: 166px; /* espace pochette 150px + marge */ }
+
+    /* Artiste */
+    .an-hero__artist {
+      font-family: 'Roboto', sans-serif;
+      font-weight: 700;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--color1);
+    }
+    .an-hero--desktop .an-hero__artist { font-size: .82rem; }
+    .an-hero--mobile  .an-hero__artist { font-size: .72rem; }
+
+    /* Titre */
+    .an-hero__title {
+      font-family: 'Anton', sans-serif;
+      line-height: .95;
+      color: var(--color3);
+      text-transform: uppercase;
+    }
+    .an-hero--desktop .an-hero__title { font-size: clamp(2.8rem, 6vw, 5.5rem); }
+    .an-hero--mobile  .an-hero__title { font-size: 2rem; line-height: 1; }
+
+    /* Accroche */
+    .an-hero__accroche {
+      font-size: .95rem;
+      line-height: 1.55;
+      color: rgba(255,255,255,.62);
+      font-style: italic;
+      border-left: 2px solid var(--color1);
+      padding-left: .9rem;
+    }
+    .an-hero--mobile .an-hero__accroche { display: none; }
+
+    /* Pills */
+    .an-hero__meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .4rem;
+    }
+
+    .an-hero__pill {
+      display: inline-block;
+      padding: .22rem .65rem;
+      font-family: 'Roboto', sans-serif;
+      font-size: .68rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      background: var(--color1);
+      color: var(--color3);
+    }
+    .an-hero__pill--ghost {
+      display: inline-block;
+      padding: .22rem .65rem;
+      font-family: 'Roboto', sans-serif;
+      font-size: .68rem;
+      font-weight: 400;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      background: transparent;
+      border: 1px solid rgba(255,255,255,.3);
+      color: rgba(255,255,255,.75);
+    }
+
+    /* Byline */
+    .an-hero__byline {
+      font-size: .75rem;
+      color: rgba(255,255,255,.38);
+      letter-spacing: .03em;
+    }
+    .an-hero--mobile .an-hero__byline { font-size: .68rem; }
+
+    /* ══════════════════════════════════════════════════════
+       CADRE MOBILE — simule un écran de téléphone 390px
+    ══════════════════════════════════════════════════════ */
+    .phone-frame {
+      width: 390px;
+      margin: 0 auto;
+      border: 6px solid #222;
+      border-radius: 36px;
+      overflow: hidden;
+      box-shadow:
+        0 0 0 1px rgba(255,255,255,.06),
+        0 40px 80px rgba(0,0,0,.6);
+      background: var(--hero-surface);
+    }
+    /* Encoche */
+    .phone-notch {
+      height: 28px;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .phone-notch::after {
+      content: '';
+      width: 80px;
+      height: 12px;
+      background: #111;
+      border-radius: 10px;
+    }
+
+    /* ── SECTIONS DE LA PAGE PROPOSAL ─────────────────── */
+    .section-desktop {
+      padding-top: 0;
+    }
+
+    .section-mobile {
+      padding: 3rem 0 5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    /* ── LÉGENDE ───────────────────────────────────────── */
+    .legend {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 3rem 2rem 5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+      font-size: .83rem;
+      color: rgba(255,255,255,.55);
+      border-top: 1px solid rgba(255,255,255,.06);
+    }
+    .legend h2 {
+      font-family: 'Anton', sans-serif;
+      color: var(--color1);
+      font-size: 1rem;
+      margin-bottom: 1rem;
+      grid-column: 1 / -1;
+    }
+    .legend h3 {
+      font-family: 'Roboto', sans-serif;
+      font-size: .7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+      color: rgba(255,255,255,.35);
+      margin-bottom: .7rem;
+    }
+    .legend ul { list-style: none; display: flex; flex-direction: column; gap: .45rem; }
+    .legend li::before { content: '· '; color: var(--color1); }
+    .tag-new {
+      display: inline-block;
+      background: var(--color1);
+      color: #fff;
+      font-size: .6rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .08rem .4rem;
+      margin-left: .3rem;
+      vertical-align: middle;
+    }
+    .tag-exists {
+      display: inline-block;
+      background: rgba(255,255,255,.08);
+      color: rgba(255,255,255,.4);
+      font-size: .6rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .08rem .4rem;
+      margin-left: .3rem;
+      vertical-align: middle;
+    }
+    .legend-divider { height: 1px; background: rgba(255,255,255,.06); grid-column: 1 / -1; margin: .5rem 0; }
+
+    /* ── ANIMATION POCHETTE ───────────────────────────────── */
+    @keyframes an-cover-in {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0);    }
+    }
+    @keyframes an-info-in {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0);   }
+    }
+
+    .an-hero__cover-wrap {
+      animation: an-cover-in .55s cubic-bezier(.22,.61,.36,1) .1s both;
+    }
+    .an-hero__info {
+      animation: an-info-in .5s cubic-bezier(.22,.61,.36,1) .28s both;
+    }
+
+    /* ── REDUCED MOTION ───────────────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      .an-hero__cover-wrap,
+      .an-hero__info { animation: none; }
+    }
+
+    /* ── ANNOTATIONS MAQUETTE (hors prod) ─────────────────── */
+    .annotation {
+      position: absolute;
+      font-family: 'Roboto', sans-serif;
+      font-size: .6rem;
+      font-weight: 700;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      background: rgba(232,31,31,.85);
+      color: #fff;
+      padding: .2rem .5rem;
+      z-index: 10;
+      pointer-events: none;
+    }
+    .annotation--bg    { top: 8px; left: 8px; }
+    .annotation--cover { top: -20px; left: 0; }
+
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════
+       DESKTOP
+  ════════════════════════════════════════════════ -->
+  <p class="preview-label">↓ Desktop</p>
+
+  <div class="section-desktop">
+    <nav class="fake-nav" aria-hidden="true">
+      <span>GIMMICK SHELTER</span>
+      Accueil &nbsp;·&nbsp; Chroniques &nbsp;·&nbsp; Playlists &nbsp;·&nbsp; Agenda
+    </nav>
+
+    <section class="an-hero an-hero--desktop" aria-label="En-tête de la chronique">
+      <!-- image_hero ACF — photo de concert, différente de la pochette -->
+      <div class="an-hero__bg" aria-hidden="true">
+        <span class="annotation annotation--bg">image_hero (ACF)</span>
+        <img src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=1400&q=80" alt="">
+      </div>
+      <div class="an-hero__overlay" aria-hidden="true"></div>
+      <div class="an-hero__grain" aria-hidden="true"></div>
+      <div class="an-hero__divider" aria-hidden="true"></div>
+
+      <div class="an-hero__inner">
+        <div class="an-hero__layout">
+
+          <!-- Pochette — the_post_thumbnail('card-square') -->
+          <div class="an-hero__cover-wrap">
+            <span class="annotation annotation--cover">card-square (WP)</span>
+            <img class="an-hero__cover"
+              src="https://upload.wikimedia.org/wikipedia/en/d/d3/Nick_Cave_and_the_Bad_Seeds_-_Push_the_Sky_Away.jpg"
+              alt="Pochette Push The Sky Away — Nick Cave &amp; The Bad Seeds">
+          </div>
+
+          <!-- Info -->
+          <div class="an-hero__info">
+            <p class="an-hero__artist">Nick Cave &amp; The Bad Seeds</p>
+            <h1 class="an-hero__title">Push the Sky Away</h1>
+            <p class="an-hero__accroche">
+              Un disque hanté, fragile et profond — Cave transforme la perte en quelque chose d'universel.
+            </p>
+            <div class="an-hero__meta">
+              <span class="an-hero__pill">Chronique</span>
+              <span class="an-hero__pill--ghost">Post-punk</span>
+              <span class="an-hero__pill--ghost">Art rock</span>
+              <span class="an-hero__pill--ghost">2013</span>
+            </div>
+            <p class="an-hero__byline">Par Jean Dupont &nbsp;·&nbsp; 12 mai 2026</p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════
+       MOBILE — cadre téléphone 390px
+  ════════════════════════════════════════════════ -->
+  <p class="preview-label">↓ Mobile (390px)</p>
+
+  <div class="section-mobile">
+    <div class="phone-frame">
+      <div class="phone-notch"></div>
+
+      <!-- Nav mobile -->
+      <nav class="fake-nav--mobile" aria-hidden="true">
+        <span>GIMMICK SHELTER</span>
+        <div class="burger"><i></i><i></i><i></i></div>
+      </nav>
+
+      <!-- Hero mobile -->
+      <section class="an-hero an-hero--mobile" aria-label="En-tête de la chronique">
+        <!-- image_hero ACF — même image que desktop -->
+        <div class="an-hero__bg" aria-hidden="true">
+          <span class="annotation annotation--bg">image_hero (ACF)</span>
+          <img src="https://images.unsplash.com/photo-1501386761578-eac5c94b800a?w=1400&q=80" alt="">
+        </div>
+        <div class="an-hero__overlay" aria-hidden="true"></div>
+        <div class="an-hero__grain" aria-hidden="true"></div>
+        <div class="an-hero__divider" aria-hidden="true"></div>
+
+        <div class="an-hero__inner">
+          <div class="an-hero__layout">
+
+            <!-- Pochette — the_post_thumbnail('card-square') -->
+            <div class="an-hero__cover-wrap">
+              <span class="annotation annotation--cover">card-square (WP)</span>
+              <img class="an-hero__cover"
+                src="https://upload.wikimedia.org/wikipedia/en/d/d3/Nick_Cave_and_the_Bad_Seeds_-_Push_the_Sky_Away.jpg"
+                alt="Pochette Push The Sky Away — Nick Cave &amp; The Bad Seeds">
+            </div>
+
+            <!-- Info -->
+            <div class="an-hero__info">
+              <p class="an-hero__artist">Nick Cave &amp; The Bad Seeds</p>
+              <h1 class="an-hero__title">Push the Sky Away</h1>
+              <!-- accroche masquée mobile -->
+              <div class="an-hero__meta">
+                <span class="an-hero__pill">Chronique</span>
+                <span class="an-hero__pill--ghost">Post-punk</span>
+                <span class="an-hero__pill--ghost">2013</span>
+              </div>
+              <p class="an-hero__byline">Par Jean Dupont · 12 mai 2026</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════
+       LÉGENDE
+  ════════════════════════════════════════════════ -->
+  <div class="legend">
+    <h2>Notes de conception · Hero v3</h2>
+
+    <div>
+      <h3>Champs ACF</h3>
+      <ul>
+        <li><code>image_hero</code> → fond flouté du hero (photo concert, ambiance…) <span class="tag-new">nouveau</span></li>
+        <li><code>card-square</code> → pochette album, nette en avant-plan <span class="tag-exists">wp natif</span></li>
+        <li><code>labels</code> → artiste rouge capitales <span class="tag-exists">existe</span></li>
+        <li><code>the_title()</code> → titre Anton XXL <span class="tag-exists">wp natif</span></li>
+        <li><code>genre</code> → pills ghost <span class="tag-exists">existe</span></li>
+        <li><code>annee_sortie</code> → pill année de sortie <span class="tag-new">nouveau</span></li>
+        <li><code>accroche</code> → tagline italic filet rouge (desktop only) <span class="tag-new">nouveau</span></li>
+        <li><code>get_the_author()</code> + <code>get_the_date()</code> → byline <span class="tag-exists">wp natif</span></li>
+      </ul>
+    </div>
+
+    <div>
+      <h3>Choix visuels</h3>
+      <ul>
+        <li>Fond : <code>lrg_size</code> — blur(10px) + grain noise 4% + double gradient</li>
+        <li>Pochette <code>card-square</code> nette en avant-plan, pas floutée</li>
+        <li>Filet rouge <code>var(--color1)</code> en bas du hero</li>
+        <li>Mobile : pochette 100×100 flottante haut-droite, accroche masquée</li>
+        <li>Hauteur desktop : <code>min(85vh, 680px)</code></li>
+        <li>Pas de note — retirée</li>
+      </ul>
+    </div>
+
+    <div class="legend-divider"></div>
+
+    <div>
+      <h3>Nouveaux champs (specs backend)</h3>
+      <ul>
+        <li><strong>image_hero</strong> — type image · "Image de fond (hero)" · non requis · return : URL · fallback : thumbnail WP si vide</li>
+        <li><strong>annee_sortie</strong> — type text · "Année de sortie" · non requis · ex. 2013</li>
+        <li><strong>accroche</strong> — type textarea · max 160 car. · non requis · "Phrase éditoriale courte pour le hero"</li>
+      </ul>
+    </div>
+
+    <div>
+      <h3>Responsive</h3>
+      <ul>
+        <li>Desktop ≥ 641px : grille 260px + 1fr, pochette à gauche</li>
+        <li>Tablette 641–900px : grille 200px + 1fr</li>
+        <li>Mobile ≤ 640px : colonne unique, pochette 100px flottante</li>
+        <li>Accroche visible desktop uniquement</li>
+        <li>Genre pills : 2 max sur mobile pour éviter le débordement</li>
+      </ul>
+    </div>
+  </div>
+
+</body>
+</html>

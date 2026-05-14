@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>GS — Page À propos · 3 directions de redesign</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --color1:#E81F1F;
+    --color2:#000B29;
+    --color3:#FFFFFF;
+    --color4:#000000;
+    --color5:#6D6D64;
+    --gs-nav-height:52px;
+    --gs-divider-soft:rgba(255,255,255,.08);
+    --gs-overlay-card:rgba(0,0,0,.85);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--color2);color:var(--color3);font-family:'Roboto',sans-serif;font-size:16px;line-height:1.6;letter-spacing:.02rem}
+  h1,h2,h3,h4,h5,h6{font-family:'Anton',sans-serif;font-weight:400;letter-spacing:.02em;margin:0}
+  p{margin:0 0 1em;text-align:justify}
+  a{color:var(--color3);text-decoration:none}
+
+  /* === Page wrapper / proposals navigation === */
+  .doc-toc{position:sticky;top:0;z-index:50;background:var(--color4);border-bottom:1px solid var(--color1);padding:.6rem 1rem;display:flex;gap:1rem;align-items:center;flex-wrap:wrap}
+  .doc-toc strong{font-family:'Anton',sans-serif;font-size:1.2rem;color:var(--color1);letter-spacing:.05em}
+  .doc-toc a{padding:.3rem .7rem;border:1px solid var(--gs-divider-soft);border-radius:3px;font-size:.85rem}
+  .doc-toc a:hover{border-color:var(--color1);color:var(--color1)}
+  .proposal{border-bottom:8px solid var(--color1);margin-bottom:0}
+  .proposal-meta{background:var(--color4);padding:1.5rem 2rem;border-left:6px solid var(--color1)}
+  .proposal-meta .label{display:inline-block;background:var(--color1);color:var(--color3);font-family:'Anton',sans-serif;font-size:1rem;letter-spacing:.1em;padding:.2rem .8rem;margin-bottom:.6rem}
+  .proposal-meta h2{font-size:2rem;color:var(--color3);margin-bottom:.4rem}
+  .proposal-meta p{color:var(--color5);font-size:.95rem;margin:0;text-align:left}
+
+  /* === Faux header simulé === */
+  .fake-header{background:var(--color1);color:var(--color3)}
+  .fake-header__band{display:flex;align-items:center;justify-content:space-between;padding:.6rem 2rem}
+  .fake-header__logo{font-family:'Anton',sans-serif;font-size:2.2rem;letter-spacing:.05em}
+  .fake-header__tagline{font-family:'Roboto',sans-serif;font-size:.85rem;font-style:italic;opacity:.9}
+  .fake-header__nav{background:var(--color4);height:var(--gs-nav-height);display:flex;align-items:center;padding:0 2rem;gap:1.5rem;border-bottom:1px solid var(--gs-divider-soft)}
+  .fake-header__nav a{font-family:'Anton',sans-serif;font-size:1rem;letter-spacing:.08em;color:var(--color3)}
+  .fake-header__nav a:hover{color:var(--color1)}
+  .fake-header__nav .spacer{flex:1}
+
+  /* === Faux footer simulé === */
+  .fake-footer{background:var(--color4);color:var(--color5);padding:2.5rem 2rem;display:grid;grid-template-columns:repeat(4,1fr);gap:2rem;border-top:1px solid var(--gs-divider-soft)}
+  .fake-footer h4{font-size:1.2rem;color:var(--color3);margin-bottom:.6rem}
+  .fake-footer ul{list-style:none;padding:0;margin:0;font-size:.85rem;line-height:1.9}
+  .fake-footer .copy{grid-column:1/-1;border-top:1px solid var(--gs-divider-soft);padding-top:1rem;font-size:.75rem;text-align:center;color:var(--color5)}
+  @media(max-width:768px){.fake-footer{grid-template-columns:1fr 1fr}}
+
+  /* ============================================================
+     VARIANTE A — MANIFESTE EDITORIAL
+     ============================================================ */
+  .va{background:var(--color2);color:var(--color3);padding:0}
+  .va__hero{padding:5rem 2rem 3rem;text-align:center;border-bottom:1px solid var(--gs-divider-soft);position:relative;overflow:hidden}
+  .va__hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,rgba(232,31,31,.12),transparent 60%);pointer-events:none}
+  .va__kicker{font-family:'Anton',sans-serif;color:var(--color1);letter-spacing:.4em;font-size:.95rem;margin-bottom:1rem}
+  .va__title{font-size:clamp(4rem,12vw,11rem);line-height:.85;color:var(--color3);position:relative;z-index:1}
+  .va__title em{font-style:normal;color:var(--color1)}
+  .va__sub{font-family:'Roboto',sans-serif;font-style:italic;color:var(--color5);font-size:1.1rem;margin-top:1.2rem;letter-spacing:.05em}
+  .va__manifesto{max-width:780px;margin:0 auto;padding:5rem 2rem}
+  .va__chapter{margin-bottom:4.5rem;position:relative}
+  .va__numeral{font-family:'Anton',sans-serif;font-size:6rem;color:var(--color1);line-height:.8;letter-spacing:.05em;margin-bottom:.5rem;opacity:.9}
+  .va__h{font-size:2.4rem;color:var(--color3);margin-bottom:1.5rem;border-bottom:2px solid var(--color1);padding-bottom:.5rem;display:inline-block}
+  .va__chapter p{font-size:1.1rem;line-height:1.75}
+  .va__chapter p:first-of-type::first-letter{font-family:'Anton',sans-serif;font-size:5rem;float:left;line-height:.85;padding:.4rem .8rem 0 0;color:var(--color1)}
+  .va__chapter strong{color:var(--color1);font-weight:700}
+  .va__pull{font-family:'Anton',sans-serif;font-size:2rem;line-height:1.1;color:var(--color3);border-left:4px solid var(--color1);padding:.5rem 0 .5rem 1.5rem;margin:2rem 0;letter-spacing:.02em}
+  .va__signature{text-align:center;padding:3rem 2rem 5rem;border-top:1px solid var(--gs-divider-soft)}
+  .va__signature .sig{font-family:'Anton',sans-serif;font-size:2.5rem;color:var(--color1);letter-spacing:.08em}
+  .va__signature .since{color:var(--color5);font-size:.9rem;letter-spacing:.2em;margin-top:.5rem}
+
+  /* ============================================================
+     VARIANTE B — MAGAZINE 2 COLONNES
+     ============================================================ */
+  .vb{background:var(--color2);padding:0}
+  .vb__masthead{background:var(--color4);padding:3rem 2rem;border-bottom:6px solid var(--color1);display:flex;align-items:flex-end;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+  .vb__masthead h1{font-size:clamp(3rem,7vw,6rem);color:var(--color3);line-height:.9}
+  .vb__masthead h1 em{font-style:normal;color:var(--color1)}
+  .vb__masthead .issue{font-family:'Anton',sans-serif;font-size:1rem;color:var(--color5);letter-spacing:.3em;text-align:right;line-height:1.4}
+  .vb__masthead .issue strong{color:var(--color1);display:block;font-size:1.4rem;letter-spacing:.1em}
+  .vb__grid{display:grid;grid-template-columns:5fr 7fr;gap:0;max-width:1300px;margin:0 auto}
+  .vb__col-img{background:var(--color4);padding:3rem 2rem;border-right:1px solid var(--gs-divider-soft)}
+  .vb__sticky{position:sticky;top:calc(var(--gs-nav-height) + 1rem)}
+  .vb__photo{width:100%;aspect-ratio:3/4;background:linear-gradient(135deg,#222 0%,#000 100%) url('https://i0.wp.com/www.gimmickshelter.fr/wp-content/uploads/2024/06/cassette-2.jpeg?resize=800&ssl=1') center/cover;filter:contrast(1.1) saturate(.9);border:1px solid var(--gs-divider-soft)}
+  .vb__caption{font-family:'Roboto',sans-serif;font-size:.8rem;color:var(--color5);font-style:italic;margin-top:.7rem;letter-spacing:.05em}
+  .vb__col-img .meta{margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--gs-divider-soft);font-size:.85rem;color:var(--color5);line-height:1.8}
+  .vb__col-img .meta strong{color:var(--color3);display:block;font-family:'Anton',sans-serif;font-size:1.1rem;letter-spacing:.1em;margin-bottom:.5rem}
+  .vb__col-text{padding:3rem 3rem 5rem}
+  .vb__lede{font-family:'Anton',sans-serif;font-size:1.8rem;line-height:1.2;color:var(--color3);margin-bottom:2rem;border-bottom:1px solid var(--gs-divider-soft);padding-bottom:1.5rem}
+  .vb__lede em{font-style:normal;color:var(--color1)}
+  .vb__col-text h2{font-size:1.8rem;color:var(--color1);margin:2.5rem 0 1rem;border-left:3px solid var(--color1);padding-left:.8rem}
+  .vb__col-text p{font-size:1rem;line-height:1.7}
+  .vb__rubriques{list-style:none;padding:0;margin:1rem 0;display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+  .vb__rubriques li{border:1px solid var(--gs-divider-soft);padding:1rem;background:rgba(255,255,255,.02)}
+  .vb__rubriques li strong{font-family:'Anton',sans-serif;color:var(--color1);font-size:1.2rem;letter-spacing:.05em;display:block;margin-bottom:.3rem}
+  .vb__rubriques li span{font-size:.85rem;color:var(--color5)}
+  .vb__team{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin:1.5rem 0}
+  .vb__team .member{background:var(--color4);padding:1rem;border:1px solid var(--gs-divider-soft)}
+  .vb__team img{width:100%;aspect-ratio:1;object-fit:cover;background:#333;display:block}
+  .vb__team h3{font-size:1.4rem;color:var(--color3);margin-top:.6rem}
+  .vb__team p{font-size:.85rem;color:var(--color5);margin:0}
+  .vb__contact{margin-top:3rem;padding:1.5rem;background:var(--color1);color:var(--color3)}
+  .vb__contact h2{color:var(--color3);border:0;padding:0}
+  .vb__contact p{margin:.5rem 0;font-size:.95rem}
+  .vb__contact a.cta{display:inline-block;margin-top:.8rem;background:var(--color4);color:var(--color3);padding:.7rem 1.4rem;font-family:'Anton',sans-serif;letter-spacing:.1em}
+  @media(max-width:992px){
+    .vb__grid{grid-template-columns:1fr}
+    .vb__col-img{border-right:0;border-bottom:1px solid var(--gs-divider-soft)}
+    .vb__sticky{position:static}
+    .vb__rubriques,.vb__team{grid-template-columns:1fr}
+  }
+
+  /* ============================================================
+     VARIANTE C — CARTES THEMATIQUES SCROLLEES
+     ============================================================ */
+  .vc{padding:0}
+  .vc__section{padding:6rem 2rem;position:relative;overflow:hidden}
+  .vc__inner{max-width:1100px;margin:0 auto;position:relative;z-index:2}
+  .vc__num{font-family:'Anton',sans-serif;font-size:8rem;line-height:.8;opacity:.18;position:absolute;top:1rem;right:2rem;letter-spacing:.05em;z-index:1}
+  .vc__kicker{font-family:'Anton',sans-serif;letter-spacing:.4em;font-size:.85rem;margin-bottom:.8rem;display:block}
+  .vc__h{font-size:clamp(2.5rem,6vw,5rem);line-height:.95;margin-bottom:1.5rem;letter-spacing:.01em}
+  .vc__h em{font-style:normal}
+  .vc__lead{font-size:1.15rem;max-width:700px;line-height:1.65;margin-bottom:1rem}
+
+  /* C — Hero Mission (rouge) */
+  .vc--mission{background:var(--color1);color:var(--color3)}
+  .vc--mission .vc__num{color:var(--color3)}
+  .vc--mission .vc__kicker{color:var(--color4)}
+  .vc--mission .vc__h em{color:var(--color2)}
+  .vc--mission .vc__sig{font-family:'Anton',sans-serif;font-size:1.2rem;letter-spacing:.3em;margin-top:2rem;display:inline-block;border-bottom:2px solid var(--color2);padding-bottom:.4rem}
+
+  /* C — Histoire (noir) */
+  .vc--story{background:var(--color4);color:var(--color3);border-top:6px solid var(--color1)}
+  .vc--story .vc__num{color:var(--color1)}
+  .vc--story .vc__kicker{color:var(--color1)}
+  .vc--story .vc__h em{color:var(--color1)}
+  .vc__timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;margin-top:2.5rem}
+  .vc__milestone{border-top:3px solid var(--color1);padding-top:1rem}
+  .vc__milestone .y{font-family:'Anton',sans-serif;font-size:2.4rem;color:var(--color1);letter-spacing:.05em;line-height:1}
+  .vc__milestone p{font-size:.9rem;color:var(--color5);margin-top:.4rem}
+  @media(max-width:768px){.vc__timeline{grid-template-columns:1fr 1fr}}
+
+  /* C — Equipe (bleu) */
+  .vc--team{background:var(--color2);color:var(--color3)}
+  .vc--team .vc__num{color:var(--color1)}
+  .vc--team .vc__kicker{color:var(--color1)}
+  .vc--team .vc__h em{color:var(--color1)}
+  .vc__people{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2.5rem}
+  .vc__person{background:var(--color4);border:1px solid var(--gs-divider-soft);overflow:hidden;position:relative;transition:transform .3s}
+  .vc__person:hover{transform:translateY(-4px);border-color:var(--color1)}
+  .vc__person .ph{aspect-ratio:1;background:#222 center/cover}
+  .vc__person .body{padding:1.2rem}
+  .vc__person h3{font-size:1.5rem;color:var(--color3)}
+  .vc__person .role{font-family:'Roboto',sans-serif;font-size:.85rem;color:var(--color1);text-transform:uppercase;letter-spacing:.15em;margin-top:.3rem;display:block}
+  .vc__person p{font-size:.85rem;color:var(--color5);margin-top:.6rem}
+  @media(max-width:768px){.vc__people{grid-template-columns:1fr}}
+
+  /* C — Rubriques (rouge alt avec damier) */
+  .vc--rub{background:var(--color4);color:var(--color3);border-top:6px solid var(--color1)}
+  .vc--rub .vc__num{color:var(--color1)}
+  .vc--rub .vc__kicker{color:var(--color1)}
+  .vc--rub .vc__h em{color:var(--color1)}
+  .vc__rubgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin-top:2.5rem;border:1px solid var(--gs-divider-soft)}
+  .vc__rub{padding:2rem 1.5rem;border-right:1px solid var(--gs-divider-soft);border-bottom:1px solid var(--gs-divider-soft);transition:background .3s}
+  .vc__rub:hover{background:var(--color1)}
+  .vc__rub:hover h3,.vc__rub:hover p{color:var(--color3)}
+  .vc__rub h3{font-size:1.6rem;color:var(--color1);letter-spacing:.05em;margin-bottom:.6rem}
+  .vc__rub p{font-size:.85rem;color:var(--color5);line-height:1.6;margin:0}
+  @media(max-width:992px){.vc__rubgrid{grid-template-columns:1fr 1fr}}
+  @media(max-width:576px){.vc__rubgrid{grid-template-columns:1fr}}
+
+  /* C — Contact (rouge final CTA) */
+  .vc--contact{background:var(--color1);color:var(--color3);text-align:center}
+  .vc--contact .vc__h{color:var(--color3)}
+  .vc--contact .vc__h em{color:var(--color4)}
+  .vc--contact .vc__lead{margin-left:auto;margin-right:auto;color:var(--color3)}
+  .vc__cta{display:inline-block;margin-top:1.5rem;background:var(--color4);color:var(--color3);padding:1rem 2.5rem;font-family:'Anton',sans-serif;letter-spacing:.15em;font-size:1.1rem;border:2px solid var(--color4);transition:.2s}
+  .vc__cta:hover{background:transparent;color:var(--color4);border-color:var(--color4)}
+  .vc__socials{margin-top:2rem;display:flex;justify-content:center;gap:1rem;flex-wrap:wrap}
+  .vc__socials a{padding:.5rem 1.2rem;border:1px solid var(--color3);font-family:'Anton',sans-serif;letter-spacing:.1em;font-size:.9rem}
+  .vc__socials a:hover{background:var(--color4);border-color:var(--color4)}
+
+</style>
+</head>
+<body>
+
+<nav class="doc-toc">
+  <strong>GS · Page À PROPOS</strong>
+  <a href="#variante-a">A — Manifeste</a>
+  <a href="#variante-b">B — Magazine 2 colonnes</a>
+  <a href="#variante-c">C — Cartes scrollées</a>
+  <span style="flex:1"></span>
+  <span style="color:var(--color5);font-size:.75rem">Mai 2026 · 3 directions</span>
+</nav>
+
+<!-- ============================================================
+     VARIANTE A
+     ============================================================ -->
+<section class="proposal" id="variante-a">
+  <div class="proposal-meta">
+    <span class="label">Direction A</span>
+    <h2>Manifeste éditorial</h2>
+    <p><strong>Apport</strong> — affirme la voix GS : page-édito longue, posture "prédicateur rock". Drop cap rouge, chiffres romains, pull-quotes. <strong>Compromis</strong> — moins d'images, surface l'écriture ; demande une rédac soignée et des paragraphes cadencés.</p>
+  </div>
+
+  <!-- Faux header -->
+  <header class="fake-header">
+    <div class="fake-header__band">
+      <div class="fake-header__logo">GIMMICK SHELTER</div>
+      <div class="fake-header__tagline">Prédicateur rock et indépendant depuis 2021</div>
+    </div>
+    <div class="fake-header__nav">
+      <a>ACCUEIL</a><a>ANACHRONIQUES</a><a>PLAYLISTS</a><a>DATES</a><a style="color:var(--color1)">À PROPOS</a><span class="spacer"></span><a>RECHERCHE</a>
+    </div>
+  </header>
+
+  <main class="va">
+    <div class="va__hero">
+      <div class="va__kicker">— ÉDITION SPÉCIALE —</div>
+      <h1 class="va__title">MANI<em>FESTE</em></h1>
+      <div class="va__sub">Cinq ans à hurler dans le vide, et le vide a fini par répondre.</div>
+    </div>
+
+    <div class="va__manifesto">
+
+      <article class="va__chapter">
+        <div class="va__numeral">I.</div>
+        <h2 class="va__h">Pourquoi ce refuge</h2>
+        <p>Gimmick Shelter est né en 2021 d'une conviction simple et un peu enragée : la <strong>scène rock indépendante</strong> méritait mieux qu'un algorithme et trois playlists tièdes. Un webzine, un bunker, un refuge — choisis le mot, on les revendique tous. Ce que l'on défend, c'est une culture qui suinte la sueur, le larsen et l'amateurisme assumé du garage du voisin.</p>
+        <p>Nous croyons aux <strong>oreilles curieuses</strong>. À celles qui n'ont pas peur de descendre dans un sous-sol parisien un mardi soir parce qu'un nom inconnu y joue un troisième concert. À celles qui préfèrent un single autoproduit à une campagne marketing soignée.</p>
+        <div class="va__pull">"Le rock indépendant n'a pas besoin d'être sauvé. Il a besoin qu'on l'écoute."</div>
+      </article>
+
+      <article class="va__chapter">
+        <div class="va__numeral">II.</div>
+        <h2 class="va__h">Ce que l'on couvre</h2>
+        <p>Chaque semaine, on publie ce qui nous secoue : <strong>chroniques d'albums</strong> qu'on aurait aimé voir mieux défendus ailleurs, <strong>interviews</strong> menées sans complaisance, <strong>live reports</strong> avec les pieds dans la bière, <strong>playlists</strong> mensuelles pour les égarés et un <strong>agenda</strong> des dates franciliennes à ne pas rater.</p>
+        <p>Pas de pub, pas de partenariats déguisés, pas de notation à dix décimales. Juste un avis, le nôtre, écrit par des humains qui aiment la musique plus que la raison.</p>
+      </article>
+
+      <article class="va__chapter">
+        <div class="va__numeral">III.</div>
+        <h2 class="va__h">Qui écrit ici</h2>
+        <p>Une rédac à taille humaine, fondée par <strong>Florent Froideval</strong> et <strong>Adrien Masseron</strong>, rejointe par une poignée de plumes invitées au fil des numéros. Pas d'organigramme, pas de comité éditorial — juste un café, une discussion, un papier qui sort.</p>
+        <p>Si tu écris, si tu photographies, si tu enregistres des sons à la volée dans une cave : <strong>écris-nous</strong>. On a toujours de la place pour une voix qui sait pourquoi elle parle.</p>
+      </article>
+
+      <article class="va__chapter">
+        <div class="va__numeral">IV.</div>
+        <h2 class="va__h">Et après ?</h2>
+        <p>On continue. Cinq ans de plus, dix si l'on tient. On continue tant qu'il y aura un groupe à défendre, un disque à exhumer, une salle à remplir un mardi soir. Tu peux nous suivre, nous lire, nous engueuler — la porte est ouverte, le volume est déjà trop fort.</p>
+        <div class="va__pull">"Reste curieux. Reste bruyant. Reste ici."</div>
+      </article>
+
+    </div>
+
+    <div class="va__signature">
+      <div class="sig">— LA RÉDACTION GS —</div>
+      <div class="since">PARIS · DEPUIS 2021</div>
+    </div>
+  </main>
+
+  <!-- Faux footer -->
+  <footer class="fake-footer">
+    <div><h4>GIMMICK SHELTER</h4><p style="font-size:.85rem">Webzine rock indépendant, basé à Paris.</p></div>
+    <div><h4>NAVIGATION</h4><ul><li>Anachroniques</li><li>Playlists</li><li>Dates</li><li>À propos</li></ul></div>
+    <div><h4>RUBRIQUES</h4><ul><li>Chroniques</li><li>Interviews</li><li>Live reports</li></ul></div>
+    <div><h4>SUIVRE</h4><ul><li>Instagram</li><li>Bluesky</li><li>Spotify</li><li>Newsletter</li></ul></div>
+    <div class="copy">© 2021–2026 Gimmick Shelter · Tous droits réservés</div>
+  </footer>
+</section>
+
+
+<!-- ============================================================
+     VARIANTE B
+     ============================================================ -->
+<section class="proposal" id="variante-b">
+  <div class="proposal-meta">
+    <span class="label">Direction B</span>
+    <h2>Magazine deux colonnes</h2>
+    <p><strong>Apport</strong> — layout presse musicale lisible, photo sticky qui ancre, tout (intro, valeurs, rubriques, équipe, contact) sur une seule page. <strong>Compromis</strong> — densité élevée ; sur mobile la sticky disparaît et la page redevient longue et linéaire.</p>
+  </div>
+
+  <header class="fake-header">
+    <div class="fake-header__band">
+      <div class="fake-header__logo">GIMMICK SHELTER</div>
+      <div class="fake-header__tagline">Prédicateur rock et indépendant depuis 2021</div>
+    </div>
+    <div class="fake-header__nav">
+      <a>ACCUEIL</a><a>ANACHRONIQUES</a><a>PLAYLISTS</a><a>DATES</a><a style="color:var(--color1)">À PROPOS</a><span class="spacer"></span><a>RECHERCHE</a>
+    </div>
+  </header>
+
+  <main class="vb">
+    <div class="vb__masthead">
+      <h1>QUI <em>SOMMES-</em><br>NOUS ?</h1>
+      <div class="issue">N° 057 · MAI 2026<br><strong>À PROPOS</strong></div>
+    </div>
+
+    <div class="vb__grid">
+      <aside class="vb__col-img">
+        <div class="vb__sticky">
+          <div class="vb__photo" role="img" aria-label="Cassette audio sur fond noir"></div>
+          <p class="vb__caption">Cassette audio. Photo d'archive Gimmick Shelter, 2024.</p>
+          <div class="meta">
+            <strong>EN BREF</strong>
+            Fondé en 2021<br>
+            Basé à Paris<br>
+            Contributions : 4–8 / mois<br>
+            Lecteurs : ~12 000 / mois<br>
+            Indépendant, sans pub
+          </div>
+        </div>
+      </aside>
+
+      <article class="vb__col-text">
+        <p class="vb__lede">Gimmick Shelter est un webzine qui met en lumière ce que l'on fait de mieux en matière de <em>culture rock indépendante</em>. Un refuge dédié aux oreilles les plus curieuses qui n'ont pour amour-propre que la musique.</p>
+
+        <h2>Notre ligne</h2>
+        <p>Directe, éclectique, percutante. On vous concentre dans un même environnement la critique des meilleurs opus de la scène émergente, le décryptage des nouveaux genres et tendances, nos playlists du moment et une sélection des meilleurs rendez-vous scéniques en Île-de-France.</p>
+        <p>Nous cherchons constamment à renforcer notre ligne éditoriale et à répandre notre passion pour la musique alternative. Si tu te reconnais dans ce projet, écris-nous : on programmera un café.</p>
+
+        <h2>Nos rubriques</h2>
+        <ul class="vb__rubriques">
+          <li><strong>ANACHRONIQUES</strong><span>Chroniques d'albums, neufs ou exhumés.</span></li>
+          <li><strong>PLAYLISTS</strong><span>Sélections mensuelles thématiques.</span></li>
+          <li><strong>DATES</strong><span>Agenda des concerts à Paris et IDF.</span></li>
+          <li><strong>INTERVIEWS</strong><span>Conversations longues, sans complaisance.</span></li>
+        </ul>
+
+        <h2>L'équipe</h2>
+        <div class="vb__team">
+          <div class="member">
+            <img src="https://www.gimmickshelter.fr/wp-content/uploads/2023/02/florent_froideval-1.jpeg" alt="Florent Froideval">
+            <h3>Florent Froideval</h3>
+            <p>Fondateur · Rédacteur en chef</p>
+          </div>
+          <div class="member">
+            <img src="https://www.gimmickshelter.fr/wp-content/uploads/2023/02/adrien_masseron-1.jpg" alt="Adrien Masseron">
+            <h3>Adrien Masseron</h3>
+            <p>Co-fondateur · Webmaster</p>
+          </div>
+        </div>
+
+        <div class="vb__contact">
+          <h2>Écris-nous</h2>
+          <p>Tu veux proposer un papier, une chronique, un live report, ou simplement nous parler d'un groupe qu'on a raté ?</p>
+          <a class="cta" href="#">CONTACT@GIMMICKSHELTER.FR</a>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="fake-footer">
+    <div><h4>GIMMICK SHELTER</h4><p style="font-size:.85rem">Webzine rock indépendant, basé à Paris.</p></div>
+    <div><h4>NAVIGATION</h4><ul><li>Anachroniques</li><li>Playlists</li><li>Dates</li><li>À propos</li></ul></div>
+    <div><h4>RUBRIQUES</h4><ul><li>Chroniques</li><li>Interviews</li><li>Live reports</li></ul></div>
+    <div><h4>SUIVRE</h4><ul><li>Instagram</li><li>Bluesky</li><li>Spotify</li><li>Newsletter</li></ul></div>
+    <div class="copy">© 2021–2026 Gimmick Shelter · Tous droits réservés</div>
+  </footer>
+</section>
+
+
+<!-- ============================================================
+     VARIANTE C
+     ============================================================ -->
+<section class="proposal" id="variante-c">
+  <div class="proposal-meta">
+    <span class="label">Direction C</span>
+    <h2>Cartes thématiques scrollées</h2>
+    <p><strong>Apport</strong> — rythme one-page moderne, alternance fond rouge / noir / bleu très GS, chaque section claque visuellement (mission, histoire, équipe, rubriques, contact). <strong>Compromis</strong> — beaucoup de hauteur, demande des transitions soignées et un contenu court par bloc.</p>
+  </div>
+
+  <header class="fake-header">
+    <div class="fake-header__band">
+      <div class="fake-header__logo">GIMMICK SHELTER</div>
+      <div class="fake-header__tagline">Prédicateur rock et indépendant depuis 2021</div>
+    </div>
+    <div class="fake-header__nav">
+      <a>ACCUEIL</a><a>ANACHRONIQUES</a><a>PLAYLISTS</a><a>DATES</a><a style="color:var(--color1)">À PROPOS</a><span class="spacer"></span><a>RECHERCHE</a>
+    </div>
+  </header>
+
+  <main class="vc">
+
+    <!-- 01 — MISSION (rouge) -->
+    <section class="vc__section vc--mission">
+      <div class="vc__num">01</div>
+      <div class="vc__inner">
+        <span class="vc__kicker">— NOTRE MISSION —</span>
+        <h1 class="vc__h">REFUGE POUR<br>OREILLES <em>CURIEUSES</em>.</h1>
+        <p class="vc__lead">Gimmick Shelter est un webzine qui met en lumière ce que l'on fait de mieux en matière de culture rock indépendante. Pas de pub, pas de complaisance — juste des avis, des disques, des concerts, des humains.</p>
+        <p class="vc__lead">Une ligne directe, éclectique et percutante. Un refuge contre l'algorithme.</p>
+        <span class="vc__sig">DEPUIS PARIS · 2021</span>
+      </div>
+    </section>
+
+    <!-- 02 — HISTOIRE (noir) -->
+    <section class="vc__section vc--story">
+      <div class="vc__num">02</div>
+      <div class="vc__inner">
+        <span class="vc__kicker">— L'HISTOIRE —</span>
+        <h2 class="vc__h">CINQ ANS<br>DE <em>BRUIT</em>.</h2>
+        <p class="vc__lead">Lancé un soir de 2021 par deux amis et une cave trop bruyante, Gimmick Shelter a grandi à coups de chroniques, de live reports et de playlists. Voilà les jalons.</p>
+        <div class="vc__timeline">
+          <div class="vc__milestone"><div class="y">2021</div><p>Premier numéro. Six chroniques. Zéro lecteur, sauf nos mères.</p></div>
+          <div class="vc__milestone"><div class="y">2023</div><p>Lancement de la rubrique <em>Dates</em> : agenda live IDF.</p></div>
+          <div class="vc__milestone"><div class="y">2024</div><p>Refonte du site, première newsletter, premiers contributeurs.</p></div>
+          <div class="vc__milestone"><div class="y">2026</div><p>12 000 lecteurs / mois. La cave est toujours trop bruyante.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 — EQUIPE (bleu) -->
+    <section class="vc__section vc--team">
+      <div class="vc__num">03</div>
+      <div class="vc__inner">
+        <span class="vc__kicker">— L'ÉQUIPE —</span>
+        <h2 class="vc__h">DEUX <em>FONDATEURS</em>,<br>UNE PETITE BANDE.</h2>
+        <p class="vc__lead">Une rédac à taille humaine. Pas d'organigramme, pas de comité — juste des plumes qui aiment la musique plus que la raison.</p>
+        <div class="vc__people">
+          <div class="vc__person">
+            <div class="ph" style="background-image:url('https://www.gimmickshelter.fr/wp-content/uploads/2023/02/florent_froideval-1.jpeg')"></div>
+            <div class="body">
+              <h3>FLORENT FROIDEVAL</h3>
+              <span class="role">Fondateur · Rédac' chef</span>
+              <p>Définit la ligne éditoriale, écrit le plus, écoute encore plus.</p>
+            </div>
+          </div>
+          <div class="vc__person">
+            <div class="ph" style="background-image:url('https://www.gimmickshelter.fr/wp-content/uploads/2023/02/adrien_masseron-1.jpg')"></div>
+            <div class="body">
+              <h3>ADRIEN MASSERON</h3>
+              <span class="role">Co-fondateur · Webmaster</span>
+              <p>Code, design, infra. Garde le site debout entre deux concerts.</p>
+            </div>
+          </div>
+          <div class="vc__person">
+            <div class="ph" style="background:linear-gradient(135deg,#222,#000);display:flex;align-items:center;justify-content:center;color:var(--color5);font-family:'Anton',sans-serif;font-size:3rem">+</div>
+            <div class="body">
+              <h3>TOI ?</h3>
+              <span class="role">Plume invitée</span>
+              <p>On cherche des contributeurs. Écris-nous, on prend un café.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 — RUBRIQUES (noir, grille) -->
+    <section class="vc__section vc--rub">
+      <div class="vc__num">04</div>
+      <div class="vc__inner">
+        <span class="vc__kicker">— CE QU'ON PUBLIE —</span>
+        <h2 class="vc__h">QUATRE <em>RUBRIQUES</em>,<br>UN MÊME REFUGE.</h2>
+        <div class="vc__rubgrid">
+          <div class="vc__rub"><h3>ANACHRONIQUES</h3><p>Chroniques d'albums, neufs ou exhumés. Note générale, labels, ressentis.</p></div>
+          <div class="vc__rub"><h3>PLAYLISTS</h3><p>Sélections mensuelles thématiques. Pour les longs trajets et les soirées seul·e.</p></div>
+          <div class="vc__rub"><h3>DATES</h3><p>Agenda des concerts à Paris et en Île-de-France. Mis à jour chaque semaine.</p></div>
+          <div class="vc__rub"><h3>INTERVIEWS</h3><p>Conversations longues avec celles et ceux qui font la scène. Sans complaisance.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 — CONTACT (rouge final) -->
+    <section class="vc__section vc--contact">
+      <div class="vc__num">05</div>
+      <div class="vc__inner">
+        <span class="vc__kicker">— ÉCRIS-NOUS —</span>
+        <h2 class="vc__h">UN PAPIER ?<br>UN <em>CAFÉ</em> ?</h2>
+        <p class="vc__lead">Tu veux proposer une chronique, un live report, une interview ? Tu as raté un groupe et tu veux qu'on en parle ? La porte est ouverte.</p>
+        <a class="vc__cta" href="mailto:contact@gimmickshelter.fr">CONTACT@GIMMICKSHELTER.FR</a>
+        <div class="vc__socials">
+          <a>INSTAGRAM</a><a>BLUESKY</a><a>SPOTIFY</a><a>NEWSLETTER</a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="fake-footer">
+    <div><h4>GIMMICK SHELTER</h4><p style="font-size:.85rem">Webzine rock indépendant, basé à Paris.</p></div>
+    <div><h4>NAVIGATION</h4><ul><li>Anachroniques</li><li>Playlists</li><li>Dates</li><li>À propos</li></ul></div>
+    <div><h4>RUBRIQUES</h4><ul><li>Chroniques</li><li>Interviews</li><li>Live reports</li></ul></div>
+    <div><h4>SUIVRE</h4><ul><li>Instagram</li><li>Bluesky</li><li>Spotify</li><li>Newsletter</li></ul></div>
+    <div class="copy">© 2021–2026 Gimmick Shelter · Tous droits réservés</div>
+  </footer>
+</section>
+
+</body>
+</html>

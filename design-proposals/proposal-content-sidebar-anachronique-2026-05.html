@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proposal — Content + Sidebar Anachronique · Gimmick Shelter</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --color1: #E81F1F;
+      --color2: #000B29;
+      --color3: #FFFFFF;
+      --color4: #000000;
+      --color5: #6D6D64;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #0a0a0d;
+      color: var(--color3);
+    }
+
+    /* ── PAGE HEADER ─────────────────────────────────────── */
+    .page-header {
+      max-width: 1200px; margin: 0 auto; padding: 3rem 2rem 0;
+    }
+    .page-header__title {
+      font-family: 'Anton', sans-serif; font-size: 1.3rem;
+      color: var(--color1); letter-spacing: .05em; text-transform: uppercase; margin-bottom: .5rem;
+    }
+    .page-header__sub { font-size: .8rem; color: rgba(255,255,255,.4); line-height: 1.6; }
+
+    /* ── AVANT / APRÈS ───────────────────────────────────── */
+    .diff-box {
+      max-width: 1200px; margin: 2rem auto 0;
+      padding: 0 2rem 2rem;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+    }
+    .diff-box__panel {
+      padding: 1.25rem 1.5rem; font-size: .8rem;
+      line-height: 1.8; color: rgba(255,255,255,.5);
+    }
+    .diff-box__panel--before { border: 1px solid rgba(255,100,100,.15); }
+    .diff-box__panel--after  { border: 1px solid rgba(100,255,150,.15); }
+    .diff-box__head { font-size: .62rem; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; margin-bottom: .9rem; }
+    .diff-box__panel--before .diff-box__head { color: rgba(255,100,100,.6); }
+    .diff-box__panel--after  .diff-box__head { color: rgba(100,255,150,.6); }
+    .diff-box ul { list-style: none; display: flex; flex-direction: column; gap: .4rem; }
+    .diff-box__panel--before li::before { content: '✕  '; color: rgba(255,100,100,.5); }
+    .diff-box__panel--after  li::before { content: '✓  '; color: rgba(100,255,150,.5); }
+
+    /* ── FAUX HERO STUB ──────────────────────────────────── */
+    .hero-stub {
+      background: linear-gradient(to top, #000B29 0%, #0c0c20 100%);
+      padding: 2.5rem 2rem;
+      max-width: 1200px; margin: 2rem auto 0;
+      display: flex; align-items: center; gap: 2rem;
+      border-bottom: 3px solid var(--color1);
+    }
+    .hero-stub__cover {
+      width: 90px; height: 90px;
+      background: linear-gradient(135deg, #1a1826 0%, #2a2f4d 100%);
+      flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+      font-size: .6rem; color: rgba(255,255,255,.3); text-align: center;
+    }
+    .hero-stub__text { display: flex; flex-direction: column; gap: .35rem; }
+    .hero-stub__artist { font-size: .68rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; color: var(--color1); }
+    .hero-stub__title { font-family: 'Anton', sans-serif; font-size: 1.9rem; color: #fff; text-transform: uppercase; line-height: 1; }
+    .hero-stub__pills { display: flex; gap: .4rem; flex-wrap: wrap; margin-top: .2rem; }
+    .hero-stub__pill { padding: .15rem .45rem; font-size: .6rem; font-weight: 700; text-transform: uppercase; background: var(--color1); color: #fff; }
+    .hero-stub__pill--g { padding: .15rem .45rem; font-size: .6rem; text-transform: uppercase; border: 1px solid rgba(255,255,255,.25); color: rgba(255,255,255,.65); }
+    .hero-stub__note { font-size: .63rem; color: rgba(255,255,255,.25); font-style: italic; }
+
+    /* ── ZONE BLANCHE (content + sidebar) ────────────────── */
+    .content-zone {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: var(--color3);
+    }
+
+    .layout {
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: 1fr 300px;
+      gap: 3.5rem;
+      align-items: start;
+    }
+
+    /* ════════════════════════════════════════════════════════
+       THE_CONTENT — gs-review-body
+       Fond blanc · texte noir · liens color2
+    ════════════════════════════════════════════════════════ */
+    .gs-review-body {
+      padding: 3rem 0 3rem;
+    }
+
+    .gs-review-body p {
+      font-size: 1.08rem;
+      line-height: 1.82;
+      color: var(--color4);
+      margin-bottom: 1.6em;
+      text-align: left;
+    }
+
+    /* Premier paragraphe — intro */
+    .gs-review-body p:first-of-type {
+      font-size: 1.18rem;
+      line-height: 1.72;
+      color: var(--color4);
+    }
+
+    /* Drop cap */
+    .gs-review-body p:first-of-type::first-letter {
+      font-family: 'Anton', sans-serif;
+      font-size: 4.2em;
+      line-height: .78;
+      float: left;
+      margin-right: .07em;
+      margin-bottom: -.05em;
+      color: var(--color1);
+    }
+
+    /* Liens — color2 */
+    .gs-review-body a {
+      color: var(--color2);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      text-decoration-thickness: 1px;
+      transition: opacity .15s;
+    }
+    .gs-review-body a:hover { opacity: .65; }
+
+    /* Gras */
+    .gs-review-body strong {
+      color: var(--color4);
+      font-weight: 700;
+    }
+
+    /* Italique */
+    .gs-review-body em { color: rgba(0,0,0,.75); }
+
+    /* Titres dans le contenu */
+    .gs-review-body h2 {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.4rem;
+      color: var(--color2);
+      text-transform: uppercase;
+      letter-spacing: .03em;
+      margin: 2.5rem 0 1rem;
+    }
+
+    /* Blockquote */
+    .gs-review-body blockquote {
+      border-left: 2px solid var(--color1);
+      margin: 2.2rem 0;
+      padding: .6rem 0 .6rem 1.4rem;
+      color: rgba(0,0,0,.55);
+      font-style: italic;
+      font-size: 1.08rem;
+      line-height: 1.7;
+    }
+    .gs-review-body blockquote cite {
+      display: block;
+      margin-top: .6rem;
+      font-size: .78rem;
+      font-style: normal;
+      color: rgba(0,0,0,.35);
+      letter-spacing: .04em;
+    }
+
+    /* Séparateur */
+    .gs-review-body hr {
+      border: none;
+      height: 1px;
+      background: rgba(0,0,0,.1);
+      margin: 2.5rem 0;
+    }
+
+    /* ── SHARE — pied d'article ──────────────────────────── */
+    .gs-share {
+      margin-top: 2.5rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(0,0,0,.1);
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+    }
+    .gs-share__label {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: rgba(0,0,0,.35);
+      white-space: nowrap;
+    }
+    .gs-share__buttons { display: flex; gap: .5rem; flex-wrap: wrap; }
+
+    /* Boutons share : fond rouge → hover color2 */
+    .gs-share__btn {
+      display: inline-flex; align-items: center; gap: .45rem;
+      padding: .4rem .9rem;
+      font-size: .72rem; font-weight: 700; letter-spacing: .06em;
+      text-transform: uppercase;
+      background: transparent;
+      color: var(--color2);
+      border: 1px solid var(--color2);
+      text-decoration: none;
+      transition: color .18s, border-color .18s;
+      cursor: pointer;
+    }
+    .gs-share__btn:hover { color: var(--color1); border-color: var(--color1); }
+    .gs-share__btn svg { width: 13px; height: 13px; flex-shrink: 0; }
+
+    /* ════════════════════════════════════════════════════════
+       SIDEBAR — gs-sidebar
+       Fond blanc · texte noir · bordures subtiles
+    ════════════════════════════════════════════════════════ */
+    .gs-sidebar {
+      padding: 3rem 0;
+      position: sticky;
+      top: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    /* Spotify placeholder */
+    .gs-spotify {
+      background: rgba(0,0,0,.03);
+      border: 1px solid rgba(0,0,0,.08);
+      padding: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      min-height: 80px;
+      font-size: .72rem; color: rgba(0,0,0,.3); font-style: italic;
+    }
+
+    /* Fiche album */
+    /* Fiche album — fond color2 */
+    .gs-fiche {
+      background: var(--color2);
+      overflow: hidden;
+    }
+    .gs-fiche__head {
+      padding: .7rem 1.2rem;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+      font-size: .6rem; font-weight: 700;
+      letter-spacing: .16em; text-transform: uppercase;
+      color: rgba(255,255,255,.35);
+    }
+    .gs-fiche__body {
+      padding: 1.2rem;
+      display: flex; flex-direction: column; gap: 1.2rem;
+    }
+    .gs-fiche__row { display: flex; flex-direction: column; gap: .4rem; }
+    .gs-fiche__key {
+      font-size: .58rem; font-weight: 700;
+      letter-spacing: .16em; text-transform: uppercase;
+      color: rgba(255,255,255,.3);
+    }
+    .gs-fiche__val { font-size: .82rem; color: rgba(255,255,255,.75); line-height: 1.5; }
+
+    /* Best tracks numérotés */
+    .gs-fiche__tracks {
+      list-style: none; counter-reset: track;
+      display: flex; flex-direction: column; gap: .4rem;
+      margin: 0; padding: 0;
+    }
+    .gs-fiche__tracks li {
+      display: flex; align-items: baseline; gap: .65rem;
+      font-size: .85rem; color: rgba(255,255,255,.8);
+      counter-increment: track;
+    }
+    .gs-fiche__tracks li::before {
+      content: counter(track);
+      font-size: .58rem; font-weight: 700;
+      color: var(--color1); letter-spacing: .05em;
+      min-width: 12px; text-align: right; flex-shrink: 0;
+    }
+
+    /* CTA Écouter — color1 plein */
+    .gs-fiche__listen {
+      display: inline-flex; align-items: center; gap: .5rem;
+      font-size: .75rem; font-weight: 700;
+      letter-spacing: .08em; text-transform: uppercase;
+      background: var(--color1);
+      color: var(--color3);
+      border: none;
+      text-decoration: none;
+      padding: .65rem 1rem;
+      width: 100%; justify-content: center;
+      transition: opacity .18s;
+    }
+    .gs-fiche__listen:hover { opacity: .82; color: var(--color3); }
+    .gs-fiche__listen svg { width: 13px; height: 13px; }
+
+    /* Séparateur fiche */
+    .gs-fiche__sep { height: 1px; background: rgba(255,255,255,.07); }
+
+  </style>
+</head>
+<body>
+
+<!-- ── PAGE HEADER ─────────────────────────────────────── -->
+<div class="page-header">
+  <p class="page-header__title">Proposal — Corps de review + Sidebar</p>
+  <p class="page-header__sub">
+    Fond blanc · texte noir · liens color2 · boutons partage rouge → hover color2 · sidebar épurée
+  </p>
+</div>
+
+<!-- ── AVANT / APRÈS ──────────────────────────────────── -->
+<div class="diff-box">
+  <div class="diff-box__panel diff-box__panel--before">
+    <div class="diff-box__head">Supprimé</div>
+    <ul>
+      <li>Pochette en doublon dans la sidebar</li>
+      <li>Genre dans la sidebar (déjà dans le hero)</li>
+      <li><code>ul.bgc-2.p-4</code> avec styles inline</li>
+      <li>Share AddToAny sans contexte visuel</li>
+      <li><code>text-align: justify</code></li>
+    </ul>
+  </div>
+  <div class="diff-box__panel diff-box__panel--after">
+    <div class="diff-box__head">Ajouté / modifié</div>
+    <ul>
+      <li>Fond blanc pour la zone corps + sidebar</li>
+      <li>Texte noir · liens color2 · drop cap rouge</li>
+      <li>Premier § intro + blockquote stylisé</li>
+      <li>Fiche album : best tracks numérotés + CTA écouter</li>
+      <li>Share : boutons rouge rempli → hover color2</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ── FAUX HERO (sombre, existant) ───────────────────── -->
+<div class="hero-stub">
+  <div class="hero-stub__cover">pochette</div>
+  <div class="hero-stub__text">
+    <div class="hero-stub__artist">Drugdealer</div>
+    <div class="hero-stub__title">Hiding in Plain Sight</div>
+    <div class="hero-stub__pills">
+      <span class="hero-stub__pill">Mexican Summer</span>
+      <span class="hero-stub__pill--g">Soft Rock</span>
+      <span class="hero-stub__pill--g">Psych Pop</span>
+      <span class="hero-stub__pill--g">2022</span>
+    </div>
+    <div class="hero-stub__note">↑ Hero sombre — transition vers la zone blanche ci-dessous</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════
+     ZONE BLANCHE — corps + sidebar
+═══════════════════════════════════════════════════════ -->
+<div class="content-zone">
+  <div class="layout">
+
+    <!-- ── CONTENU ───────────────────────────────────── -->
+    <div class="gs-review-body">
+
+      <p>Il y a quelque chose d'un peu désarmant dans le nom <strong>Drugdealer</strong>. Derrière ce pseudonyme qui fleure bon le dealer de quartier se cache <strong>Michael Collins</strong>, songwriter discret de Los Angeles qui a passé les dix dernières années à construire une œuvre aussi érudite que séduisante. <em>Hiding in Plain Sight</em>, son troisième album, ne cherche pas à surprendre — il cherche à convaincre.</p>
+
+      <p>L'americana de Collins est celle des grands espaces californiens, des autoroutes qui n'en finissent pas et des couchers de soleil qui durent trop longtemps. La production, signée avec son complice habituel <strong>Danny Nogueiras</strong>, est d'une précision presque clinique : chaque reverb est à sa place, chaque voix de fond sert un dessein précis.</p>
+
+      <p>Les collaborations sont nombreuses et judicieusement choisies. <a href="#">Kate Bollinger</a> apporte une fragilité bienvenue sur <em>Madison</em>, l'un des sommets de l'album. <em>Someone to Love</em> confirme que Collins est l'un des rares artistes contemporains capables d'écrire une vraie chanson d'amour sans tomber dans la sensiblerie. <em>Pictures of You</em> clôt le disque avec une grâce mélancolique qui reste longtemps en tête.</p>
+
+      <p>Il y a une honnêteté dans cet album qui touche. Pas de gimmick, pas de détour vers l'expérimental pour l'expérimental. Juste des chansons, bien écrites, bien jouées, bien produites. Dans un paysage musical qui valorise souvent la rupture pour la rupture, c'est presque un acte subversif.</p>
+
+      <!--
+      == PARTAGE — à faire en temps 2 ==
+      <div class="gs-share">
+        <span class="gs-share__label">Partager</span>
+        <div class="gs-share__buttons">
+          <a class="gs-share__btn" href="#">Facebook</a>
+          <a class="gs-share__btn" href="#">X / Twitter</a>
+          <a class="gs-share__btn" href="#">WhatsApp</a>
+          <a class="gs-share__btn" href="#">Email</a>
+        </div>
+      </div>
+      -->
+
+    </div><!-- .gs-review-body -->
+
+    <!-- ── SIDEBAR ──────────────────────────────────── -->
+    <aside class="gs-sidebar">
+
+      <!-- Spotify -->
+      <div class="gs-spotify">
+        [ Lecteur Spotify — <code>get_field('album_spotify')</code> ]
+      </div>
+
+      <!-- Fiche album -->
+      <div class="gs-fiche">
+        <div class="gs-fiche__head">Fiche album</div>
+        <div class="gs-fiche__body">
+
+          <div class="gs-fiche__row">
+            <span class="gs-fiche__key">Best tracks</span>
+            <ol class="gs-fiche__tracks">
+              <li>Madison</li>
+              <li>Someone to Love</li>
+              <li>Pictures of You</li>
+            </ol>
+          </div>
+
+          <div class="gs-fiche__sep"></div>
+
+          <div class="gs-fiche__row">
+            <span class="gs-fiche__key">Écouter</span>
+            <a class="gs-fiche__listen" href="#">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>
+              </svg>
+              Bandcamp
+            </a>
+          </div>
+
+        </div>
+      </div>
+
+    </aside>
+
+  </div><!-- .layout -->
+</div><!-- .content-zone -->
+
+</body>
+</html>

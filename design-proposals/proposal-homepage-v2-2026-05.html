@@ -1,0 +1,1070 @@
+<!--
+  MAQUETTE — Homepage Gimmick Shelter · Série 2
+  DS       : #E81F1F · #000B29 · #FFFFFF · #000000 · #6D6D64
+  Polices  : Anton · Roboto — Google Fonts
+  Date     : 2026-05 · Agent Designer
+
+  CONTENU FAUX — À remplacer par données WP réelles
+
+  ──────────────────────────────────────
+  PROPOSITION D — Dark Luxe
+    Stage sombre · Hairlines lumineuses · Hover spotlight
+  ──────────────────────────────────────
+  PROPOSITION E — Brutalism
+    Slab poster · Archive list · Bande d'inversion rouge
+  ──────────────────────────────────────
+  PROPOSITION F — Monochrome Modern
+    Contrast field · Grille desaturée · Rouge comme seul accent
+  ──────────────────────────────────────
+-->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Maquette Homepage v2 — Gimmick Shelter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+<style>
+/* ─── RESET + TOKENS ─────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --c1: #E81F1F;
+  --c2: #000B29;
+  --c3: #FFFFFF;
+  --c4: #000000;
+  --c5: #6D6D64;
+  --f-display: 'Anton', sans-serif;
+  --f-body: 'Roboto', sans-serif;
+}
+html { scroll-behavior: smooth; }
+body { font-family: var(--f-body); font-size: 1rem; line-height: 1.6; background: #0d0d0d; color: var(--c3); }
+a { color: inherit; text-decoration: none; }
+img { display: block; width: 100%; height: 100%; object-fit: cover; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0s !important; transition-duration: 0s !important; }
+}
+
+/* ─── ÉTIQUETTE DE PROPOSITION ───────────────── */
+.prop-break { height: 4px; background: var(--c1); }
+.prop-header {
+  background: var(--c2);
+  border-left: 4px solid var(--c1);
+  padding: 2.5rem 2rem 2rem;
+}
+.prop-header h3 {
+  font-family: var(--f-display);
+  font-size: 1.75rem;
+  color: var(--c1);
+  letter-spacing: .04em;
+  margin-bottom: .4rem;
+}
+.prop-header p { font-size: .8rem; color: var(--c5); line-height: 1.5; }
+
+/* ─── UTILITAIRES PARTAGÉS ───────────────────── */
+.gs-label {
+  display: inline-block;
+  font-size: .6rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .18em;
+  padding: 3px 9px;
+  border: 1px solid var(--c1);
+  color: var(--c1);
+}
+.gs-label--fill { background: var(--c1); color: var(--c3); border-color: var(--c1); }
+
+
+/* ═══════════════════════════════════════════ */
+/*  PROPOSITION D — DARK LUXE                 */
+/* ═══════════════════════════════════════════ */
+
+/* NAV D */
+.d-nav {
+  position: sticky; top: 0; z-index: 100;
+  height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2.5rem;
+  background: rgba(5,5,8,.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(232,31,31,.15);
+}
+.d-nav__logo {
+  font-family: var(--f-display);
+  font-size: 1.1rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--c3);
+}
+.d-nav__logo em { color: var(--c1); font-style: normal; }
+.d-nav__links {
+  display: flex; gap: 2.5rem; list-style: none;
+  font-size: .65rem; text-transform: uppercase; letter-spacing: .14em; font-weight: 600;
+}
+.d-nav__links a { color: rgba(255,255,255,.45); transition: color .25s; }
+.d-nav__links a:hover { color: var(--c3); }
+.d-nav__links .on a { color: var(--c1); }
+
+/* HERO D — Stage sombre */
+.d-hero {
+  position: relative;
+  min-height: min(92vh, 760px);
+  background: #07070c;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+.d-hero__img {
+  position: relative;
+  overflow: hidden;
+}
+.d-hero__img img { object-position: center 20%; }
+.d-hero__img::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(to right, #07070c 0%, rgba(7,7,12,.5) 40%, rgba(7,7,12,.05) 100%);
+}
+.d-hero__stage {
+  position: relative; z-index: 1;
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 4rem 3rem 4rem 3.5rem;
+  background: linear-gradient(to left, #07070c 60%, transparent 100%);
+}
+.d-hero__kicker {
+  font-size: .6rem; text-transform: uppercase; letter-spacing: .2em;
+  color: var(--c1); margin-bottom: 1.25rem;
+  display: flex; align-items: center; gap: .75rem;
+}
+.d-hero__kicker::before {
+  content: ''; width: 24px; height: 1px; background: var(--c1); display: block;
+}
+.d-hero__title {
+  font-family: var(--f-display);
+  font-size: clamp(2.75rem, 4.5vw, 4.25rem);
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: .92;
+  letter-spacing: .01em;
+  color: var(--c3);
+  margin-bottom: 1.5rem;
+}
+.d-hero__dek {
+  font-size: .9rem;
+  color: rgba(255,255,255,.55);
+  line-height: 1.6;
+  max-width: 42ch;
+  margin-bottom: 2.25rem;
+}
+.d-hero__cta {
+  display: inline-flex; align-items: center; gap: .6rem;
+  font-size: .65rem; text-transform: uppercase; letter-spacing: .16em; font-weight: 700;
+  color: var(--c3);
+  padding: .8rem 1.75rem;
+  border: 1px solid rgba(255,255,255,.2);
+  transition: border-color .25s, background .25s;
+  width: fit-content;
+}
+.d-hero__cta:hover { border-color: var(--c1); background: rgba(232,31,31,.08); }
+.d-hero__cta::after { content: '↗'; color: var(--c1); font-size: .7rem; }
+.d-hero__count {
+  position: absolute; bottom: 2.5rem; right: 2.5rem;
+  font-family: var(--f-display); font-size: .7rem;
+  color: rgba(255,255,255,.2); letter-spacing: .1em;
+}
+.d-hero__count strong { color: var(--c1); }
+
+/* SECTION "À LA UNE" D — horizontal bands */
+.d-section { max-width: 1400px; margin: 0 auto; padding: 3rem 2.5rem; }
+.d-head {
+  display: flex; align-items: baseline; gap: 1rem; margin-bottom: 2.5rem;
+  border-bottom: 1px solid rgba(255,255,255,.06); padding-bottom: 1rem;
+}
+.d-head h2 {
+  font-family: var(--f-display); font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  text-transform: uppercase; letter-spacing: .04em; color: var(--c3);
+}
+.d-head h2 em { color: var(--c1); font-style: normal; }
+.d-head__all {
+  margin-left: auto; font-size: .65rem; text-transform: uppercase;
+  letter-spacing: .12em; color: var(--c5); transition: color .2s;
+}
+.d-head__all:hover { color: var(--c3); }
+
+.d-bands { display: flex; flex-direction: column; gap: 1px; background: rgba(255,255,255,.05); }
+.d-band {
+  display: grid; grid-template-columns: 260px 1fr;
+  background: #09090e;
+  cursor: pointer;
+  transition: background .25s;
+  overflow: hidden;
+}
+.d-band:hover { background: #0e0e16; }
+.d-band__img { height: 180px; overflow: hidden; position: relative; }
+.d-band__img img { transition: transform .6s ease; }
+.d-band:hover .d-band__img img { transform: scale(1.05); }
+.d-band__img::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to right, transparent 60%, #09090e 100%);
+  transition: background .25s;
+}
+.d-band:hover .d-band__img::after { background: linear-gradient(to right, transparent 60%, #0e0e16 100%); }
+.d-band__body {
+  padding: 1.5rem 2rem;
+  display: flex; flex-direction: column; justify-content: center;
+  border-left: 1px solid rgba(255,255,255,.04);
+}
+.d-band__meta {
+  display: flex; align-items: center; gap: .75rem; margin-bottom: .75rem;
+}
+.d-band__date { font-size: .6rem; text-transform: uppercase; letter-spacing: .12em; color: var(--c5); }
+.d-band__title {
+  font-family: var(--f-display);
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  text-transform: uppercase; line-height: .95;
+  letter-spacing: .02em; color: var(--c3);
+  margin-bottom: .5rem;
+  transition: color .2s;
+}
+.d-band:hover .d-band__title { color: rgba(255,255,255,.85); }
+.d-band__excerpt { font-size: .8rem; color: rgba(255,255,255,.4); line-height: 1.5; max-width: 56ch; }
+.d-band__arrow {
+  margin-top: auto; padding-top: 1rem;
+  font-size: .6rem; text-transform: uppercase; letter-spacing: .14em;
+  color: rgba(255,255,255,.2); transition: color .2s;
+  display: flex; align-items: center; gap: .4rem;
+}
+.d-band:hover .d-band__arrow { color: var(--c1); }
+.d-band__arrow::after { content: '→'; }
+
+/* SECTION CHRONIQUES D — spotlight strip */
+.d-chro { background: #05050a; padding: 3rem 0; }
+.d-chro-inner { max-width: 1400px; margin: 0 auto; padding: 0 2.5rem; }
+.d-chro-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: rgba(255,255,255,.04);
+  margin-top: 2rem;
+}
+.d-chro-item {
+  background: #05050a;
+  padding: 2rem;
+  cursor: pointer;
+  transition: background .3s;
+  position: relative;
+}
+.d-chro-item::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(232,31,31,.3), transparent);
+  opacity: 0; transition: opacity .3s;
+}
+.d-chro-item:hover { background: #080810; }
+.d-chro-item:hover::before { opacity: 1; }
+.d-chro-item__img { width: 80px; height: 80px; overflow: hidden; margin-bottom: 1.25rem; }
+.d-chro-item__artist {
+  font-size: .6rem; text-transform: uppercase; letter-spacing: .16em;
+  color: var(--c1); margin-bottom: .3rem;
+}
+.d-chro-item__album {
+  font-family: var(--f-display); font-size: 1.1rem; text-transform: uppercase;
+  letter-spacing: .02em; color: var(--c3); margin-bottom: 1rem; line-height: .97;
+}
+.d-chro-item__note {
+  font-family: var(--f-display); font-size: 2.25rem; color: var(--c1); line-height: 1;
+}
+.d-chro-item__note sup {
+  font-family: var(--f-body); font-size: .65rem; color: var(--c5); vertical-align: super;
+}
+
+
+/* ═══════════════════════════════════════════ */
+/*  PROPOSITION E — BRUTALISM                 */
+/* ═══════════════════════════════════════════ */
+
+/* NAV E */
+.e-nav {
+  position: sticky; top: 0; z-index: 100;
+  height: 52px;
+  display: flex; align-items: stretch;
+  background: var(--c4);
+  border-bottom: 3px solid var(--c1);
+}
+.e-nav__logo {
+  display: flex; align-items: center;
+  padding: 0 2rem;
+  font-family: var(--f-display); font-size: 1.05rem;
+  text-transform: uppercase; letter-spacing: .06em;
+  color: var(--c3);
+  border-right: 1px solid rgba(255,255,255,.1);
+}
+.e-nav__logo span { color: var(--c1); }
+.e-nav__links {
+  display: flex; align-items: stretch; list-style: none; margin-left: auto;
+}
+.e-nav__links li { display: flex; align-items: center; }
+.e-nav__links a {
+  display: flex; align-items: center;
+  padding: 0 1.5rem; height: 100%;
+  font-size: .6rem; text-transform: uppercase; letter-spacing: .14em; font-weight: 700;
+  color: var(--c5);
+  border-left: 1px solid rgba(255,255,255,.06);
+  transition: color .15s, background .15s;
+}
+.e-nav__links a:hover { color: var(--c3); background: rgba(255,255,255,.04); }
+.e-nav__links .on a { color: var(--c4); background: var(--c1); }
+
+/* HERO E — Poster slab */
+.e-hero {
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  min-height: min(88vh, 680px);
+  background: var(--c4);
+}
+.e-hero__text {
+  background: var(--c4);
+  display: flex; flex-direction: column; justify-content: space-between;
+  padding: 3.5rem 3rem;
+  border-right: 3px solid var(--c1);
+}
+.e-hero__stamp {
+  display: inline-block;
+  font-family: var(--f-display); font-size: .7rem;
+  text-transform: uppercase; letter-spacing: .18em;
+  color: var(--c4); background: var(--c1);
+  padding: 4px 10px; width: fit-content;
+  margin-bottom: 1.5rem;
+}
+.e-hero__title {
+  font-family: var(--f-display);
+  font-size: clamp(3.5rem, 8vw, 7rem);
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: .88;
+  letter-spacing: .01em;
+  color: var(--c3);
+  flex: 1;
+  display: flex; align-items: center;
+}
+.e-hero__bottom { margin-top: auto; padding-top: 2rem; }
+.e-hero__dek {
+  font-size: .875rem; color: rgba(255,255,255,.55); line-height: 1.55;
+  max-width: 36ch; margin-bottom: 2rem;
+}
+.e-hero__cta {
+  display: inline-flex; align-items: center;
+  font-family: var(--f-display); font-size: .8rem;
+  text-transform: uppercase; letter-spacing: .1em;
+  color: var(--c4); background: var(--c3);
+  padding: .9rem 2rem;
+  transition: background .15s, color .15s;
+  width: fit-content;
+}
+.e-hero__cta:hover { background: var(--c1); color: var(--c3); }
+.e-hero__img {
+  position: relative; overflow: hidden;
+}
+.e-hero__img img { object-position: center 15%; }
+
+/* SECTION ARCHIVE E — liste typographique */
+.e-section { max-width: 1400px; margin: 0 auto; padding: 3rem 2.5rem; background: var(--c4); }
+.e-head {
+  display: flex; align-items: baseline; gap: 2rem;
+  margin-bottom: 0; padding-bottom: 0;
+}
+.e-head h2 {
+  font-family: var(--f-display); font-size: clamp(1.5rem, 3vw, 2.5rem);
+  text-transform: uppercase; letter-spacing: .03em; color: var(--c3);
+}
+.e-head__count {
+  font-size: .65rem; text-transform: uppercase; letter-spacing: .14em; color: var(--c5);
+}
+
+.e-list {
+  margin-top: 1.5rem;
+  border-top: 3px solid var(--c3);
+}
+.e-item {
+  display: grid;
+  grid-template-columns: 3rem 1fr auto auto;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  cursor: pointer;
+  transition: background .15s;
+  position: relative;
+}
+.e-item::before {
+  content: ''; position: absolute; left: -2.5rem; right: -2.5rem; top: 0; bottom: 0;
+  background: var(--c1); transform: scaleX(0); transform-origin: left;
+  transition: transform .15s ease;
+  z-index: 0;
+}
+.e-item:hover::before { transform: scaleX(1); }
+.e-item > * { position: relative; z-index: 1; }
+.e-item__num {
+  font-family: var(--f-display); font-size: .85rem;
+  color: var(--c5); letter-spacing: .06em;
+  transition: color .15s;
+}
+.e-item:hover .e-item__num { color: rgba(0,0,0,.4); }
+.e-item__title {
+  font-family: var(--f-display);
+  font-size: clamp(1rem, 2vw, 1.4rem);
+  text-transform: uppercase; letter-spacing: .02em; color: var(--c3);
+  line-height: .97;
+  transition: color .15s;
+}
+.e-item:hover .e-item__title { color: var(--c4); }
+.e-item__type {
+  font-size: .6rem; text-transform: uppercase; letter-spacing: .12em;
+  color: var(--c5); white-space: nowrap; transition: color .15s;
+}
+.e-item:hover .e-item__type { color: rgba(0,0,0,.5); }
+.e-item__date {
+  font-size: .6rem; text-transform: uppercase; letter-spacing: .1em;
+  color: rgba(255,255,255,.2); white-space: nowrap; transition: color .15s;
+}
+.e-item:hover .e-item__date { color: rgba(0,0,0,.35); }
+
+/* BANDE ROUGE E */
+.e-band {
+  background: var(--c1);
+  padding: 3rem 2.5rem;
+}
+.e-band-inner {
+  max-width: 1400px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between; gap: 2rem;
+}
+.e-band__text h3 {
+  font-family: var(--f-display); font-size: clamp(1.75rem, 4vw, 3rem);
+  text-transform: uppercase; letter-spacing: .02em; color: var(--c4); line-height: .92;
+}
+.e-band__text p { font-size: .85rem; color: rgba(0,0,0,.55); margin-top: .5rem; }
+.e-band__cta {
+  display: inline-flex; align-items: center;
+  font-family: var(--f-display); font-size: .75rem;
+  text-transform: uppercase; letter-spacing: .1em;
+  color: var(--c1); background: var(--c4);
+  padding: .85rem 2rem; white-space: nowrap;
+  transition: background .15s, color .15s;
+}
+.e-band__cta:hover { background: var(--c3); color: var(--c4); }
+
+
+/* ═══════════════════════════════════════════ */
+/*  PROPOSITION F — MONOCHROME MODERN         */
+/* ═══════════════════════════════════════════ */
+
+/* NAV F */
+.f-nav {
+  position: sticky; top: 0; z-index: 100;
+  height: 54px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2.5rem;
+  background: #111;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+}
+.f-nav__logo {
+  font-family: var(--f-display); font-size: 1.05rem;
+  text-transform: uppercase; letter-spacing: .06em; color: var(--c3);
+}
+.f-nav__accent { color: var(--c1); }
+.f-nav__links {
+  display: flex; gap: 0; list-style: none;
+}
+.f-nav__links a {
+  display: block; padding: 0 1.25rem; height: 54px;
+  display: flex; align-items: center;
+  font-size: .6rem; text-transform: uppercase; letter-spacing: .14em; font-weight: 600;
+  color: rgba(255,255,255,.35);
+  border-bottom: 2px solid transparent;
+  transition: color .2s, border-color .2s;
+}
+.f-nav__links a:hover { color: var(--c3); }
+.f-nav__links .on a { color: var(--c3); border-bottom-color: var(--c1); }
+
+/* HERO F — Contrast field */
+.f-hero {
+  position: relative;
+  background: #111;
+  min-height: min(90vh, 740px);
+  display: grid;
+  grid-template-columns: 5fr 7fr;
+  overflow: hidden;
+}
+.f-hero__text {
+  display: flex; flex-direction: column; justify-content: flex-end;
+  padding: 4rem 3rem;
+  position: relative; z-index: 1;
+}
+.f-hero__issue {
+  font-size: .6rem; text-transform: uppercase; letter-spacing: .2em;
+  color: rgba(255,255,255,.25); margin-bottom: .75rem;
+}
+.f-hero__title {
+  font-family: var(--f-display);
+  font-size: clamp(3rem, 5.5vw, 5.5rem);
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: .88;
+  letter-spacing: .01em;
+  color: var(--c3);
+  margin-bottom: 1.75rem;
+}
+.f-hero__title em { color: var(--c1); font-style: normal; }
+.f-hero__dek {
+  font-size: .875rem; color: rgba(255,255,255,.45); line-height: 1.6;
+  max-width: 40ch; margin-bottom: 2rem;
+}
+.f-hero__cta {
+  display: inline-flex; align-items: center; gap: .5rem;
+  font-size: .65rem; text-transform: uppercase; letter-spacing: .16em; font-weight: 700;
+  color: var(--c4); background: var(--c3);
+  padding: .8rem 1.75rem; width: fit-content;
+  transition: background .2s;
+}
+.f-hero__cta:hover { background: var(--c1); color: var(--c3); }
+.f-hero__img {
+  position: relative; overflow: hidden;
+}
+.f-hero__img img {
+  filter: grayscale(100%) contrast(1.1);
+  object-position: center 15%;
+  transition: filter .6s ease;
+}
+.f-hero:hover .f-hero__img img { filter: grayscale(70%) contrast(1.05); }
+.f-hero__img::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(to right, #111 0%, transparent 25%);
+}
+.f-hero__caption {
+  position: absolute; bottom: 1.5rem; right: 1.5rem; z-index: 1;
+  font-size: .55rem; text-transform: uppercase; letter-spacing: .14em;
+  color: rgba(255,255,255,.2); text-align: right;
+}
+
+/* SECTION À LA UNE F — grille contrast */
+.f-section { max-width: 1400px; margin: 0 auto; padding: 3rem 2.5rem; }
+.f-head {
+  display: flex; align-items: baseline; gap: .75rem;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  padding-bottom: 1rem; margin-bottom: 2rem;
+}
+.f-head h2 {
+  font-family: var(--f-display); font-size: clamp(1.25rem, 2.5vw, 1.75rem);
+  text-transform: uppercase; letter-spacing: .04em; color: var(--c3);
+}
+.f-head__sep { flex: 1; height: 1px; background: rgba(255,255,255,.06); align-self: center; }
+.f-head__all {
+  font-size: .65rem; text-transform: uppercase; letter-spacing: .12em;
+  color: rgba(255,255,255,.25); transition: color .2s;
+}
+.f-head__all:hover { color: var(--c3); }
+
+.f-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: auto auto;
+  gap: 1px;
+  background: rgba(255,255,255,.06);
+}
+.f-card {
+  background: #111;
+  cursor: pointer;
+  overflow: hidden;
+  position: relative;
+}
+.f-card--large { grid-column: 1 / 3; grid-row: 1 / 3; }
+.f-card__img {
+  height: 100%; min-height: 200px;
+  overflow: hidden;
+  position: relative;
+}
+.f-card--large .f-card__img { min-height: 420px; }
+.f-card__img img {
+  filter: grayscale(100%);
+  transition: filter .5s ease, transform .5s ease;
+}
+.f-card:hover .f-card__img img { filter: grayscale(30%); transform: scale(1.03); }
+.f-card__overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(17,17,17,.92) 0%, transparent 55%);
+}
+.f-card__content {
+  position: absolute; bottom: 0; left: 0; right: 0; padding: 1.5rem;
+}
+.f-card--large .f-card__content { padding: 2rem; }
+.f-card__label { margin-bottom: .6rem; }
+.f-card__title {
+  font-family: var(--f-display);
+  font-size: clamp(.95rem, 2vw, 1.35rem);
+  text-transform: uppercase; letter-spacing: .02em; color: var(--c3);
+  line-height: .96; margin-bottom: .4rem;
+}
+.f-card--large .f-card__title { font-size: clamp(1.75rem, 3.5vw, 2.75rem); }
+.f-card__meta {
+  font-size: .6rem; text-transform: uppercase; letter-spacing: .1em;
+  color: rgba(255,255,255,.3);
+}
+
+/* SECTION CHRONIQUES F — ruled strip */
+.f-chro { background: #0d0d0d; padding: 3rem 0; }
+.f-chro-inner { max-width: 1400px; margin: 0 auto; padding: 0 2.5rem; }
+.f-ruled {
+  margin-top: 2rem;
+  border-top: 2px solid var(--c3);
+}
+.f-ruled-item {
+  display: grid;
+  grid-template-columns: 72px 1fr auto 80px;
+  align-items: center; gap: 1.5rem;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  cursor: pointer;
+  transition: background .2s;
+  position: relative; overflow: hidden;
+}
+.f-ruled-item::after {
+  content: ''; position: absolute; inset: 0;
+  background: var(--c3);
+  transform: translateX(-100%);
+  transition: transform .25s ease;
+  z-index: 0;
+}
+.f-ruled-item:hover::after { transform: translateX(0); }
+.f-ruled-item > * { position: relative; z-index: 1; }
+.f-ruled-item__img { width: 72px; height: 72px; overflow: hidden; }
+.f-ruled-item__img img {
+  filter: grayscale(100%);
+  transition: filter .3s;
+}
+.f-ruled-item:hover .f-ruled-item__img img { filter: grayscale(0%); }
+.f-ruled-item__body {}
+.f-ruled-item__artist {
+  font-size: .6rem; text-transform: uppercase; letter-spacing: .14em;
+  color: rgba(255,255,255,.3); margin-bottom: .2rem;
+  transition: color .2s;
+}
+.f-ruled-item:hover .f-ruled-item__artist { color: rgba(0,0,0,.5); }
+.f-ruled-item__title {
+  font-family: var(--f-display); font-size: 1.15rem;
+  text-transform: uppercase; letter-spacing: .02em; color: var(--c3); line-height: .96;
+  transition: color .2s;
+}
+.f-ruled-item:hover .f-ruled-item__title { color: var(--c4); }
+.f-ruled-item__date {
+  font-size: .6rem; text-transform: uppercase; letter-spacing: .1em;
+  color: rgba(255,255,255,.2); text-align: right; white-space: nowrap;
+  transition: color .2s;
+}
+.f-ruled-item:hover .f-ruled-item__date { color: rgba(0,0,0,.35); }
+.f-ruled-item__note {
+  font-family: var(--f-display); font-size: 1.75rem; color: var(--c1);
+  text-align: right; line-height: 1; transition: color .2s;
+}
+.f-ruled-item__note sup {
+  font-family: var(--f-body); font-size: .6rem; color: rgba(255,255,255,.25);
+  vertical-align: super; transition: color .2s;
+}
+.f-ruled-item:hover .f-ruled-item__note { color: var(--c1); }
+.f-ruled-item:hover .f-ruled-item__note sup { color: rgba(0,0,0,.3); }
+
+/* ─── RESPONSIVE ────────────────────────────── */
+@media (max-width: 768px) {
+  .d-nav__links,
+  .e-nav__links,
+  .f-nav__links { display: none; }
+  .d-hero { grid-template-columns: 1fr; }
+  .d-hero__img { height: 260px; }
+  .d-hero__img::after { background: linear-gradient(to bottom, transparent 40%, #07070c 100%); }
+  .d-hero__stage { background: #07070c; padding: 2rem; }
+  .d-chro-grid { grid-template-columns: 1fr; }
+  .d-band { grid-template-columns: 1fr; }
+  .d-band__img { height: 200px; }
+  .e-hero { grid-template-columns: 1fr; }
+  .e-hero__img { height: 240px; }
+  .e-item { grid-template-columns: 2rem 1fr; }
+  .e-item__type, .e-item__date { display: none; }
+  .e-band-inner { flex-direction: column; gap: 1.5rem; }
+  .f-hero { grid-template-columns: 1fr; }
+  .f-hero__img { height: 260px; }
+  .f-grid { grid-template-columns: 1fr; }
+  .f-card--large { grid-column: 1; grid-row: auto; }
+  .f-ruled-item { grid-template-columns: 56px 1fr 60px; }
+  .f-ruled-item__date { display: none; }
+}
+@media (min-width: 768px) and (max-width: 992px) {
+  .d-chro-grid { grid-template-columns: 1fr 1fr; }
+  .f-grid { grid-template-columns: 1fr 1fr; }
+  .f-card--large { grid-column: 1 / 3; }
+}
+</style>
+</head>
+<body>
+
+
+<!-- ═══════════════════════════════════════════ -->
+<!--  PROPOSITION D — DARK LUXE                 -->
+<!-- ═══════════════════════════════════════════ -->
+
+<div class="prop-header">
+  <h3>Proposition D — Dark Luxe</h3>
+  <p>
+    Stage sombre · Nav slim backdrop-blur · Bandes horizontales avec hover spotlight<br>
+    Accent rouge rare comme seule lumière chaude sur surface froide. Ambiance club/vitrine underground premium.
+  </p>
+</div>
+
+<nav class="d-nav">
+  <div class="d-nav__logo"><em>Gimmick</em> Shelter</div>
+  <ul class="d-nav__links">
+    <li class="on"><a href="#">Chroniques</a></li>
+    <li><a href="#">Playlists</a></li>
+    <li><a href="#">Live</a></li>
+    <li><a href="#">Agenda</a></li>
+    <li><a href="#">À propos</a></li>
+  </ul>
+</nav>
+
+<section class="d-hero">
+  <div class="d-hero__img">
+    <img src="https://picsum.photos/seed/dark-concert-1/800/760" alt="Concert sombre">
+  </div>
+  <div class="d-hero__stage">
+    <div class="d-hero__kicker">Chronique · Album de la semaine</div>
+    <h1 class="d-hero__title">Nick Cave<br>&amp; The<br>Bad Seeds</h1>
+    <p class="d-hero__dek">
+      <em>Wild God</em> est un disque qui réconcilie la foi et le deuil
+      sans jamais chercher à plaire. Un retour qui ressemble à une absolution.
+    </p>
+    <div class="d-hero__bottom">
+      <a href="#" class="d-hero__cta">Lire la chronique</a>
+    </div>
+    <div class="d-hero__count">Note <strong>8</strong>/10</div>
+  </div>
+</section>
+
+<div style="background:#07070c; padding: 3rem 0;">
+  <section class="d-section">
+    <div class="d-head">
+      <h2>À la <em>une</em></h2>
+      <a href="#" class="d-head__all">Tout voir →</a>
+    </div>
+    <div class="d-bands">
+      <div class="d-band">
+        <div class="d-band__img">
+          <img src="https://picsum.photos/seed/concert-dark-2/400/200" alt="Concert">
+        </div>
+        <div class="d-band__body">
+          <div class="d-band__meta">
+            <span class="gs-label gs-label--fill">Live</span>
+            <span class="d-band__date">8 mai 2026</span>
+          </div>
+          <h3 class="d-band__title">Fontaines D.C. — L'Olympia, Paris</h3>
+          <p class="d-band__excerpt">Une heure quarante sans temps mort. Le groupe dublinois prouve que la rage peut rimer avec précision.</p>
+          <div class="d-band__arrow">Lire le compte-rendu</div>
+        </div>
+      </div>
+      <div class="d-band">
+        <div class="d-band__img">
+          <img src="https://picsum.photos/seed/vinyl-dark/400/200" alt="Vinyle">
+        </div>
+        <div class="d-band__body">
+          <div class="d-band__meta">
+            <span class="gs-label">Playlist</span>
+            <span class="d-band__date">3 mai 2026</span>
+          </div>
+          <h3 class="d-band__title">10 titres pour survivre au mois de mai</h3>
+          <p class="d-band__excerpt">Du kraut au punk tunisien en passant par le rock malgache — la sélection mensuelle de la rédaction.</p>
+          <div class="d-band__arrow">Écouter la playlist</div>
+        </div>
+      </div>
+      <div class="d-band">
+        <div class="d-band__img">
+          <img src="https://picsum.photos/seed/guitar-night/400/200" alt="Guitariste">
+        </div>
+        <div class="d-band__body">
+          <div class="d-band__meta">
+            <span class="gs-label">Portrait</span>
+            <span class="d-band__date">1er mai 2026</span>
+          </div>
+          <h3 class="d-band__title">Mdou Moctar — Le justicier de Niamey</h3>
+          <p class="d-band__excerpt">Retour sur le parcours du guitariste touareg avant son passage parisien en juin.</p>
+          <div class="d-band__arrow">Lire le portrait</div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="d-chro">
+  <div class="d-chro-inner">
+    <div class="d-head">
+      <h2>Dernières <em>chroniques</em></h2>
+      <a href="#" class="d-head__all">Archive →</a>
+    </div>
+    <div class="d-chro-grid">
+      <div class="d-chro-item">
+        <div class="d-chro-item__img">
+          <img src="https://picsum.photos/seed/album-d1/160/160" alt="Album">
+        </div>
+        <div class="d-chro-item__artist">Nick Cave &amp; The Bad Seeds</div>
+        <div class="d-chro-item__album">Wild God</div>
+        <div class="d-chro-item__note">8<sup>/10</sup></div>
+      </div>
+      <div class="d-chro-item">
+        <div class="d-chro-item__img">
+          <img src="https://picsum.photos/seed/album-d2/160/160" alt="Album">
+        </div>
+        <div class="d-chro-item__artist">Mdou Moctar</div>
+        <div class="d-chro-item__album">Funeral for Justice</div>
+        <div class="d-chro-item__note">9<sup>/10</sup></div>
+      </div>
+      <div class="d-chro-item">
+        <div class="d-chro-item__img">
+          <img src="https://picsum.photos/seed/album-d3/160/160" alt="Album">
+        </div>
+        <div class="d-chro-item__artist">Osees</div>
+        <div class="d-chro-item__album">Intercepted Message</div>
+        <div class="d-chro-item__note">7<sup>/10</sup></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════ -->
+<!--  PROPOSITION E — BRUTALISM                 -->
+<!-- ═══════════════════════════════════════════ -->
+
+<div class="prop-break"></div>
+<div class="prop-header">
+  <h3>Proposition E — Brutalism</h3>
+  <p>
+    Hero poster slab offset · Archive typographique avec hover inversion · Bande rouge d'identité<br>
+    Le rouge est une encre de marquage, pas une décoration. Anton à l'échelle d'une affiche.
+  </p>
+</div>
+
+<nav class="e-nav">
+  <div class="e-nav__logo"><span>Gimmick</span> Shelter</div>
+  <ul class="e-nav__links">
+    <li class="on"><a href="#">Chroniques</a></li>
+    <li><a href="#">Playlists</a></li>
+    <li><a href="#">Live</a></li>
+    <li><a href="#">Agenda</a></li>
+    <li><a href="#">À propos</a></li>
+  </ul>
+</nav>
+
+<section class="e-hero">
+  <div class="e-hero__text">
+    <div class="e-hero__stamp">Album de la semaine</div>
+    <h1 class="e-hero__title">Wild<br>God</h1>
+    <div class="e-hero__bottom">
+      <p class="e-hero__dek">
+        Nick Cave revient avec un disque qui réconcilie la foi et le deuil.
+        Un retour qui ressemble à une absolution.
+      </p>
+      <a href="#" class="e-hero__cta">Lire la chronique</a>
+    </div>
+  </div>
+  <div class="e-hero__img">
+    <img src="https://picsum.photos/seed/brutal-concert/800/680" alt="Concert">
+  </div>
+</section>
+
+<section class="e-section" style="background:var(--c4); padding-bottom:0;">
+  <div class="e-head">
+    <h2>À la une</h2>
+    <span class="e-head__count">9 articles récents</span>
+  </div>
+  <div class="e-list">
+    <div class="e-item">
+      <span class="e-item__num">01</span>
+      <h3 class="e-item__title">Fontaines D.C. — L'Olympia, Paris</h3>
+      <span class="e-item__type">Live Report</span>
+      <span class="e-item__date">8 mai 2026</span>
+    </div>
+    <div class="e-item">
+      <span class="e-item__num">02</span>
+      <h3 class="e-item__title">Amyl and the Sniffers — Cartoon Darkness</h3>
+      <span class="e-item__type">Chronique</span>
+      <span class="e-item__date">5 mai 2026</span>
+    </div>
+    <div class="e-item">
+      <span class="e-item__num">03</span>
+      <h3 class="e-item__title">10 titres pour survivre au mois de mai</h3>
+      <span class="e-item__type">Playlist</span>
+      <span class="e-item__date">3 mai 2026</span>
+    </div>
+    <div class="e-item">
+      <span class="e-item__num">04</span>
+      <h3 class="e-item__title">Mdou Moctar — Le justicier de Niamey</h3>
+      <span class="e-item__type">Portrait</span>
+      <span class="e-item__date">1er mai 2026</span>
+    </div>
+    <div class="e-item">
+      <span class="e-item__num">05</span>
+      <h3 class="e-item__title">Agenda juin — Ce qu'il ne faut pas manquer</h3>
+      <span class="e-item__type">Agenda</span>
+      <span class="e-item__date">28 avr. 2026</span>
+    </div>
+  </div>
+</section>
+
+<div class="e-band">
+  <div class="e-band-inner">
+    <div class="e-band__text">
+      <h3>Les chroniques<br>d'albums</h3>
+      <p>Toutes nos analyses, notes et verdicts depuis 2018</p>
+    </div>
+    <a href="#" class="e-band__cta">Voir toutes les chroniques</a>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════ -->
+<!--  PROPOSITION F — MONOCHROME MODERN         -->
+<!-- ═══════════════════════════════════════════ -->
+
+<div class="prop-break"></div>
+<div class="prop-header">
+  <h3>Proposition F — Monochrome Modern</h3>
+  <p>
+    Hero contrast field · Images desaturées (couleur au hover) · Grille ruled avec inversion<br>
+    Le rouge <code>#E81F1F</code> est le seul accent chromatique. Tout le reste est noir, blanc, gris.
+    Impact maximal de la couleur par rareté.
+  </p>
+</div>
+
+<nav class="f-nav">
+  <div class="f-nav__logo">Gimmick <span class="f-nav__accent">Shelter</span></div>
+  <ul class="f-nav__links">
+    <li class="on"><a href="#">Chroniques</a></li>
+    <li><a href="#">Playlists</a></li>
+    <li><a href="#">Live</a></li>
+    <li><a href="#">Agenda</a></li>
+    <li><a href="#">À propos</a></li>
+  </ul>
+</nav>
+
+<section class="f-hero">
+  <div class="f-hero__text">
+    <div class="f-hero__issue">Gimmick Shelter · Mai 2026</div>
+    <h1 class="f-hero__title">Nick Cave<br>&amp; l'art de<br><em>survivre.</em></h1>
+    <p class="f-hero__dek">
+      <em>Wild God</em> — huit titres, quarante minutes, et une certitude :
+      Cave n'a jamais autant ressemblé à lui-même.
+    </p>
+    <a href="#" class="f-hero__cta">Lire la chronique</a>
+  </div>
+  <div class="f-hero__img">
+    <img src="https://picsum.photos/seed/mono-concert/900/740" alt="Concert">
+    <div class="f-hero__caption">Photo : placeholder · Remplacer par image réelle</div>
+  </div>
+</section>
+
+<div style="background:#111;">
+  <section class="f-section">
+    <div class="f-head">
+      <h2>À la une</h2>
+      <div class="f-head__sep"></div>
+      <a href="#" class="f-head__all">Tout voir →</a>
+    </div>
+    <div class="f-grid">
+      <div class="f-card f-card--large">
+        <div class="f-card__img">
+          <img src="https://picsum.photos/seed/mono-1/900/600" alt="Concert">
+        </div>
+        <div class="f-card__overlay"></div>
+        <div class="f-card__content">
+          <div class="f-card__label"><span class="gs-label gs-label--fill">Live Report</span></div>
+          <h3 class="f-card__title">Fontaines D.C. —<br>L'Olympia, Paris</h3>
+          <div class="f-card__meta">Par Adrien M. · 8 mai 2026</div>
+        </div>
+      </div>
+      <div class="f-card">
+        <div class="f-card__img" style="min-height:200px;">
+          <img src="https://picsum.photos/seed/mono-2/500/300" alt="Album">
+        </div>
+        <div class="f-card__overlay"></div>
+        <div class="f-card__content">
+          <div class="f-card__label"><span class="gs-label">Playlist</span></div>
+          <h3 class="f-card__title">10 titres pour le mois de mai</h3>
+        </div>
+      </div>
+      <div class="f-card">
+        <div class="f-card__img" style="min-height:200px;">
+          <img src="https://picsum.photos/seed/mono-3/500/300" alt="Portrait">
+        </div>
+        <div class="f-card__overlay"></div>
+        <div class="f-card__content">
+          <div class="f-card__label"><span class="gs-label">Portrait</span></div>
+          <h3 class="f-card__title">Mdou Moctar</h3>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<section class="f-chro">
+  <div class="f-chro-inner">
+    <div class="f-head">
+      <h2>Chroniques</h2>
+      <div class="f-head__sep"></div>
+      <a href="#" class="f-head__all">Archive →</a>
+    </div>
+    <div class="f-ruled">
+      <div class="f-ruled-item">
+        <div class="f-ruled-item__img">
+          <img src="https://picsum.photos/seed/album-f1/144/144" alt="Album">
+        </div>
+        <div class="f-ruled-item__body">
+          <div class="f-ruled-item__artist">Nick Cave &amp; The Bad Seeds</div>
+          <div class="f-ruled-item__title">Wild God</div>
+        </div>
+        <div class="f-ruled-item__date">10 mai 2026</div>
+        <div class="f-ruled-item__note">8<sup>/10</sup></div>
+      </div>
+      <div class="f-ruled-item">
+        <div class="f-ruled-item__img">
+          <img src="https://picsum.photos/seed/album-f2/144/144" alt="Album">
+        </div>
+        <div class="f-ruled-item__body">
+          <div class="f-ruled-item__artist">Mdou Moctar</div>
+          <div class="f-ruled-item__title">Funeral for Justice</div>
+        </div>
+        <div class="f-ruled-item__date">28 avr. 2026</div>
+        <div class="f-ruled-item__note">9<sup>/10</sup></div>
+      </div>
+      <div class="f-ruled-item">
+        <div class="f-ruled-item__img">
+          <img src="https://picsum.photos/seed/album-f3/144/144" alt="Album">
+        </div>
+        <div class="f-ruled-item__body">
+          <div class="f-ruled-item__artist">Osees</div>
+          <div class="f-ruled-item__title">Intercepted Message</div>
+        </div>
+        <div class="f-ruled-item__date">20 avr. 2026</div>
+        <div class="f-ruled-item__note">7<sup>/10</sup></div>
+      </div>
+      <div class="f-ruled-item">
+        <div class="f-ruled-item__img">
+          <img src="https://picsum.photos/seed/album-f4/144/144" alt="Album">
+        </div>
+        <div class="f-ruled-item__body">
+          <div class="f-ruled-item__artist">Amyl and the Sniffers</div>
+          <div class="f-ruled-item__title">Cartoon Darkness</div>
+        </div>
+        <div class="f-ruled-item__date">15 avr. 2026</div>
+        <div class="f-ruled-item__note">8<sup>/10</sup></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

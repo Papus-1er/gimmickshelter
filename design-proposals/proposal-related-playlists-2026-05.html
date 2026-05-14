@@ -1,0 +1,471 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>Proposal — Section "D'autres playlists" (single-playlists)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --color1: #E81F1F;
+    --color2: #000B29;
+    --color3: #FFFFFF;
+    --color4: #000000;
+    --color5: #6D6D64;
+    /* tokens locaux dérivés */
+    --gs-divider-soft-dark: rgba(0, 11, 41, 0.08);
+    --gs-divider-strong-dark: rgba(0, 11, 41, 0.18);
+    --gs-shadow-soft: 0 6px 24px rgba(0, 11, 41, 0.08);
+    --gs-shadow-hover: 0 14px 40px rgba(0, 11, 41, 0.16);
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--color3);
+    color: var(--color4);
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    letter-spacing: 0.02rem;
+  }
+
+  .page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 24px 96px;
+  }
+
+  /* En-tête simulant la fin du single */
+  .single-context {
+    border-top: 1px dashed var(--gs-divider-strong-dark);
+    margin: 0 0 24px;
+    padding-top: 24px;
+    color: var(--color5);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+
+  /* Étiquettes de variante (UI proposal, pas le DS) */
+  .variant-label {
+    display: inline-block;
+    margin: 80px 0 16px;
+    padding: 6px 14px;
+    background: var(--color2);
+    color: var(--color3);
+    font-family: 'Anton', sans-serif;
+    letter-spacing: 0.08em;
+    font-size: 0.95rem;
+  }
+  .variant-note {
+    margin: 0 0 32px;
+    padding: 12px 16px;
+    border-left: 3px solid var(--color1);
+    background: rgba(232, 31, 31, 0.04);
+    color: var(--color2);
+    font-size: 0.95rem;
+    max-width: 820px;
+  }
+  .variant-note strong { font-weight: 700; }
+
+  /* ==========================================
+     COMMUN — titre de section "D'autres playlists"
+     ========================================== */
+  .gs-related {
+    padding: 64px 0 24px;
+  }
+  .gs-related__head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+    margin-bottom: 40px;
+  }
+  .gs-related__title {
+    font-family: 'Anton', sans-serif;
+    font-weight: 400;
+    color: var(--color2);
+    margin: 0;
+    font-size: clamp(2rem, 4vw, 3rem);
+    letter-spacing: 0.02em;
+    line-height: 1;
+  }
+  .gs-related__title em {
+    font-style: normal;
+    color: var(--color1);
+  }
+  .gs-related__all {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.9rem;
+    color: var(--color2);
+    text-decoration: none;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    border-bottom: 1px solid var(--color2);
+    padding-bottom: 2px;
+    transition: color .2s ease, border-color .2s ease;
+  }
+  .gs-related__all:hover {
+    color: var(--color1);
+    border-color: var(--color1);
+  }
+
+  /* Pochettes mock (gradient) */
+  .mock-cover {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    display: block;
+    position: relative;
+    overflow: hidden;
+  }
+  .mock-cover::after {
+    content: "";
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(255,255,255,0.18), transparent 55%),
+      radial-gradient(circle at 70% 80%, rgba(0,0,0,0.25), transparent 60%);
+    mix-blend-mode: overlay;
+  }
+  .cover-1 { background: linear-gradient(135deg, #E81F1F 0%, #6a0a0a 100%); }
+  .cover-2 { background: linear-gradient(135deg, #000B29 0%, #1d3b8b 100%); }
+  .cover-3 { background: linear-gradient(135deg, #6D6D64 0%, #2a2a26 100%); }
+
+  /* ==========================================
+     VARIANTE A — Cards éditoriales pures
+     ========================================== */
+  .va-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+  .va-card {
+    text-decoration: none;
+    color: var(--color2);
+    display: block;
+  }
+  .va-card__cover-wrap {
+    overflow: hidden;
+    margin-bottom: 16px;
+    background: var(--color2);
+  }
+  .va-card__cover {
+    transition: transform .5s ease;
+  }
+  .va-card:hover .va-card__cover { transform: scale(1.06); }
+  .va-card__title {
+    font-family: 'Anton', sans-serif;
+    font-weight: 400;
+    font-size: 1.6rem;
+    margin: 0 0 6px;
+    letter-spacing: 0.01em;
+    color: var(--color2);
+    transition: color .2s ease;
+  }
+  .va-card:hover .va-card__title { color: var(--color1); }
+  .va-card__subtitle {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.95rem;
+    color: var(--color5);
+    margin: 0;
+    line-height: 1.45;
+  }
+  .va-card__meta {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--color5);
+  }
+  .va-card:hover .va-card__meta { color: var(--color1); }
+
+  /* ==========================================
+     VARIANTE B — Mosaïque tilt
+     ========================================== */
+  .vb-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    padding: 24px 12px 56px;
+  }
+  .vb-card {
+    text-decoration: none;
+    color: var(--color2);
+    display: block;
+    transition: transform .4s ease;
+  }
+  .vb-card:nth-child(1) { transform: rotate(-2deg); }
+  .vb-card:nth-child(2) { transform: rotate(1.2deg); }
+  .vb-card:nth-child(3) { transform: rotate(-0.8deg); }
+  .vb-card:hover {
+    transform: rotate(0deg) translateY(-4px);
+  }
+  .vb-card__cover-wrap {
+    box-shadow: var(--gs-shadow-soft);
+    transition: box-shadow .3s ease;
+    background: var(--color2);
+    margin-bottom: 18px;
+    border: 4px solid var(--color3);
+    outline: 1px solid var(--gs-divider-soft-dark);
+  }
+  .vb-card:hover .vb-card__cover-wrap {
+    box-shadow: var(--gs-shadow-hover);
+  }
+  .vb-card__title {
+    font-family: 'Anton', sans-serif;
+    font-weight: 400;
+    font-size: 1.5rem;
+    margin: 0 0 4px;
+    color: var(--color2);
+    letter-spacing: 0.01em;
+  }
+  .vb-card__subtitle {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.9rem;
+    color: var(--color5);
+    margin: 0;
+  }
+  .vb-card__pin {
+    display: inline-block;
+    width: 8px; height: 8px;
+    background: var(--color1);
+    border-radius: 50%;
+    margin-right: 8px;
+    vertical-align: middle;
+  }
+
+  /* ==========================================
+     VARIANTE C — Liste éditoriale horizontale
+     ========================================== */
+  .vc-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--gs-divider-strong-dark);
+  }
+  .vc-item {
+    border-bottom: 1px solid var(--gs-divider-strong-dark);
+  }
+  .vc-link {
+    display: grid;
+    grid-template-columns: 88px 1fr auto;
+    gap: 24px;
+    align-items: center;
+    padding: 20px 8px;
+    text-decoration: none;
+    color: var(--color2);
+    transition: padding .25s ease, background-color .25s ease;
+  }
+  .vc-link:hover {
+    padding-left: 20px;
+    background: rgba(0, 11, 41, 0.03);
+  }
+  .vc-cover {
+    width: 88px; height: 88px;
+    flex-shrink: 0;
+    box-shadow: var(--gs-shadow-soft);
+  }
+  .vc-cover .mock-cover { aspect-ratio: 1 / 1; }
+  .vc-text { min-width: 0; }
+  .vc-title {
+    font-family: 'Anton', sans-serif;
+    font-weight: 400;
+    font-size: 1.65rem;
+    margin: 0 0 4px;
+    color: var(--color2);
+    line-height: 1.05;
+    letter-spacing: 0.01em;
+  }
+  .vc-subtitle {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+    color: var(--color5);
+    margin: 0;
+    line-height: 1.4;
+    /* sous-titre = champ ACF mis en valeur */
+  }
+  .vc-arrow {
+    font-family: 'Anton', sans-serif;
+    font-size: 2rem;
+    color: var(--color2);
+    transition: transform .25s ease, color .25s ease;
+    line-height: 1;
+  }
+  .vc-link:hover .vc-arrow {
+    transform: translateX(8px);
+    color: var(--color1);
+  }
+  .vc-index {
+    font-family: 'Anton', sans-serif;
+    font-size: 0.9rem;
+    color: var(--color5);
+    letter-spacing: 0.12em;
+    display: block;
+    margin-bottom: 4px;
+  }
+
+  /* ===== Responsive ===== */
+  @media (max-width: 768px) {
+    .va-grid, .vb-grid { grid-template-columns: 1fr; gap: 32px; }
+    .vb-card:nth-child(n) { transform: none; }
+    .vc-link { grid-template-columns: 64px 1fr auto; gap: 16px; padding: 16px 4px; }
+    .vc-cover { width: 64px; height: 64px; }
+    .vc-title { font-size: 1.25rem; }
+    .vc-subtitle { font-size: 0.9rem; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <p class="single-context">↑ Fin du contenu single-playlists.php (texte + Spotify embed)</p>
+
+  <!-- =========================================================
+       VARIANTE A — Cards éditoriales pures
+       ========================================================= -->
+  <span class="variant-label">Variante A — Cards éditoriales pures</span>
+  <p class="variant-note">
+    <strong>Apport :</strong> sobriété maximale, hiérarchie typo nette (pochette → Anton → Roboto khaki),
+    hover discret (zoom pochette + titre rouge GS) qui reste lisible sur fond blanc.
+    <strong>Compromis :</strong> visuel plus "magazine classique", moins de personnalité tactile.
+  </p>
+
+  <section class="gs-related">
+    <header class="gs-related__head">
+      <h2 class="gs-related__title">D'autres <em>playlists</em></h2>
+      <a href="#" class="gs-related__all">Voir toutes les playlists →</a>
+    </header>
+
+    <div class="va-grid">
+      <a href="#" class="va-card">
+        <div class="va-card__cover-wrap">
+          <span class="mock-cover cover-1 va-card__cover"></span>
+        </div>
+        <h3 class="va-card__title">Garage Resurrection</h3>
+        <p class="va-card__subtitle">Riffs sales et fuzz salvateur, dix titres pour réveiller votre platine.</p>
+        <span class="va-card__meta">Playlist · 47 min</span>
+      </a>
+
+      <a href="#" class="va-card">
+        <div class="va-card__cover-wrap">
+          <span class="mock-cover cover-2 va-card__cover"></span>
+        </div>
+        <h3 class="va-card__title">Cold Wave Renaissance</h3>
+        <p class="va-card__subtitle">Synthés glacés et basses tendues, une lente plongée dans l'élégance post-punk.</p>
+        <span class="va-card__meta">Playlist · 52 min</span>
+      </a>
+
+      <a href="#" class="va-card">
+        <div class="va-card__cover-wrap">
+          <span class="mock-cover cover-3 va-card__cover"></span>
+        </div>
+        <h3 class="va-card__title">Slowcore Sunday</h3>
+        <p class="va-card__subtitle">Pour les dimanches gris, des chansons qui prennent leur temps et le rendent.</p>
+        <span class="va-card__meta">Playlist · 41 min</span>
+      </a>
+    </div>
+  </section>
+
+
+  <!-- =========================================================
+       VARIANTE B — Mosaïque tilt
+       ========================================================= -->
+  <span class="variant-label">Variante B — Mosaïque tilt (vinyles posés)</span>
+  <p class="variant-note">
+    <strong>Apport :</strong> personnalité forte, esprit "vinyles posés sur la table". Les rotations légères
+    se redressent au hover, l'ombre s'intensifie — geste tactile, mémorable.
+    <strong>Compromis :</strong> rotation bannie sous <em>prefers-reduced-motion</em> ; à valider en accessibilité.
+  </p>
+
+  <section class="gs-related">
+    <header class="gs-related__head">
+      <h2 class="gs-related__title">D'autres <em>playlists</em></h2>
+      <a href="#" class="gs-related__all">Voir toutes les playlists →</a>
+    </header>
+
+    <div class="vb-grid">
+      <a href="#" class="vb-card">
+        <div class="vb-card__cover-wrap">
+          <span class="mock-cover cover-1"></span>
+        </div>
+        <h3 class="vb-card__title"><span class="vb-card__pin"></span>Garage Resurrection</h3>
+        <p class="vb-card__subtitle">Riffs sales et fuzz salvateur, dix titres pour réveiller votre platine.</p>
+      </a>
+
+      <a href="#" class="vb-card">
+        <div class="vb-card__cover-wrap">
+          <span class="mock-cover cover-2"></span>
+        </div>
+        <h3 class="vb-card__title"><span class="vb-card__pin"></span>Cold Wave Renaissance</h3>
+        <p class="vb-card__subtitle">Synthés glacés et basses tendues, plongée dans l'élégance post-punk.</p>
+      </a>
+
+      <a href="#" class="vb-card">
+        <div class="vb-card__cover-wrap">
+          <span class="mock-cover cover-3"></span>
+        </div>
+        <h3 class="vb-card__title"><span class="vb-card__pin"></span>Slowcore Sunday</h3>
+        <p class="vb-card__subtitle">Pour les dimanches gris, des chansons qui prennent leur temps.</p>
+      </a>
+    </div>
+  </section>
+
+
+  <!-- =========================================================
+       VARIANTE C — Liste éditoriale horizontale
+       ========================================================= -->
+  <span class="variant-label">Variante C — Liste éditoriale horizontale</span>
+  <p class="variant-note">
+    <strong>Apport :</strong> dense, magazine, met en valeur le <code>sous-titre-playlist</code> (ACF) qui
+    devient la vraie accroche. Hover : la ligne respire (padding-left), la flèche glisse en rouge GS.
+    <strong>Compromis :</strong> moins "vitrine pochette" — la pochette devient miniature secondaire.
+  </p>
+
+  <section class="gs-related">
+    <header class="gs-related__head">
+      <h2 class="gs-related__title">D'autres <em>playlists</em></h2>
+      <a href="#" class="gs-related__all">Voir toutes les playlists →</a>
+    </header>
+
+    <ul class="vc-list">
+      <li class="vc-item">
+        <a href="#" class="vc-link">
+          <div class="vc-cover"><span class="mock-cover cover-1"></span></div>
+          <div class="vc-text">
+            <span class="vc-index">PL · 01</span>
+            <h3 class="vc-title">Garage Resurrection</h3>
+            <p class="vc-subtitle">Riffs sales et fuzz salvateur, dix titres pour réveiller votre platine.</p>
+          </div>
+          <span class="vc-arrow" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li class="vc-item">
+        <a href="#" class="vc-link">
+          <div class="vc-cover"><span class="mock-cover cover-2"></span></div>
+          <div class="vc-text">
+            <span class="vc-index">PL · 02</span>
+            <h3 class="vc-title">Cold Wave Renaissance</h3>
+            <p class="vc-subtitle">Synthés glacés et basses tendues, une lente plongée dans l'élégance post-punk.</p>
+          </div>
+          <span class="vc-arrow" aria-hidden="true">→</span>
+        </a>
+      </li>
+      <li class="vc-item">
+        <a href="#" class="vc-link">
+          <div class="vc-cover"><span class="mock-cover cover-3"></span></div>
+          <div class="vc-text">
+            <span class="vc-index">PL · 03</span>
+            <h3 class="vc-title">Slowcore Sunday</h3>
+            <p class="vc-subtitle">Pour les dimanches gris, des chansons qui prennent leur temps et le rendent.</p>
+          </div>
+          <span class="vc-arrow" aria-hidden="true">→</span>
+        </a>
+      </li>
+    </ul>
+  </section>
+
+</div>
+</body>
+</html>

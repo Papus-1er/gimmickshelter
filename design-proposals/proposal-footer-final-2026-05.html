@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<!--
+  PROPOSITION DESIGN — Footer Gimmick Shelter (VERSION FINALE — itération 2)
+  Date    : 2026-05
+  Auteur  : Agent /designer
+  Source  : itération sur proposal-footer-final-2026-05.html (v1)
+
+  Retours utilisateur intégrés
+  ────────────────────────────
+  1. Breadcrumb : fond --color2 (bleu GS #000B29), plus de rouge assombri.
+     → Contraste blanc/bleu nuit ≈ 16:1 (AAA), overlay supprimé.
+  2. Menu réduit à 3 liens : « À propos », « Contact », « Mentions légales ».
+  3. Logo centré, conservé (48px desktop / 36px mobile).
+  4. Maquette duale : Desktop pleine largeur + Mobile (390px) côte à côte
+     dans le même document, avec annotations.
+
+  Cohérence DS
+  ────────────
+  - --color1 (rouge) : corps du footer
+  - --color2 (bleu nuit) : bande breadcrumb
+  - Anton : logo + menu / Roboto : breadcrumb + copyright
+  - Focus visible : outline blanc 2px
+  - Pas de duplication des « Mentions légales » dans la ligne légale
+    (déjà dans le menu).
+-->
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Footer Gimmick Shelter — version finale (itération 2)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" crossorigin="anonymous">
+  <style>
+    /* ── Reset & tokens DS ──────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color1: #E81F1F;
+      --color2: #000B29;
+      --color3: #FFFFFF;
+      --color4: #000000;
+      --color5: #6D6D64;
+
+      /* Variables locales footer */
+      --gs-footer-bg:               var(--color1);
+      --gs-footer-breadcrumb-bg:    var(--color2);
+      --gs-footer-divider:          rgba(255, 255, 255, 0.22);
+      --gs-footer-divider-soft:     rgba(255, 255, 255, 0.12);
+      --gs-footer-text-muted:       rgba(255, 255, 255, 0.82);
+      --gs-footer-social-hover-bg:  rgba(255, 255, 255, 0.14);
+    }
+
+    body {
+      background: #1a1a1a;
+      font-family: 'Roboto', sans-serif;
+      color: var(--color3);
+      line-height: 1.6;
+      padding: 40px 24px 80px;
+    }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    .sr-only {
+      position: absolute; height: 1px; width: 1px;
+      overflow: hidden; clip: rect(1px,1px,1px,1px);
+    }
+
+    /* ── Page de présentation (annotations maquette) ───────────── */
+    .doc {
+      max-width: 1480px; margin: 0 auto;
+    }
+    .doc__h1 {
+      font-family: 'Anton', sans-serif;
+      letter-spacing: .08em; text-transform: uppercase;
+      font-size: 1.6rem;
+      color: var(--color3);
+      margin-bottom: 8px;
+    }
+    .doc__lede {
+      color: rgba(255,255,255,0.7);
+      font-size: .9rem;
+      max-width: 760px;
+      margin-bottom: 40px;
+    }
+    .doc__section {
+      margin-bottom: 64px;
+    }
+    .doc__h2 {
+      font-family: 'Anton', sans-serif;
+      letter-spacing: .12em; text-transform: uppercase;
+      font-size: 1.05rem;
+      color: var(--color1);
+      border-bottom: 1px dashed rgba(255,255,255,0.2);
+      padding-bottom: 8px; margin-bottom: 12px;
+    }
+    .doc__note {
+      color: rgba(255,255,255,0.65);
+      font-size: .82rem; line-height: 1.55;
+      margin-bottom: 20px;
+      max-width: 820px;
+    }
+    .doc__note b { color: var(--color3); font-weight: 500; }
+
+    /* Wrapper « device » pour la version mobile */
+    .device {
+      width: 390px;
+      margin: 0 auto;
+      border: 8px solid #2a2a2a;
+      border-radius: 36px;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.6);
+      background: var(--color4);
+    }
+    .device__notch {
+      height: 22px;
+      background: #2a2a2a;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .device__notch::before {
+      content: ""; width: 60px; height: 6px;
+      background: #0a0a0a; border-radius: 4px;
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       FOOTER GS — styles partagés
+    ═══════════════════════════════════════════════════════════ */
+    .gs-footer {
+      background: var(--gs-footer-bg);
+      color: var(--color3);
+    }
+
+    /* ── Breadcrumb (fond bleu GS) ────────────────────────────── */
+    .gs-footer__breadcrumb {
+      background: var(--gs-footer-breadcrumb-bg);
+      padding: 12px 24px;
+      font-size: .85rem;
+      letter-spacing: .02em;
+    }
+    .gs-footer__breadcrumb-inner {
+      max-width: 1400px; margin: 0 auto;
+      color: var(--color3);
+    }
+    .gs-footer__breadcrumb #breadcrumbs {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+    }
+    .gs-footer__breadcrumb a {
+      color: var(--gs-footer-text-muted);
+      transition: color .2s ease;
+    }
+    .gs-footer__breadcrumb a:hover,
+    .gs-footer__breadcrumb a:focus-visible {
+      color: var(--color3);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      outline: none;
+    }
+    .gs-footer__breadcrumb .breadcrumb_last,
+    .gs-footer__breadcrumb [aria-current="page"] {
+      color: var(--color3);
+      font-weight: 500;
+    }
+    .gs-footer__breadcrumb .sep {
+      color: var(--gs-footer-text-muted);
+      opacity: .7;
+      margin: 0 2px;
+    }
+
+    /* ── Corps ────────────────────────────────────────────────── */
+    .gs-footer__body {
+      padding: 64px 24px 24px;
+      text-align: center;
+    }
+    .gs-footer__logo {
+      display: inline-block;
+      margin-bottom: 36px;
+    }
+    .gs-footer__logo img {
+      height: 48px; width: auto; display: block;
+    }
+    .gs-footer__logo:focus-visible {
+      outline: 2px solid var(--color3);
+      outline-offset: 6px;
+    }
+
+    /* Menu — 3 liens */
+    .gs-footer__nav {
+      display: flex; justify-content: center; flex-wrap: wrap;
+      gap: 10px 36px;
+      font-family: 'Anton', sans-serif;
+      letter-spacing: .1em; text-transform: uppercase;
+      font-size: 1.05rem;
+      margin-bottom: 36px;
+    }
+    .gs-footer__nav a {
+      color: var(--color3);
+      padding: 4px 2px;
+      position: relative;
+      transition: opacity .2s ease;
+    }
+    .gs-footer__nav a::after {
+      content: "";
+      position: absolute; left: 0; right: 0; bottom: 0;
+      height: 2px;
+      background: var(--color3);
+      transform: scaleX(0); transform-origin: center;
+      transition: transform .25s ease;
+    }
+    .gs-footer__nav a:hover::after,
+    .gs-footer__nav a:focus-visible::after { transform: scaleX(1); }
+    .gs-footer__nav a:focus-visible {
+      outline: 2px solid var(--color3);
+      outline-offset: 4px;
+    }
+
+    /* Réseaux sociaux */
+    .gs-footer__social {
+      display: flex; justify-content: center; gap: 12px;
+      margin-bottom: 40px;
+    }
+    .gs-footer__social a {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 44px; height: 44px;
+      border: 1.5px solid var(--gs-footer-divider);
+      border-radius: 50%;
+      color: var(--color3);
+      font-size: 1.05rem;
+      transition: background .2s ease, border-color .2s ease, transform .2s ease;
+    }
+    .gs-footer__social a:hover,
+    .gs-footer__social a:focus-visible {
+      background: var(--gs-footer-social-hover-bg);
+      border-color: var(--color3);
+      transform: translateY(-2px);
+      outline: none;
+    }
+    .gs-footer__social a:focus-visible {
+      outline: 2px solid var(--color3);
+      outline-offset: 3px;
+    }
+
+    /* Ligne légale (copyright seul) */
+    .gs-footer__legal {
+      max-width: 1400px; margin: 0 auto;
+      border-top: 1px solid var(--gs-footer-divider-soft);
+      padding-top: 20px;
+      text-align: center;
+      font-size: .8rem;
+      color: var(--gs-footer-text-muted);
+    }
+
+    /* ═══════════════════════════════════════════════════════════
+       VARIANTE MOBILE — appliquée via classe .gs-footer--mobile
+       (le wrapper .device fait 390px → on simule directement)
+    ═══════════════════════════════════════════════════════════ */
+    .gs-footer--mobile .gs-footer__breadcrumb {
+      padding: 10px 14px;
+      font-size: .78rem;
+    }
+    .gs-footer--mobile .gs-footer__breadcrumb #breadcrumbs {
+      flex-wrap: nowrap; overflow: hidden;
+      white-space: nowrap;
+    }
+    .gs-footer--mobile .gs-footer__body {
+      padding: 36px 16px 18px;
+    }
+    .gs-footer--mobile .gs-footer__logo { margin-bottom: 26px; }
+    .gs-footer--mobile .gs-footer__logo img { height: 36px; }
+
+    /* Menu mobile : empilé verticalement (3 liens — lisibles, gros touch targets) */
+    .gs-footer--mobile .gs-footer__nav {
+      flex-direction: column;
+      gap: 14px;
+      font-size: 1rem;
+      margin-bottom: 28px;
+    }
+    .gs-footer--mobile .gs-footer__nav a {
+      padding: 8px 4px;
+    }
+
+    .gs-footer--mobile .gs-footer__social {
+      gap: 10px; margin-bottom: 26px;
+    }
+    .gs-footer--mobile .gs-footer__social a {
+      width: 40px; height: 40px; font-size: 1rem;
+    }
+    .gs-footer--mobile .gs-footer__legal {
+      padding-top: 16px;
+      font-size: .72rem;
+      line-height: 1.5;
+    }
+
+    /* ── Responsive natif (au cas où on resize la page entière) ─ */
+    @media (max-width: 768px) {
+      body { padding: 20px 0 40px; }
+      .doc__h1 { font-size: 1.3rem; }
+      .device { width: 100%; border-radius: 0; border: 0; }
+    }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .gs-footer__nav a::after,
+      .gs-footer__social a,
+      .gs-footer__breadcrumb a { transition: none; }
+      .gs-footer__social a:hover { transform: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="doc">
+
+  <h1 class="doc__h1">Footer Gimmick Shelter — itération 2</h1>
+  <p class="doc__lede">
+    Breadcrumb sur fond bleu nuit (<code>--color2</code>), corps rouge GS
+    (<code>--color1</code>), logo centré, menu réduit à 3 entrées
+    (À propos / Contact / Mentions légales). Deux rendus : desktop pleine
+    largeur, puis mobile 390 px dans un cadre simulant un téléphone.
+  </p>
+
+  <!-- ════════════════════════════════════════════════════════
+       SECTION 1 — DESKTOP
+  ════════════════════════════════════════════════════════ -->
+  <section class="doc__section" aria-labelledby="t-desktop">
+    <h2 class="doc__h2" id="t-desktop">Footer — Desktop (≥ 769 px)</h2>
+    <p class="doc__note">
+      Bande breadcrumb <b>bleu GS</b> (contraste blanc ≈ 16:1, AAA).
+      Logo blanc 48 px centré. Menu Anton 3 entrées espacées de 36 px.
+      Quatre réseaux sociaux en cercles outline. Copyright seul sur la
+      ligne légale (les mentions légales sont désormais dans le menu).
+    </p>
+
+    <footer class="gs-footer" aria-labelledby="gs-footer-title-d">
+      <h2 id="gs-footer-title-d" class="sr-only">Pied de page Gimmick Shelter</h2>
+
+      <div class="gs-footer__breadcrumb">
+        <nav class="gs-footer__breadcrumb-inner" aria-label="Fil d'Ariane">
+          <div id="breadcrumbs">
+            <a href="/">Accueil</a>
+            <span class="sep" aria-hidden="true">›</span>
+            <a href="/playlists/">Playlists</a>
+            <span class="sep" aria-hidden="true">›</span>
+            <span class="breadcrumb_last" aria-current="page">Winter 24</span>
+          </div>
+        </nav>
+      </div>
+
+      <div class="gs-footer__body">
+        <a href="/" class="gs-footer__logo" aria-label="Gimmick Shelter — Accueil">
+          <img src="../img/identity/gimmick-shelter-logo-blanc.svg" alt="">
+        </a>
+
+        <nav aria-label="Navigation du pied de page">
+          <ul class="gs-footer__nav">
+            <li><a href="/a-propos-de-nous/">À propos</a></li>
+            <li><a href="/contact/">Contact</a></li>
+            <li><a href="/mentions-legales/">Mentions légales</a></li>
+          </ul>
+        </nav>
+
+        <ul class="gs-footer__social" aria-label="Réseaux sociaux">
+          <li><a href="https://www.instagram.com/gimmick_shelter/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
+          <li><a href="https://twitter.com/gimmick_shelter" target="_blank" rel="noopener" aria-label="Twitter / X"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
+          <li><a href="https://www.facebook.com/Gimmick-Shelter-111613287097036" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
+          <li><a href="https://open.spotify.com/user/1113597649" target="_blank" rel="noopener" aria-label="Spotify"><i class="fab fa-spotify" aria-hidden="true"></i></a></li>
+        </ul>
+
+        <div class="gs-footer__legal">
+          <p>&copy; 2021–2026 Gimmick Shelter</p>
+        </div>
+      </div>
+    </footer>
+  </section>
+
+  <!-- ════════════════════════════════════════════════════════
+       SECTION 2 — MOBILE (390 px)
+  ════════════════════════════════════════════════════════ -->
+  <section class="doc__section" aria-labelledby="t-mobile">
+    <h2 class="doc__h2" id="t-mobile">Footer — Mobile (≤ 600 px, simulation 390 px)</h2>
+    <p class="doc__note">
+      Padding compacté, logo 36 px, breadcrumb tronqué si nécessaire
+      (<code>white-space: nowrap; overflow: hidden</code>).
+      <b>Menu empilé verticalement</b> : meilleure lisibilité en Anton et
+      cibles tactiles plus généreuses que 3 liens serrés horizontalement.
+      Réseaux sociaux centrés (40 px), copyright en petite police.
+    </p>
+
+    <div class="device" role="presentation" aria-hidden="false">
+      <div class="device__notch" aria-hidden="true"></div>
+
+      <footer class="gs-footer gs-footer--mobile" aria-labelledby="gs-footer-title-m">
+        <h2 id="gs-footer-title-m" class="sr-only">Pied de page Gimmick Shelter</h2>
+
+        <div class="gs-footer__breadcrumb">
+          <nav class="gs-footer__breadcrumb-inner" aria-label="Fil d'Ariane">
+            <div id="breadcrumbs">
+              <a href="/">Accueil</a>
+              <span class="sep" aria-hidden="true">›</span>
+              <a href="/playlists/">Playlists</a>
+              <span class="sep" aria-hidden="true">›</span>
+              <span class="breadcrumb_last" aria-current="page">Winter 24</span>
+            </div>
+          </nav>
+        </div>
+
+        <div class="gs-footer__body">
+          <a href="/" class="gs-footer__logo" aria-label="Gimmick Shelter — Accueil">
+            <img src="../img/identity/gimmick-shelter-logo-blanc.svg" alt="">
+          </a>
+
+          <nav aria-label="Navigation du pied de page">
+            <ul class="gs-footer__nav">
+              <li><a href="/a-propos-de-nous/">À propos</a></li>
+              <li><a href="/contact/">Contact</a></li>
+              <li><a href="/mentions-legales/">Mentions légales</a></li>
+            </ul>
+          </nav>
+
+          <ul class="gs-footer__social" aria-label="Réseaux sociaux">
+            <li><a href="https://www.instagram.com/gimmick_shelter/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a></li>
+            <li><a href="https://twitter.com/gimmick_shelter" target="_blank" rel="noopener" aria-label="Twitter / X"><i class="fab fa-twitter" aria-hidden="true"></i></a></li>
+            <li><a href="https://www.facebook.com/Gimmick-Shelter-111613287097036" target="_blank" rel="noopener" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a></li>
+            <li><a href="https://open.spotify.com/user/1113597649" target="_blank" rel="noopener" aria-label="Spotify"><i class="fab fa-spotify" aria-hidden="true"></i></a></li>
+          </ul>
+
+          <div class="gs-footer__legal">
+            <p>&copy; 2021–2026<br>Gimmick Shelter</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </section>
+
+</div>
+
+</body>
+</html>

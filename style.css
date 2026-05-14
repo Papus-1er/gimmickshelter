@@ -1,0 +1,2218 @@
+/*
+Theme Name: Gimmick Shelter 
+Author: Adrien Masseron
+Author URI: https://www.linkedin.com/in/adrien-masseron/
+Description: Official Gimmick Shelter theme  
+Version: 1.0
+Requires at least: 5.4
+Requires PHP: 5.6.25
+Text Domain: Gimmick Shelter Official Website
+Tags: one-column, two-columns, right-sidebar, flexible-header, accessibility-ready, custom-colors, custom-header, custom-menu, custom-logo, editor-style, featured-images, footer-widgets, post-formats, rtl-language-support, sticky-post, theme-options, threaded-comments, translation-ready
+
+This theme, like WordPress, is licensed under the GPL.
+*/
+
+/*--------------------------------------------------------------
+>>> TABLE OF CONTENTS:
+----------------------------------------------------------------
+1.0 Normalize
+2.0 Accessibility
+3.0 Alignments
+4.0 Clearings
+5.0 Typography
+6.0 Forms
+7.0 Formatting
+8.0 Lists
+9.0 Tables
+10.0 Links
+11.0 Featured Image Hover
+12.0 Navigation
+13.0 Layout
+   13.1 Header
+   13.2 Front Page
+   13.3 Regular Content
+   13.4 Posts
+   13.5 Pages
+   13.6 Footer
+14.0 Comments
+15.0 Widgets
+16.0 Media
+   16.1 Galleries
+17.0 Customizer
+18.0 SVGs Fallbacks
+19.0 Media Queries
+20.0 Print
+--------------------------------------------------------------*/
+
+/*--------------------------------------------------------------
+1.0 Normalize
+Styles based on Normalize v5.0.0 @link https://github.com/necolas/normalize.css
+--------------------------------------------------------------*/
+
+
+
+/*Common parameters*/
+
+:root{
+	--color1:#E81F1F; /*Rouge GS*/
+	--color2:#000B29; /*Bleu GS*/
+	--color3:#FFFFFF; /*White*/
+	--color4:#000000; /*Black*/
+  --color5:#6D6D64; /*Khaki Web*/
+}
+
+.sr-only{
+	position: absolute!important;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    clip: rect(1px,1px,1px,1px);
+    word-wrap: normal;
+}
+
+/* Police 'Anton' et 'Roboto' Google Font */
+body {
+  font-family: 'Roboto', sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Anton', sans-serif;
+}
+
+p {
+  font-size: 1.15rem;
+  line-height: 1.6;
+  letter-spacing: 0.05rem;
+  text-align:justify;
+}
+li {
+  font-size: 1.15rem;
+  line-height: 1.6;
+  letter-spacing: 0.05rem;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+.c-1{
+	color: var(--color1) !important;
+}
+.c-2{
+	color: var(--color2) !important;
+}
+.c-3{
+	color: var(--color3) !important;
+}
+.c-4{
+	color: var(--color4) !important;
+}
+.c-5{
+	color: var(--color5) !important;
+}
+
+.bgc-1{
+	background-color: var(--color1) !important;
+}
+.bgc-2{
+	background-color: var(--color2) !important;
+}
+.bgc-3{
+	background-color: var(--color3) !important;
+}
+.bgc-4{
+	background-color: var(--color4) !important;
+}
+.bgc-5{
+	background-color: var(--color5) !important;
+}
+
+a {
+  color: var(--color3);
+  text-decoration: none;
+  background-color: transparent;
+}
+
+a:hover {
+  color:var(--color3);	
+  text-decoration: none;
+}
+
+.gs-link {
+  color:var(--color2) !important;
+  text-decoration: underline;
+}
+
+.adrien {
+  margin: 150px 0 200px;
+  text-align: center;
+  width: 100%;
+}
+
+/*Header*/
+
+.gs-logo {
+	padding:1rem;
+}
+
+#logo{
+	max-height:100px;
+	display: block;
+    color: inherit;
+    height: 100%;
+    width: auto;
+	margin: auto;
+}
+
+.navbar-light .navbar-toggler {
+
+  border-color: var(--color3) !important;
+}
+
+.navbar-light .navbar-toggler-icon {
+  background-image: url(data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgb(255, 255, 255)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e);
+}
+
+.justify-horizontal-center {
+	margin-top: auto;
+	margin-bottom: auto;
+}
+
+#breadcrumb > * {
+    margin-top: 0;
+    margin-bottom: 0;
+    color: var(--color3) !important;
+}
+
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  word-wrap: break-word;
+  background-color: #fff;
+  background-clip: border-box;
+  border: 1px solid rgba(0,0,0,.125);
+  border-radius: .25rem;
+}
+
+.card-body{
+	padding-left: 1.25rem;
+	padding-right: 1.25rem;
+	}	
+
+.card-img-top-card-news {
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    width: 100%;
+    height: 350px;
+    border-top-left-radius: calc(0.25rem - 1px);
+    border-top-right-radius: calc(0.25rem - 1px);
+}
+
+
+
+
+/* Anachronique Homepage section */
+
+.image-anachronique{
+	opacity: 1;
+	display:block;
+	transition: .5s ease;
+	backface-visibility: hidden;
+}
+
+.position-text{
+	transition: .5s ease;
+    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+.anachronique-text{
+    font-size: 16px;
+}
+
+.anachronique:hover .image-anachronique{
+	opacity:0.3;
+    background: var(--color4)!important;    
+}
+
+.anachronique:hover .position-text{
+    opacity: 1;
+}
+
+.playlist{
+	height: auto;
+}
+
+.gs-footer{
+  margin-bottom:0;
+  padding:0;
+}
+
+.gs-social-network {
+  margin-bottom:0;
+  padding:0;
+  list-style: none;
+  display: flex;
+  flex-direction:row;
+  -ms-flex-pack: center !important;
+  justify-content: center !important;
+}
+
+.gs-form-inline {
+  display: -ms-flexbox;
+  display: flex;
+  /* flex-flow: row wrap; */
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.page-item.gs-active .page-link {
+  z-index: 3;
+  color: #fff;
+  background-color: var(--color2);
+  border-color: var(--color2);
+}
+
+.container-news {
+  position: relative;
+  text-align: left;
+  color: white;
+}
+.text-news {
+  position: absolute;
+  bottom: 8px;
+  left: 16px;
+}
+.content-text {
+  text-align: justify
+}
+
+/** SVG **/
+.svg-icon {
+  width: 2rem;
+  height: 2rem;
+}
+
+.svg-icon path,
+.svg-icon polygon,
+.svg-icon rect {
+  fill: #FFFFFF;
+}
+
+.svg-icon circle {
+  stroke: #4691f6;
+  stroke-width: 1;
+}
+
+/* RESPONSIVE ELEMENTS UPDATE */
+.btn-gs-primary {
+  color:#fff !important;
+  border-color: var(--color2) !important;
+  background-color: var(--color2) !important;
+}
+
+.btn-gs-primary:hover {
+  color: #fff;
+  border-color: var(--color2);
+}
+
+.btn-gs-primary:focus, .btn-gs-primary.focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+}
+
+.btn-gs-primary.disabled, .btn-gs-primary:disabled {
+  color: var(--color2);
+  background-color: transparent;
+}
+
+.btn-gs-primary:not(:disabled):not(.disabled):active, .btn-gs-primary:not(:disabled):not(.disabled).active,
+.show > .btn-gs-primary.dropdown-toggle {
+  color: #fff;
+  background-color: var(--color2);
+  border-color: var(--color2);
+}
+
+.btn-gs-primary:not(:disabled):not(.disabled):active:focus, .btn-gs-primary:not(:disabled):not(.disabled).active:focus,
+.show > .btn-gs-primary.dropdown-toggle:focus {
+  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.5);
+}
+
+
+#back-to-top {
+  /* Positionnement */
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  z-index: 99;
+
+  /* Forme — carré arrondi blanc + liseré rouge */
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  background: var(--color3);
+  border: 2px solid var(--color1);
+
+  /* Contenu centré */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Transitions ciblées */
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition: opacity .3s ease, transform .3s ease,
+              background .22s ease, border-color .22s ease;
+
+  /* Reset bouton */
+  cursor: pointer;
+  text-decoration: none;
+}
+
+/* Visible */
+#back-to-top.is-visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+/* Hover — fond rouge, icône blanche */
+#back-to-top:hover {
+  background: var(--color1);
+  transform: translateY(-3px);
+}
+
+/* Focus clavier */
+#back-to-top:focus-visible {
+  outline: 2px solid var(--color2);
+  outline-offset: 3px;
+}
+
+/* SVG chevron */
+#back-to-top svg {
+  width: 18px;
+  height: 18px;
+  stroke: var(--color1);
+  fill: none;
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: stroke .22s ease, transform .22s ease;
+  display: block;
+}
+
+#back-to-top:hover svg {
+  stroke: var(--color3);
+  transform: translateY(-1px);
+}
+
+/* Desktop — margin droite plus généreux */
+@media (min-width: 992px) {
+  #back-to-top {
+    right: 56px;
+  }
+}
+
+/* prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  #back-to-top {
+    transition: opacity .15s ease;
+    transform: none !important;
+  }
+  #back-to-top:hover {
+    transform: none;
+  }
+  #back-to-top svg {
+    transition: stroke .15s ease;
+    transform: none !important;
+  }
+}
+
+#go-back {
+  background-color: var(--color3) !important;
+  width: 50px;
+  height: 50px;
+  font-size: 28px;
+  color: var(--color4) !important;
+  text-decoration: none;
+  border: #dee2e6;
+  display: flex;
+  justify-content: left;
+  opacity: 1;
+  outline: none;
+}
+
+.gs-card-img-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: end; /* Aligne le texte en bas */
+  justify-content: center;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0)); /* Dégradé allant du noir opaque en bas au transparent en haut */
+}
+
+.gs-card-title {
+  color: rgba(255, 255, 255, 0.8); /* Transparent white text */
+  font-size: 2rem; /* Adjust text size as needed */
+}
+
+.gs-overlay-card {
+  position: relative; /* Position relative pour que l'overlay puisse se positionner par rapport à cette carte */
+  max-width: 100%; /* La carte s'adapte à la taille de l'écran */
+  height: auto;
+}
+
+.gs-card {
+  flex: 1; /* Toutes les cartes prennent une hauteur égale */
+  display: flex;
+  flex-direction: column; /* Assure que le contenu de la carte s'aligne verticalement */
+  position: relative;
+  overflow: hidden; /* Assure que le zoom ne dépasse pas les bords de la carte */
+}
+
+.gs-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Remplit la carte sans déformer l'image */
+  position: relative; /* Relative pour que l'image reste dans le flux normal */
+  flex-shrink: 0; /* Empêche l'image de rétrécir */
+  transition: transform 0.3s ease; /* Transition fluide lors du zoom */
+}
+
+/* Appliquer le zoom au survol */
+.gs-card:hover .gs-card-img {
+  transform: scale(1.1); /* Agrandir l'image de 10% au survol */
+}
+
+/* Fond semi-transparent derrière le texte */
+.gs-overlay-text {
+  border-radius: 5px; /* Coins arrondis */
+  padding: 1rem; /* Espacement interne autour du texte */
+}
+
+.card-label {
+  position: absolute;
+  top: 10px; /* Positionne le label à 10px du haut */
+  right: 10px; /* Positionne le label à 10px de la droite */
+  background-color: rgba(0, 0, 0, 0.7); /* Fond noir semi-transparent */
+  color: #fff; /* Couleur du texte */
+  padding: 5px 10px; /* Espacement interne du label */
+  border-radius: 5px; /* Coins arrondis pour le label */
+  font-size: 0.9rem; /* Taille de la police du label */
+  z-index: 10; /* Assure que le label est au-dessus des autres éléments */
+}
+
+#progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 2px;
+  background: var(--color1);
+  width: 0%;
+  z-index: 999;
+  transition: width 0.2s ease;
+}
+
+.gs-social-network i {
+  font-size: 1.5rem; /* Increase the font size */
+  color: #fff;
+  transition: colorccc 0.3s;
+}
+
+.gs-social-network i:hover {
+  color: var(--color) !important; /* Optional hover effect */
+}
+
+/* Sticky Navigation Styles */
+.navigation-wrapper {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+    background-color: var(--color1);
+    width: 100%;
+}
+
+/* Remove duplicate properties */
+.navigation-wrapper .navbar {
+    padding: 0.5rem 0;
+}
+
+/* Optional: Add background color transition */
+.navigation-wrapper {
+    transition: background-color 0.3s ease;
+}
+
+/* Optional: Add box shadow when scrolling */
+.navigation-wrapper.is-sticky {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* RESPONSIVE ELEMENTS UPDATE */
+
+
+@media (max-width: 768px) { /** SM **/
+  .border-right {
+    border-right: 0 !important;
+  }
+
+  .border-left {
+    border-left: 0 !important;
+  }
+  .gs-footer{
+    -ms-flex-align: start !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+  } 
+  .gs-list{
+    list-style: none;
+    flex-direction:row;
+  }
+  .single-subtitle{
+    font-family: 'Roboto', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+  }
+  .single-title{
+    font-family: 'Anton', sans-serif;
+    font-size: 2em;
+    font-weight: 400;
+  }
+  .single-author{
+    font-size: 18px;
+    color: var(--color5) !important;
+  }
+  .sticky {
+  } 
+  .table thead {
+    display: none;
+    }
+    
+    .table tr{
+    display: block;
+    margin-bottom: 40px;
+    }
+    
+    .table td {
+    display: block;
+    text-align: right;
+    }
+    
+    .table td:before {
+    content: attr(data-label);
+    float: left;
+    font-weight: bold;
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 400;
+      letter-spacing: .025rem;
+      line-height: 1.2rem;
+      margin-bottom: .2rem;
+  }
+    .card-subtitle{
+      font-family: 'Roboto', sans-serif;
+      font-size: .875rem;
+      font-weight: 400;
+      letter-spacing: .025rem;
+      line-height: 1rem;
+  }
+}
+
+@media (min-width: 768px) { /** MD **/
+  .border-right {
+    border-right: 0 !important;
+  }
+
+  .border-left {
+    border-left: 0 !important;
+  }
+  .gs-footer{
+    -ms-flex-align: start !important;
+    align-items: flex-start !important;
+    justify-content: center !important;
+  } 
+  .gs-list{
+    list-style: none;
+    flex-direction:row;
+  }
+  .single-subtitle{
+    font-family: 'Roboto', sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+  }
+  .single-title{
+    font-family: 'Anton', sans-serif;
+    font-size: 2em;
+    font-weight: 400;
+  }
+  .single-author{
+    font-size: 18px;
+    color: var(--color5) !important;
+  }
+  .sticky {
+  }
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: 400;
+    letter-spacing: .025rem;
+    line-height: 1.2rem;
+    margin-bottom: .2rem;
+}
+  .card-subtitle{
+    font-family: 'Roboto', sans-serif;
+    font-size: .875rem;
+    font-weight: 400;
+    letter-spacing: .025rem;
+    line-height: 1rem;
+}  
+}
+
+@media (min-width: 992px) { /** LG **/
+  .border-right {
+    border-right: 0.5px solid #dee2e6 !important;
+  }
+
+  .border-left {
+    border-left: 0.5px solid #dee2e6 !important;
+  }
+  .gs-list{
+    list-style: none;
+    display: flex;
+    flex-direction:row;
+  }
+  .single-subtitle{
+    font-family: 'Roboto', sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+  }
+  .single-title{
+    font-family: 'Anton', sans-serif;
+    font-size: 2em;
+    font-weight: 400;
+  }
+  .single-author{
+    font-size: 20px;
+    color: var(--color5) !important;
+  }
+  .sticky {
+    position: sticky;
+    top: 2rem;
+  }
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: 400;
+    letter-spacing: .025rem;
+    line-height: 1.2rem;
+    margin-bottom: .2rem;
+}
+  .card-subtitle{
+    font-family: 'Roboto', sans-serif;
+    font-size: .875rem;
+    font-weight: 400;
+    letter-spacing: .025rem;
+    line-height: 1rem;
+}   
+}
+
+@media (min-width: 1200px) { /** XL **/
+  .border-right {
+    border-right: 0.5px solid #dee2e6 !important;
+  }
+
+  .border-left {
+    border-left: 0.5px solid #dee2e6 !important;
+  }
+  .gs-list{
+    list-style: none;
+    display: flex;
+    flex-direction:row;
+  }
+  .single-subtitle{
+    font-family: 'Roboto', sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+  }
+  .single-title{
+    font-family: 'Anton', sans-serif;
+    font-size: 2em;
+    font-weight: 400;
+  }
+  .single-author{
+    font-size: 22px;
+    color: var(--color5) !important;
+  }
+  .sticky {
+    position: sticky;
+    top: 2rem;
+  } 
+  .card-title {
+    font-size: 1.25rem;
+    font-weight: 400;
+    letter-spacing: .025rem;
+    line-height: 1.2rem;
+    margin-bottom: .2rem;
+}
+  .card-subtitle{
+    font-family: 'Roboto', sans-serif;
+    font-size: .875rem;
+    font-weight: 400;
+    letter-spacing: .025rem;
+    line-height: 1rem;
+}  
+}
+
+
+/* ==============================================================
+   HEADER GS — Section ajoutée Mai 2026
+   Maquette : proposal-header-interactive-2026-05.html
+   Conventions : BEM, var(--colorN), Anton/Roboto, pas de !important
+================================================================ */
+
+/* ---------------------------------------------------------------
+   Variables header (étendent :root existant)
+--------------------------------------------------------------- */
+:root {
+  --gs-nav-bg:              var(--color4);
+  --gs-nav-bg-scrolled:     var(--color2);
+  --gs-nav-border-scrolled: var(--color1);
+  --gs-nav-height:          52px;
+  --gs-placeholder:         #949489; /* contraste AA sur fond noir/bleu */
+  --gs-divider-soft:        rgba(255, 255, 255, 0.05);
+  --gs-divider-medium:      rgba(255, 255, 255, 0.08);
+  --gs-overlay-card:        rgba(0, 0, 0, 0.85); /* overlay bas-vers-transparent sur cards image */
+}
+
+/* ---------------------------------------------------------------
+   .gs-header — structure générale
+--------------------------------------------------------------- */
+.gs-header {
+  position: relative;
+}
+
+/* ---------------------------------------------------------------
+   .gs-header__logo-band — bandeau rouge
+--------------------------------------------------------------- */
+.gs-header__logo-band {
+  background-color: var(--color1);
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 16px;
+  overflow: hidden;
+  transition: padding 0.3s ease;
+}
+
+.gs-header__logo-link {
+  display: inline-block;
+  text-decoration: none;
+}
+
+.gs-header__logo-img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  max-height: 100px;
+}
+
+.gs-header__tagline {
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 300;
+  color: var(--color3);
+  opacity: 0.75;
+  letter-spacing: 0.12em;
+  margin-top: 6px;
+  text-align: center;
+}
+
+/* ---------------------------------------------------------------
+   .gs-header__nav-bar — barre noire sticky
+--------------------------------------------------------------- */
+.gs-header__nav-bar {
+  background-color: var(--gs-nav-bg);
+  width: 100%;
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  transition: background-color 0.35s ease;
+}
+
+.gs-header__nav-bar.is-scrolled {
+  background-color: var(--gs-nav-bg-scrolled);
+}
+
+/* ---------------------------------------------------------------
+   .gs-nav-desktop — navigation desktop
+--------------------------------------------------------------- */
+.gs-nav-desktop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: var(--gs-nav-height);
+  position: relative;
+}
+
+.gs-nav-desktop__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  transition: opacity 0.25s ease-out;
+}
+
+.gs-nav-desktop__inner.search-open {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Liste des liens nav desktop */
+.gs-nav-desktop__list {
+  display: flex;
+  align-items: center;
+  list-style: none;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.gs-nav-desktop__list li {
+  height: 100%;
+  display: flex;
+  align-items: stretch;
+}
+
+.gs-nav-desktop__list a {
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color3);
+  text-decoration: none;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  position: relative;
+  transition: color 0.2s ease;
+}
+
+/* Soulignement rouge animé au hover / page active */
+.gs-nav-desktop__list a::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 16px;
+  right: 16px;
+  height: 3px;
+  background: var(--color1);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.25s ease;
+}
+
+.gs-nav-desktop__list a:hover::after,
+.gs-nav-desktop__list .current-menu-item > a::after,
+.gs-nav-desktop__list .current_page_item > a::after,
+.gs-nav-desktop__list .current-menu-ancestor > a::after {
+  transform: scaleX(1);
+}
+
+/* Conteneur du bouton loupe */
+.gs-nav-desktop__search {
+  display: flex;
+  align-items: center;
+}
+
+/* ---------------------------------------------------------------
+   .gs-search-icon-btn — bouton loupe desktop
+--------------------------------------------------------------- */
+.gs-search-icon-btn {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color3);
+  font-size: 1rem;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+  line-height: 1;
+}
+
+.gs-search-icon-btn:hover {
+  opacity: 1;
+}
+
+/* ---------------------------------------------------------------
+   .gs-search-overlay — recherche pleine largeur (desktop)
+--------------------------------------------------------------- */
+.gs-search-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 16px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease-out;
+}
+
+.gs-search-overlay.is-open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.gs-search-overlay__icon {
+  color: var(--color1);
+  font-size: 1rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.gs-search-overlay__form {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+}
+
+.gs-search-overlay__input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--color3);
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  padding: 0;
+  min-width: 0;
+}
+
+/* Placeholder : ratio de contraste conforme AA (4.5:1 sur fond noir) */
+.gs-search-overlay__input::placeholder {
+  color: var(--gs-placeholder);
+}
+
+.gs-search-overlay__close {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color3);
+  font-size: 1.1rem;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+  flex-shrink: 0;
+  transition: opacity 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  line-height: 1;
+}
+
+.gs-search-overlay__close:hover {
+  opacity: 1;
+  color: var(--color1);
+  transform: rotate(90deg);
+}
+
+/* ---------------------------------------------------------------
+   .gs-nav-mobile — barre navigation mobile
+--------------------------------------------------------------- */
+.gs-nav-mobile {
+  display: none;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 16px;
+  height: var(--gs-nav-height);
+  gap: 4px;
+  position: relative;
+}
+
+.gs-nav-mobile__inner {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  transition: opacity 0.25s ease-out;
+}
+
+.gs-nav-mobile__inner.search-open {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* ---------------------------------------------------------------
+   .gs-search-icon-btn-mobile — loupe mobile
+--------------------------------------------------------------- */
+.gs-search-icon-btn-mobile {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color3);
+  font-size: 1rem;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+  transition: opacity 0.2s ease;
+  line-height: 1;
+}
+
+.gs-search-icon-btn-mobile:hover {
+  opacity: 1;
+}
+
+/* ---------------------------------------------------------------
+   .gs-hamburger — bouton hamburger mobile
+--------------------------------------------------------------- */
+.gs-hamburger {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color3);
+  font-size: 1.5rem;
+  padding: 8px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease;
+}
+
+.gs-hamburger:hover {
+  color: var(--color1);
+}
+
+/* ---------------------------------------------------------------
+   .gs-search-overlay-mobile — recherche mobile
+--------------------------------------------------------------- */
+.gs-search-overlay-mobile {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  gap: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s ease-out;
+}
+
+.gs-search-overlay-mobile.is-open {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.gs-search-overlay-mobile__icon {
+  color: var(--color1);
+  font-size: 0.95rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.gs-search-overlay-mobile__form {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+}
+
+.gs-search-overlay-mobile__input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--color3);
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.875rem;
+  padding: 0;
+  min-width: 0;
+}
+
+/* Placeholder : ratio de contraste conforme AA (4.5:1 sur fond noir) */
+.gs-search-overlay-mobile__input::placeholder {
+  color: var(--gs-placeholder);
+}
+
+.gs-search-overlay-mobile__close {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color3);
+  font-size: 1rem;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+  flex-shrink: 0;
+  transition: opacity 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  line-height: 1;
+}
+
+.gs-search-overlay-mobile__close:hover {
+  opacity: 1;
+  color: var(--color1);
+  transform: rotate(90deg);
+}
+
+/* ---------------------------------------------------------------
+   .gs-mobile-overlay — menu plein écran mobile
+--------------------------------------------------------------- */
+.gs-mobile-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  background: var(--color4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+  transform: translateX(100%);
+  opacity: 0;
+  transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+              opacity 0.25s ease;
+  pointer-events: none;
+  overflow-y: auto;
+}
+
+.gs-mobile-overlay.is-open {
+  transform: translateX(0);
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* En-tête overlay : bouton fermeture */
+.gs-mobile-overlay__header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 16px 20px;
+  flex-shrink: 0;
+}
+
+/* Bouton croix fermeture */
+.gs-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--color3);
+  font-size: 2rem;
+  cursor: pointer;
+  line-height: 1;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.gs-close-btn:hover {
+  color: var(--color1);
+  transform: rotate(90deg);
+}
+
+/* Liens navigation dans l'overlay mobile */
+.gs-mobile-overlay__nav {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: 20px 24px;
+  gap: 0;
+}
+
+/* wp_nav_menu génère des <li> dans une <ul> */
+.gs-mobile-overlay__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.gs-mobile-overlay__list li {
+  width: 100%;
+  border-bottom: 1px solid var(--gs-divider-soft);
+}
+
+.gs-mobile-overlay__list li:last-child {
+  border-bottom: none;
+}
+
+.gs-mobile-overlay__list a {
+  font-family: 'Anton', sans-serif;
+  font-size: 2rem;
+  color: var(--color3);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 10px 20px;
+  width: 100%;
+  display: block;
+  transition: color 0.2s ease, transform 0.2s ease;
+}
+
+.gs-mobile-overlay__list a:hover,
+.gs-mobile-overlay__list .current-menu-item > a,
+.gs-mobile-overlay__list .current_page_item > a,
+.gs-mobile-overlay__list .current-menu-ancestor > a {
+  color: var(--color1);
+}
+
+.gs-mobile-overlay__list a:hover {
+  transform: translateX(4px);
+}
+
+/* Animations d'entrée des liens au slide-in de l'overlay */
+.gs-mobile-overlay.is-open .gs-mobile-overlay__list li {
+  animation: gs-fade-slide-in 0.3s ease both;
+}
+
+.gs-mobile-overlay.is-open .gs-mobile-overlay__list li:nth-child(1) { animation-delay: 0.05s; }
+.gs-mobile-overlay.is-open .gs-mobile-overlay__list li:nth-child(2) { animation-delay: 0.10s; }
+.gs-mobile-overlay.is-open .gs-mobile-overlay__list li:nth-child(3) { animation-delay: 0.15s; }
+.gs-mobile-overlay.is-open .gs-mobile-overlay__list li:nth-child(4) { animation-delay: 0.20s; }
+.gs-mobile-overlay.is-open .gs-mobile-overlay__list li:nth-child(5) { animation-delay: 0.25s; }
+.gs-mobile-overlay.is-open .gs-mobile-overlay__list li:nth-child(6) { animation-delay: 0.30s; }
+
+@keyframes gs-fade-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Pied overlay : réseaux sociaux */
+.gs-mobile-overlay__footer {
+  width: 100%;
+  padding: 20px 24px 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+  border-top: 1px solid var(--gs-divider-medium);
+}
+
+/* Liens réseaux sociaux (liste générée par wp_nav_menu) */
+.gs-social-links {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.gs-social-links li {
+  display: flex;
+}
+
+.gs-social-links a {
+  color: var(--color3);
+  font-size: 1.4rem;
+  text-decoration: none;
+  opacity: 0.8;
+  transition: color 0.2s ease, transform 0.2s ease, opacity 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gs-social-links a:hover {
+  color: var(--color1);
+  transform: translateY(-2px);
+  opacity: 1;
+}
+
+/* ---------------------------------------------------------------
+   Focus visible — accessibilité header
+--------------------------------------------------------------- */
+.gs-header a:focus-visible,
+.gs-header button:focus-visible,
+.gs-header input:focus-visible,
+.gs-mobile-overlay a:focus-visible,
+.gs-mobile-overlay button:focus-visible {
+  outline: 2px solid var(--color1);
+  outline-offset: 2px;
+}
+
+/* ---------------------------------------------------------------
+   Breakpoints responsives header
+--------------------------------------------------------------- */
+
+/* Mobile (< 992px) : masquer nav desktop, afficher nav mobile */
+@media (max-width: 991px) {
+  .gs-nav-desktop {
+    display: none;
+  }
+
+  .gs-nav-mobile {
+    display: flex;
+  }
+
+  .gs-header__tagline {
+    display: none;
+  }
+
+  .gs-header__logo-img {
+    max-height: 100px;
+  }
+}
+
+/* Desktop (>= 992px) : masquer nav mobile, afficher nav desktop */
+@media (min-width: 992px) {
+  .gs-nav-desktop {
+    display: flex;
+  }
+
+  .gs-nav-mobile {
+    display: none;
+  }
+
+  .gs-header__tagline {
+    display: block;
+  }
+}
+
+/* ---------------------------------------------------------------
+   prefers-reduced-motion — désactiver les animations header
+--------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .gs-header__logo-band,
+  .gs-header__nav-bar,
+  .gs-nav-desktop__inner,
+  .gs-search-overlay,
+  .gs-search-overlay-mobile,
+  .gs-nav-mobile__inner,
+  .gs-mobile-overlay,
+  .gs-close-btn,
+  .gs-search-overlay__close,
+  .gs-search-overlay-mobile__close,
+  .gs-nav-desktop__list a::after,
+  .gs-hamburger,
+  .gs-social-links a,
+  .gs-mobile-overlay__list a {
+    transition: none;
+    animation: none;
+  }
+
+  .gs-mobile-overlay.is-open .gs-mobile-overlay__list li {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ---------------------------------------------------------------
+   Related Playlists — section "D'autres playlists" en bas du single
+--------------------------------------------------------------- */
+.gs-related {
+  padding: 64px 0 24px;
+}
+
+.gs-related__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+  margin-bottom: 40px;
+}
+
+.gs-related__head h2,
+.gs-related__title {
+  font-family: 'Anton', sans-serif;
+  font-weight: 400;
+  color: var(--color2);
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: 0.02em;
+  line-height: 1;
+}
+
+.gs-related__head h2 em,
+.gs-related__title em {
+  font-style: normal;
+  color: var(--color1);
+}
+
+.gs-related__all {
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.9rem;
+  color: var(--color2);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  border-bottom: 2px solid var(--color2);
+  padding-bottom: 2px;
+  transition: border-color .2s ease;
+}
+
+.gs-related__all:hover,
+.gs-related__all:focus {
+  /* Conserver color: var(--color2) pour respecter le contraste AA
+     (le rouge sur blanc à cette taille passe sous 4.5:1).
+     Seule la bordure change de couleur. */
+  color: var(--color2);
+  border-bottom-color: var(--color1);
+}
+
+.gs-related__list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.gs-related__list li {
+  margin: 0;
+}
+
+.gs-related .gs-card {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1;
+  display: block;
+  text-decoration: none;
+  color: var(--color3);
+}
+
+.gs-related .gs-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .35s ease;
+}
+
+.gs-related .gs-card:hover .gs-card-img {
+  transform: scale(1.08);
+}
+
+.gs-related .gs-card-img-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, var(--gs-overlay-card, rgba(0, 0, 0, 0.85)), transparent 50%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 1.2rem;
+  text-align: center;
+}
+
+.gs-related .gs-card-artist {
+  font-family: 'Roboto', sans-serif;
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--color1);
+  margin: 0 0 .2rem;
+}
+
+.gs-related .gs-card-title {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.5rem;
+  color: var(--color3);
+  text-transform: uppercase;
+  line-height: 1;
+  margin: 0;
+  letter-spacing: 0.02em;
+}
+
+/* Focus visible — accessibilité clavier */
+.gs-related .gs-card:focus-visible,
+.gs-related__all:focus-visible {
+  outline: 2px solid var(--color1);
+  outline-offset: 2px;
+}
+
+/* Responsive — mobile */
+@media (max-width: 768px) {
+  .gs-related__list {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  .gs-related__head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+}
+
+/* prefers-reduced-motion — neutraliser animations related */
+@media (prefers-reduced-motion: reduce) {
+  .gs-related .gs-card-img,
+  .gs-related__all {
+    transition: none;
+  }
+
+  .gs-related .gs-card:hover .gs-card-img {
+    transform: none;
+  }
+}
+
+/* ==============================================================
+   SKIP LINK — accessibilité (commun au site)
+   Premier élément focusable injecté via header.php > wp_body_open
+================================================================ */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 1rem;
+  z-index: 10000;
+  background: var(--color1);
+  color: var(--color3);
+  padding: .5rem 1.2rem;
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: .9rem;
+  text-decoration: none;
+}
+.skip-link:focus {
+  top: 0;
+}
+
+/* ==============================================================
+   SINGLE ANACHRONIQUES — hero v3 · 2026-05
+   Maquette : proposal-hero-anachronique-2026-05.html
+   Préfixe   : an-   Scope : .single-anachroniques (body class WP)
+================================================================ */
+
+/* ── HERO ───────────────────────────────────────── */
+.an-hero {
+  position: relative;
+  min-height: min(85vh, 680px);
+  overflow: hidden;
+  display: flex;
+  align-items: flex-end;
+  background: #0c0c10;
+}
+.an-hero__bg {
+  position: absolute;
+  inset: 0;
+}
+.an-hero__bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  filter: blur(3px) saturate(.65) brightness(.48);
+  transform: scale(1.04);
+}
+.an-hero__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    var(--color2) 0%,
+    rgba(0, 11, 41, .75) 45%,
+    rgba(0, 0, 0, .3) 100%
+  );
+}
+.an-hero__grain {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  opacity: .04;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-size: 200px;
+  pointer-events: none;
+}
+.an-hero__divider {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(232, 31, 31, .45) 20%,
+    rgba(232, 31, 31, .45) 80%,
+    transparent
+  );
+  z-index: 3;
+}
+.an-hero__inner {
+  position: relative;
+  z-index: 3;
+  max-width: 1200px;
+  margin: 0 auto;
+  width: 100%;
+  padding: 3rem 2rem 3.5rem;
+}
+
+/* Grille : pochette gauche · info droite */
+.an-hero__layout {
+  display: grid;
+  grid-template-columns: 260px 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+/* Pochette */
+.an-hero__cover-wrap { position: relative; }
+.an-hero__cover {
+  width: 260px;
+  height: 260px;
+  object-fit: cover;
+  display: block;
+  box-shadow:
+    0 20px 60px rgba(0, 0, 0, .7),
+    0 0 0 1px rgba(255, 255, 255, .08);
+}
+
+/* Info */
+.an-hero__info {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.an-hero__artist {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--color1);
+  margin-bottom: .22rem;
+}
+.an-hero__title {
+  font-family: 'Anton', sans-serif;
+  font-size: clamp(2.4rem, 5vw, 4.8rem);
+  text-transform: uppercase;
+  line-height: .92;
+  color: var(--color3);
+  margin-bottom: .9rem;
+}
+.an-hero__accroche {
+  font-size: .92rem;
+  line-height: 1.55;
+  color: rgba(255, 255, 255, .62);
+  font-style: italic;
+  border-left: 2px solid var(--color1);
+  padding-left: .9rem;
+  max-width: 520px;
+  margin-bottom: .85rem;
+}
+.an-hero__meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .4rem;
+  margin-bottom: .7rem;
+}
+.an-hero__pill {
+  display: inline-block;
+  background: var(--color1);
+  color: var(--color3);
+  padding: .22rem .65rem;
+  font-family: 'Roboto', sans-serif;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.an-hero__pill--ghost {
+  display: inline-block;
+  border: 1px solid rgba(255, 255, 255, .3);
+  color: rgba(255, 255, 255, .75);
+  padding: .22rem .65rem;
+  font-family: 'Roboto', sans-serif;
+  font-size: .68rem;
+  font-weight: 400;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.an-hero__byline {
+  font-size: .75rem;
+  color: rgba(255, 255, 255, .38);
+  letter-spacing: .03em;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Animations d'entrée */
+@keyframes an-cover-in {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes an-info-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.an-hero__cover-wrap {
+  animation: an-cover-in .55s cubic-bezier(.22, .61, .36, 1) .1s both;
+}
+.an-hero__info {
+  animation: an-info-in .5s cubic-bezier(.22, .61, .36, 1) .28s both;
+}
+
+/* ── CORPS — fond blanc ─────────────────────────── */
+.an-body {
+  background: var(--color3);
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4rem 2.5rem 5rem;
+}
+.an-body__grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 4rem;
+  align-items: start;
+}
+
+/* Réinitialisation couleur liens dans le texte article uniquement
+   (évite d'écraser les composants .an-back-link etc.) */
+.an-article__content a {
+  color: var(--color2);
+  text-decoration: underline;
+}
+.an-article__content a:hover {
+  color: var(--color1);
+}
+
+/* Article */
+.an-article__content {
+  font-size: 1.06rem;
+  line-height: 1.8;
+  color: rgba(0, 0, 0, .8);
+}
+.an-article__content p {
+  margin-bottom: 1.5em;
+  max-width: 68ch;
+  font-size: 1.06rem;
+  line-height: 1.8;
+  letter-spacing: .015em;
+}
+.an-article__content p:last-child { margin-bottom: 0; }
+
+/* Drop-cap façon playlist */
+.an-article__content > p:first-of-type::first-letter {
+  font-family: 'Anton', sans-serif;
+  font-size: 4.2rem;
+  float: left;
+  line-height: .88;
+  margin: .2rem .55rem 0 0;
+  color: var(--color1);
+}
+
+/* Barre de partage */
+.an-share {
+  display: flex;
+  align-items: center;
+  gap: .75rem;
+  flex-wrap: wrap;
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(0, 0, 0, .08);
+}
+.an-share__label {
+  font-family: 'Anton', sans-serif;
+  font-size: .75rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--color5);
+}
+
+/* Lien retour */
+.an-back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  margin-top: 2rem;
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: var(--color5);
+  transition: color .2s;
+  text-decoration: none;
+}
+.an-back-link::before { content: '←'; font-family: 'Anton', sans-serif; }
+.an-back-link:hover,
+.an-back-link:focus-visible { color: var(--color1); outline: none; }
+
+/* ── ASIDE ──────────────────────────────────────── */
+.an-aside {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.an-aside__cover {
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, .14);
+}
+.an-aside__cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.an-aside__spotify {
+  background: #f5f5f5;
+  border: 1px solid rgba(0, 0, 0, .08);
+  padding: .75rem;
+}
+.an-aside__spotify iframe { border-radius: 0; }
+
+/* Fiche technique — fond bleu nuit */
+.an-aside__sheet {
+  background: var(--color2);
+  padding: 1.5rem;
+  border-left: 3px solid var(--color1);
+}
+.an-aside__sheet h4 {
+  font-family: 'Anton', sans-serif;
+  font-size: .75rem;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: var(--color1);
+  margin-bottom: 1rem;
+}
+.an-aside__row {
+  padding: .65rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, .07);
+  display: flex;
+  flex-direction: column;
+  gap: .2rem;
+}
+.an-aside__row:last-child { border-bottom: none; }
+.an-aside__key {
+  font-size: .58rem;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  color: var(--color5);
+  font-family: 'Roboto', sans-serif;
+}
+.an-aside__val {
+  font-size: .85rem;
+  color: var(--color3);
+  font-weight: 600;
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Sticky aside — desktop uniquement */
+@media (min-width: 992px) {
+  .an-aside {
+    position: sticky;
+    top: 74px; /* hauteur nav sticky */
+  }
+}
+
+/* ── SECTION RELATED — surcharge de contexte ────── */
+/* Utilise les classes .gs-related déjà définies,
+   scoped ici pour isoler les overrides du template */
+.single-anachroniques .gs-related {
+  padding: 4rem 0 5rem;
+  border-top: 1px solid rgba(0, 0, 0, .08);
+}
+.single-anachroniques .gs-related__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2.5rem;
+}
+
+/* Les cartes related : left-align le texte (override justify-content: center global) */
+.single-anachroniques .gs-related .gs-card-img-overlay {
+  justify-content: flex-start;
+  text-align: left;
+}
+
+/* ── FOCUS VISIBLE — global page ────────────────── */
+.single-anachroniques a:focus-visible,
+.single-anachroniques button:focus-visible {
+  outline: 2px solid var(--color1);
+  outline-offset: 3px;
+}
+
+/* ── RESPONSIVE — TABLETTE ──────────────────────── */
+@media (max-width: 900px) {
+  .an-hero__layout {
+    grid-template-columns: 200px 1fr;
+    gap: 2rem;
+  }
+  .an-hero__cover { width: 200px; height: 200px; }
+  .an-body__grid  { grid-template-columns: 1fr 280px; gap: 2.5rem; }
+}
+
+/* ── RESPONSIVE — MOBILE ────────────────────────── */
+@media (max-width: 640px) {
+  .an-hero { min-height: 60vh; align-items: flex-end; }
+  .an-hero__inner { padding: 2.5rem 1.25rem 3rem; }
+
+  /* Colonne unique — pochette flottante haut-gauche */
+  .an-hero__layout { display: block; position: relative; }
+  .an-hero__cover-wrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 5;
+  }
+  .an-hero__cover { width: 150px; height: 150px; }
+  .an-hero__info  { padding-left: 166px; gap: .6rem; }
+
+  .an-hero__title   { font-size: clamp(1.8rem, 8vw, 2.4rem); line-height: 1; }
+  .an-hero__accroche { display: none; }
+  .an-hero__byline  { font-size: .68rem; }
+
+  .an-body__grid  { grid-template-columns: 1fr; gap: 2.5rem; }
+  .an-aside       { position: static; }
+  .an-aside__cover { max-width: 280px; margin: 0 auto; }
+  .an-article__content p { max-width: 100%; }
+
+  .single-anachroniques .gs-related { padding: 3rem 0 4rem; }
+  .single-anachroniques .gs-related__list {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  .single-anachroniques .gs-related .gs-card { aspect-ratio: 1; }
+}
+
+/* ── RESPONSIVE — TRÈS PETIT ────────────────────── */
+@media (max-width: 400px) {
+  .an-hero__cover { width: 110px; height: 110px; }
+  .an-hero__info  { padding-left: 126px; }
+  .an-hero__title { font-size: 1.6rem; }
+}
+
+/* ── REDUCED MOTION ─────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .an-hero__cover-wrap,
+  .an-hero__info { animation: none; }
+}
+
+/* prefers-reduced-motion — single anachroniques */
+@media (prefers-reduced-motion: reduce) {
+  .an-hero__bg img,
+  .an-aside__cover img,
+  .an-back-link,
+  .an-hero__back {
+    transition: none;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   CORPS DE REVIEW — gs-content-zone + gs-review-body
+   Scope : .single-anachroniques
+════════════════════════════════════════════════════════════ */
+
+.single-anachroniques .gs-content-zone {
+  background: var(--color3);
+}
+
+/* ── Typographie the_content() ─────────────────────────── */
+.gs-review-body {
+  padding-top: 2.5rem;
+  padding-bottom: 3rem;
+}
+
+.gs-review-body p {
+  font-size: 1.08rem;
+  line-height: 1.82;
+  color: var(--color4);
+  margin-bottom: 1.6em;
+  text-align: left;
+}
+
+.gs-review-body p:first-of-type {
+  font-size: 1.18rem;
+  line-height: 1.72;
+}
+
+/* Drop cap */
+.gs-review-body p:first-of-type::first-letter {
+  font-family: 'Anton', sans-serif;
+  font-size: 4.2em;
+  line-height: .78;
+  float: left;
+  margin-right: .07em;
+  margin-bottom: -.05em;
+  color: var(--color1);
+}
+
+.gs-review-body a {
+  color: var(--color2);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+  transition: opacity .15s;
+}
+.gs-review-body a:hover { opacity: .65; }
+
+.gs-review-body strong { color: var(--color4); font-weight: 700; }
+.gs-review-body em     { color: rgba(0,0,0,.75); }
+
+.gs-review-body h2 {
+  font-family: 'Anton', sans-serif;
+  font-size: 1.4rem;
+  color: var(--color2);
+  text-transform: uppercase;
+  letter-spacing: .03em;
+  margin: 2.5rem 0 1rem;
+}
+
+.gs-review-body blockquote {
+  border-left: 2px solid var(--color1);
+  margin: 2.2rem 0;
+  padding: .6rem 0 .6rem 1.4rem;
+  color: rgba(0,0,0,.55);
+  font-style: italic;
+  font-size: 1.08rem;
+  line-height: 1.7;
+}
+.gs-review-body blockquote cite {
+  display: block;
+  margin-top: .6rem;
+  font-size: .78rem;
+  font-style: normal;
+  color: rgba(0,0,0,.35);
+}
+
+.gs-review-body hr {
+  border: none;
+  height: 1px;
+  background: rgba(0,0,0,.1);
+  margin: 2.5rem 0;
+}
+
+/* ── Sidebar ────────────────────────────────────────────── */
+.gs-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding-top: 2.5rem;
+  padding-bottom: 3rem;
+}
+
+/* Fiche album — fond color2 */
+.gs-fiche { background: var(--color2); overflow: hidden; }
+
+.gs-fiche__head {
+  padding: .7rem 1.2rem;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+  font-size: .6rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.35);
+}
+
+.gs-fiche__body {
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.gs-fiche__row { display: flex; flex-direction: column; gap: .4rem; }
+
+.gs-fiche__key {
+  font-size: .58rem;
+  font-weight: 700;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--color3);
+}
+
+/* Best tracks numérotés */
+.gs-fiche__tracks {
+  list-style: none;
+  counter-reset: track;
+  display: flex;
+  flex-direction: column;
+  gap: .4rem;
+  margin: 0;
+  padding: 0;
+}
+.gs-fiche__tracks li {
+  display: flex;
+  align-items: baseline;
+  gap: .65rem;
+  font-size: .85rem;
+  color: rgba(255,255,255,.8);
+  counter-increment: track;
+}
+.gs-fiche__tracks li::before {
+  content: counter(track);
+  font-size: .58rem;
+  font-weight: 700;
+  color: var(--color1);
+  min-width: 12px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* CTA Écouter */
+.gs-fiche__listen {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  background: var(--color1);
+  color: var(--color3);
+  border: none;
+  text-decoration: none;
+  padding: .65rem 1rem;
+  width: 100%;
+  justify-content: center;
+  transition: opacity .18s;
+}
+.gs-fiche__listen:hover,
+.gs-fiche__listen:focus-visible {
+  opacity: .82;
+  color: var(--color3);
+}
+.gs-fiche__listen svg { width: 13px; height: 13px; }
+
+.gs-fiche__sep { height: 1px; background: rgba(255,255,255,.07); }
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 991px) {
+  .gs-sidebar { position: static !important; padding-top: 1rem; padding-bottom: 1.5rem; }
+  .gs-review-body { padding-top: 1.5rem; padding-bottom: 1rem; }
+  .gs-review-body p:first-of-type::first-letter { font-size: 3.5em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gs-review-body a,
+  .gs-fiche__listen { transition: none; }
+}

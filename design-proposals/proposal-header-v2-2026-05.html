@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<!--
+  PROPOSITION DESIGN — Header Gimmick Shelter v2
+  Date      : 2026-05
+  Auteur    : Agent /designer
+  Contexte  : Seconde itération après la v1 (proposal-header-2026-05.html).
+              La v1 explorait des directions structurelles. La v2 pousse
+              l'identité visuelle psychédélique rock, améliore la lisibilité
+              mobile, et introduit des micro-interactions.
+
+  Acquis de la v1 (à conserver) :
+  - Logo centré dans un bandeau dédié
+  - Nav séparée du logo, sticky sur scroll
+  - Hamburger visible et fonctionnel sur mobile
+  - Élimination du code mobile/desktop dupliqué
+
+  Nouvelles directions explorées :
+  A — "Marquee underground" : bande de texte défilant + nav condensée noire
+  B — "Neon split" : logo fond bleu nuit / nav fond noir avec accent rouge
+  C — "Bloc solide" : header monobloc condensé, logo à gauche, nav à droite
+
+  Tokens DS utilisés :
+  --color1: #E81F1F  (rouge — accent)
+  --color2: #000B29  (bleu nuit — fond principal)
+  --color3: #FFFFFF  (blanc — texte)
+  --color4: #000000  (noir)
+  --color5: #6D6D64  (khaki — métadonnées)
+
+  Polices : Anton (titres/logo), Roboto (nav/corps)
+-->
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Proposals v2 — Header Gimmick Shelter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" crossorigin="anonymous">
+  <style>
+    /* ── Reset & tokens DS ──────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --color1: #E81F1F;
+      --color2: #000B29;
+      --color3: #FFFFFF;
+      --color4: #000000;
+      --color5: #6D6D64;
+    }
+    body {
+      background: #111;
+      font-family: 'Roboto', sans-serif;
+      color: var(--color3);
+    }
+
+    /* ── Labels de section ───────────────────────────────────────────── */
+    .proposal-section {
+      padding: 48px 0 80px;
+      border-bottom: 2px solid #2a2a2a;
+    }
+    .proposal-section:last-of-type { border-bottom: none; }
+
+    .proposal-meta {
+      max-width: 900px;
+      margin: 0 auto 32px;
+      padding: 0 24px;
+    }
+    .proposal-meta h2 {
+      font-family: 'Anton', sans-serif;
+      font-size: 2rem;
+      color: var(--color1);
+      letter-spacing: 0.05em;
+      margin-bottom: 6px;
+    }
+    .proposal-meta p {
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.9rem;
+      color: var(--color5);
+      line-height: 1.6;
+    }
+    .proposal-meta .tag {
+      display: inline-block;
+      background: var(--color2);
+      border: 1px solid #1a2d5a;
+      color: var(--color3);
+      font-size: 0.72rem;
+      padding: 2px 10px;
+      border-radius: 2px;
+      margin-right: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    .proposal-meta .tag.tag-new {
+      background: var(--color1);
+      border-color: var(--color1);
+    }
+
+    /* ── Page header ─────────────────────────────────────────────────── */
+    .page-header {
+      padding: 60px 24px 40px;
+      text-align: center;
+    }
+    .page-header h1 {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.5rem;
+      color: var(--color5);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+    }
+    .page-header span {
+      color: var(--color1);
+    }
+    .page-header p {
+      font-size: 0.85rem;
+      color: #555;
+      margin-top: 8px;
+    }
+
+    /* ── Fake page content (pour simuler le scroll) ──────────────────── */
+    .fake-content {
+      background: #1a1a1a;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      color: #444;
+      letter-spacing: 0.1em;
+    }
+
+    /* ══════════════════════════════════════════════════════════════════
+       VARIANTE A — "Marquee Underground"
+       Bande d'actualités défilante au-dessus de la nav.
+       Logo en grand dans un bandeau rouge.
+       Nav condensée sur fond noir, sticky.
+    ══════════════════════════════════════════════════════════════════ */
+
+    /* Ticker (bande défilante) */
+    .va-ticker {
+      background: var(--color1);
+      overflow: hidden;
+      padding: 6px 0;
+      white-space: nowrap;
+    }
+    .va-ticker-inner {
+      display: inline-block;
+      animation: ticker-scroll 28s linear infinite;
+    }
+    .va-ticker-inner:hover { animation-play-state: paused; }
+    .va-ticker span {
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--color3);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-right: 60px;
+    }
+    .va-ticker span::before {
+      content: '■';
+      margin-right: 12px;
+      opacity: 0.6;
+    }
+    @keyframes ticker-scroll {
+      0%   { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* Logo bandeau */
+    .va-logo-band {
+      background: var(--color1);
+      padding: 28px 24px 20px;
+      text-align: center;
+      border-bottom: 3px solid rgba(0,0,0,0.25);
+    }
+    .va-logo-band img {
+      height: 64px;
+      width: auto;
+    }
+    .va-logo-band .tagline {
+      display: block;
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.7rem;
+      color: rgba(255,255,255,0.6);
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      margin-top: 6px;
+    }
+
+    /* Nav principale */
+    .va-nav {
+      background: var(--color4);
+      border-bottom: 1px solid #1a1a1a;
+      position: relative;
+    }
+    .va-nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0;
+      padding: 0 24px;
+    }
+    .va-nav a {
+      display: block;
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 14px 18px;
+      border-bottom: 3px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .va-nav a:hover,
+    .va-nav a.active {
+      color: var(--color3);
+      border-bottom-color: var(--color1);
+    }
+
+    /* Nav mobile (hamburger) */
+    .va-nav-mobile {
+      background: var(--color4);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+      border-bottom: 1px solid #222;
+    }
+    .va-nav-mobile .site-name {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.1rem;
+      color: var(--color3);
+      letter-spacing: 0.05em;
+    }
+    .va-hamburger {
+      background: none;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 3px;
+      padding: 6px 10px;
+      cursor: pointer;
+      color: var(--color3);
+    }
+    .va-hamburger i { font-size: 0.9rem; }
+
+    /* ══════════════════════════════════════════════════════════════════
+       VARIANTE B — "Neon Split"
+       Fond bleu nuit pour le logo.
+       Séparateur ligne rouge.
+       Nav fond noir transparent semi-opaque, sticky.
+       Effet lueur sur hover des liens.
+    ══════════════════════════════════════════════════════════════════ */
+
+    .vb-header {
+      position: relative;
+    }
+
+    /* Logo section */
+    .vb-logo-section {
+      background: var(--color2);
+      padding: 36px 24px 28px;
+      text-align: center;
+      position: relative;
+    }
+    .vb-logo-section::after {
+      content: '';
+      display: block;
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, transparent, var(--color1) 20%, var(--color1) 80%, transparent);
+    }
+    .vb-logo-section img {
+      height: 72px;
+      width: auto;
+      filter: drop-shadow(0 0 12px rgba(232,31,31,0.4));
+    }
+
+    /* Réseaux sociaux dans le bandeau logo */
+    .vb-social {
+      position: absolute;
+      right: 24px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      gap: 14px;
+    }
+    .vb-social a {
+      color: rgba(255,255,255,0.45);
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .vb-social a:hover { color: var(--color1); }
+
+    /* Nav */
+    .vb-nav {
+      background: rgba(0,11,41,0.96);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border-bottom: 1px solid rgba(232,31,31,0.2);
+    }
+    .vb-nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 24px;
+    }
+    .vb-nav a {
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.82rem;
+      font-weight: 400;
+      color: rgba(255,255,255,0.65);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 16px 20px;
+      display: block;
+      position: relative;
+      transition: color 0.2s;
+    }
+    .vb-nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 50%; right: 50%;
+      height: 2px;
+      background: var(--color1);
+      transition: left 0.25s ease, right 0.25s ease;
+    }
+    .vb-nav a:hover,
+    .vb-nav a.active {
+      color: var(--color3);
+      text-shadow: 0 0 8px rgba(232,31,31,0.5);
+    }
+    .vb-nav a:hover::after,
+    .vb-nav a.active::after {
+      left: 12px;
+      right: 12px;
+    }
+
+    /* Mobile VB */
+    .vb-nav-mobile {
+      background: var(--color2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      border-bottom: 3px solid var(--color1);
+    }
+    .vb-nav-mobile img {
+      height: 40px;
+      padding: 10px 0;
+    }
+    .vb-hamburger {
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+      padding: 8px 0;
+    }
+    .vb-hamburger span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--color3);
+      transition: transform 0.3s;
+    }
+
+    /* ══════════════════════════════════════════════════════════════════
+       VARIANTE C — "Bloc Solide"
+       Header monobloc ultra-compact.
+       Logo à gauche + nav centrée + icône recherche à droite.
+       Identité affirmée sans prise d'espace excessive.
+       Barre de couleur latérale gauche comme accent.
+    ══════════════════════════════════════════════════════════════════ */
+
+    .vc-header {
+      background: var(--color2);
+      border-bottom: 3px solid var(--color1);
+    }
+
+    /* Desktop */
+    .vc-header-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      height: 72px;
+    }
+
+    /* Logo zone */
+    .vc-logo {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+    .vc-logo img {
+      height: 38px;
+      width: auto;
+    }
+    .vc-logo-text {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.4rem;
+      color: var(--color3);
+      letter-spacing: 0.04em;
+      line-height: 1;
+    }
+    .vc-logo-text small {
+      display: block;
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.55rem;
+      font-weight: 400;
+      color: var(--color5);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-top: 2px;
+    }
+
+    /* Nav zone */
+    .vc-nav {
+      display: flex;
+      align-items: center;
+      gap: 2px;
+    }
+    .vc-nav a {
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 8px 14px;
+      border-radius: 2px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .vc-nav a:hover { color: var(--color3); background: rgba(255,255,255,0.07); }
+    .vc-nav a.active {
+      color: var(--color3);
+      background: var(--color1);
+    }
+
+    /* Actions zone (droite) */
+    .vc-actions {
+      flex: 0 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .vc-search-btn {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.6);
+      font-size: 0.9rem;
+      cursor: pointer;
+      padding: 6px 8px;
+      transition: color 0.2s;
+    }
+    .vc-search-btn:hover { color: var(--color1); }
+
+    .vc-search-box {
+      display: flex;
+      align-items: center;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 3px;
+      padding: 4px 12px;
+      gap: 8px;
+    }
+    .vc-search-box input {
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--color3);
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.8rem;
+      width: 140px;
+    }
+    .vc-search-box input::placeholder { color: rgba(255,255,255,0.3); }
+    .vc-search-box button {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.45);
+      cursor: pointer;
+      font-size: 0.8rem;
+      transition: color 0.2s;
+    }
+    .vc-search-box button:hover { color: var(--color1); }
+
+    /* Mobile VC */
+    .vc-mobile {
+      background: var(--color2);
+      border-bottom: 3px solid var(--color1);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 20px;
+    }
+    .vc-mobile img { height: 34px; }
+    .vc-mobile-right {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+    .vc-mobile-search {
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.6);
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .vc-mobile-burger {
+      background: none;
+      border: none;
+      color: var(--color3);
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    /* Mobile menu drawer (démo statique) */
+    .vc-mobile-menu {
+      background: rgba(0,11,41,0.98);
+      padding: 8px 0 16px;
+      border-top: 1px solid rgba(255,255,255,0.07);
+    }
+    .vc-mobile-menu a {
+      display: block;
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      padding: 12px 24px;
+      border-left: 3px solid transparent;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .vc-mobile-menu a:hover,
+    .vc-mobile-menu a.active {
+      color: var(--color3);
+      border-left-color: var(--color1);
+      background: rgba(232,31,31,0.06);
+    }
+
+    /* ── Responsive helpers ──────────────────────────────────────────── */
+    .only-desktop { display: none; }
+    .only-mobile  { display: block; }
+    @media (min-width: 992px) {
+      .only-desktop { display: block; }
+      .only-mobile  { display: none; }
+    }
+
+    /* ── Faux contenu de page ────────────────────────────────────────── */
+    .fake-page {
+      background: #111;
+      padding: 24px;
+      margin: 0;
+    }
+    .fake-hero {
+      background: linear-gradient(to bottom, #1a1a2e, #111);
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Anton', sans-serif;
+      font-size: 2rem;
+      color: rgba(255,255,255,0.1);
+      letter-spacing: 0.1em;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── En-tête du document ─────────────────────────────────────────── -->
+<div class="page-header">
+  <h1>Header <span>Gimmick Shelter</span> — v2</h1>
+  <p>Proposition design · Mai 2026 · 3 variantes · Tokens DS respectés</p>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════
+     VARIANTE A — "Marquee Underground"
+══════════════════════════════════════════════════════════════════ -->
+<div class="proposal-section">
+  <div class="proposal-meta">
+    <h2>A — Marquee Underground</h2>
+    <p>
+      Bande de texte défilante en rouge pour les actualités/news urgentes.
+      Logo dans un grand bandeau rouge avec tagline.
+      Nav condensée sur fond noir, bordure de soulignement rouge au hover.
+    </p>
+    <br>
+    <span class="tag">Ticker actualités</span>
+    <span class="tag tag-new">Nouveau</span>
+    <span class="tag">Logo + tagline</span>
+    <span class="tag">Nav fond noir</span>
+    <br><br>
+    <p><strong>Avantages :</strong> très identitaire rock / underground · le ticker donne vie au header sans JavaScript complexe · hiérarchie logo &gt; nav clairement lisible.</p>
+    <p style="margin-top:4px"><strong>Vigilance :</strong> le ticker peut distraire · prévoir une option de désactivation en accessibilité · tester la longueur du texte.</p>
+  </div>
+
+  <!-- Desktop A -->
+  <div class="only-desktop">
+    <div class="va-ticker">
+      <div class="va-ticker-inner">
+        <span>Les Wampas en concert à Paris · 14 juin 2026</span>
+        <span>Nouvelle chronique · Superorganism — "Something For Your M.I.N.D."</span>
+        <span>Interview exclusive · Phoebe Bridgers de retour en France</span>
+        <span>Playlist de la semaine · 50 titres indie rock 2026</span>
+        <span>Les Wampas en concert à Paris · 14 juin 2026</span>
+        <span>Nouvelle chronique · Superorganism — "Something For Your M.I.N.D."</span>
+        <span>Interview exclusive · Phoebe Bridgers de retour en France</span>
+        <span>Playlist de la semaine · 50 titres indie rock 2026</span>
+      </div>
+    </div>
+    <div class="va-logo-band">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 60'%3E%3Crect width='320' height='60' fill='none'/%3E%3Ctext x='160' y='44' font-family='Anton,sans-serif' font-size='40' fill='%23fff' text-anchor='middle' letter-spacing='2'%3EGIMMICK SHELTER%3C/text%3E%3C/svg%3E"
+           alt="Gimmick Shelter" style="height:56px">
+      <span class="tagline">Le webzine rock indépendant</span>
+    </div>
+    <div class="va-nav">
+      <nav class="va-nav-inner">
+        <a href="#">Accueil</a>
+        <a href="#" class="active">Actualités</a>
+        <a href="#">Chroniques</a>
+        <a href="#">Playlists</a>
+        <a href="#">Anachroniques</a>
+        <a href="#">Concerts</a>
+        <a href="#">À propos</a>
+      </nav>
+    </div>
+    <div class="fake-hero">← contenu de la page →</div>
+  </div>
+
+  <!-- Mobile A -->
+  <div class="only-mobile">
+    <div class="va-ticker">
+      <div class="va-ticker-inner">
+        <span>Les Wampas en concert à Paris · 14 juin 2026</span>
+        <span>Nouvelle chronique · Superorganism · "SFYM"</span>
+        <span>Playlist de la semaine · 50 titres indie rock 2026</span>
+        <span>Les Wampas en concert à Paris · 14 juin 2026</span>
+        <span>Nouvelle chronique · Superorganism · "SFYM"</span>
+        <span>Playlist de la semaine · 50 titres indie rock 2026</span>
+      </div>
+    </div>
+    <div class="va-logo-band" style="padding: 20px 24px 16px;">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 60'%3E%3Crect width='320' height='60' fill='none'/%3E%3Ctext x='160' y='44' font-family='Anton,sans-serif' font-size='40' fill='%23fff' text-anchor='middle' letter-spacing='2'%3EGIMMICK SHELTER%3C/text%3E%3C/svg%3E"
+           alt="Gimmick Shelter" style="height:40px">
+    </div>
+    <div class="va-nav-mobile">
+      <span class="site-name">MENU</span>
+      <button class="va-hamburger" aria-label="Ouvrir le menu">
+        <i class="fas fa-bars"></i>
+      </button>
+    </div>
+    <div class="fake-hero" style="height:80px; font-size:1rem">← contenu page mobile →</div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════
+     VARIANTE B — "Neon Split"
+══════════════════════════════════════════════════════════════════ -->
+<div class="proposal-section">
+  <div class="proposal-meta">
+    <h2>B — Neon Split</h2>
+    <p>
+      Bandeau logo sur fond bleu nuit (color2), séparé de la nav par une ligne rouge.
+      Les icônes réseaux sociaux habitent le bandeau logo, à droite.
+      La nav utilise un fond semi-transparent + backdrop-blur pour un effet premium.
+      Micro-animation de soulignement au hover des liens.
+    </p>
+    <br>
+    <span class="tag">Logo fond bleu nuit</span>
+    <span class="tag tag-new">Réseaux sociaux intégrés</span>
+    <span class="tag tag-new">Backdrop blur</span>
+    <span class="tag">Hover animé</span>
+    <br><br>
+    <p><strong>Avantages :</strong> utilise correctement --color2 en fond · les réseaux sociaux trouvent leur place naturelle · effet blur moderne sans jQuery · mobile compact.</p>
+    <p style="margin-top:4px"><strong>Vigilance :</strong> backdrop-filter pas supporté IE/Safari &lt;9 → fallback opaque prévu · vérifier que le logo SVG blanc ressort bien sur bleu nuit.</p>
+  </div>
+
+  <!-- Desktop B -->
+  <div class="only-desktop">
+    <div class="vb-header">
+      <div class="vb-logo-section">
+        <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 60'%3E%3Crect width='320' height='60' fill='none'/%3E%3Ctext x='160' y='44' font-family='Anton,sans-serif' font-size='40' fill='%23fff' text-anchor='middle' letter-spacing='2'%3EGIMMICK SHELTER%3C/text%3E%3C/svg%3E"
+             alt="Gimmick Shelter" style="height:64px">
+        <div class="vb-social">
+          <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+          <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+          <a href="#" aria-label="Spotify"><i class="fab fa-spotify"></i></a>
+        </div>
+      </div>
+      <div class="vb-nav">
+        <nav class="vb-nav-inner">
+          <a href="#">Accueil</a>
+          <a href="#" class="active">Actualités</a>
+          <a href="#">Chroniques</a>
+          <a href="#">Playlists</a>
+          <a href="#">Anachroniques</a>
+          <a href="#">Concerts</a>
+          <a href="#">À propos</a>
+        </nav>
+      </div>
+    </div>
+    <div class="fake-hero">← contenu de la page →</div>
+  </div>
+
+  <!-- Mobile B -->
+  <div class="only-mobile">
+    <div class="vb-nav-mobile">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 60'%3E%3Crect width='320' height='60' fill='none'/%3E%3Ctext x='160' y='44' font-family='Anton,sans-serif' font-size='40' fill='%23fff' text-anchor='middle' letter-spacing='2'%3EGIMMICK SHELTER%3C/text%3E%3C/svg%3E"
+           alt="Gimmick Shelter">
+      <button class="vb-hamburger" aria-label="Menu">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+    <div class="fake-hero" style="height:80px; font-size:1rem">← contenu page mobile →</div>
+  </div>
+</div>
+
+
+<!-- ══════════════════════════════════════════════════════════════════
+     VARIANTE C — "Bloc Solide"
+══════════════════════════════════════════════════════════════════ -->
+<div class="proposal-section">
+  <div class="proposal-meta">
+    <h2>C — Bloc Solide</h2>
+    <p>
+      Header monobloc : logo à gauche, nav au centre, barre de recherche à droite.
+      Hauteur fixe de 72px en desktop — économe en espace vertical.
+      Bordure rouge en bas. Sur mobile : logo à gauche + icône search + hamburger.
+      Le menu mobile s'ouvre avec une bordure gauche rouge (style "drawer").
+    </p>
+    <br>
+    <span class="tag">Monobloc compact</span>
+    <span class="tag tag-new">Recherche intégrée</span>
+    <span class="tag">Logo + wordmark</span>
+    <span class="tag tag-new">Menu drawer mobile</span>
+    <br><br>
+    <p><strong>Avantages :</strong> très économe en espace · intègre la recherche (actuellement commentée dans le code) · structure en 3 colonnes scalable · le "drawer" mobile est élégant et accessible.</p>
+    <p style="margin-top:4px"><strong>Vigilance :</strong> le wordmark textuel "GIMMICK SHELTER" à côté du logo est optionnel — à supprimer si le SVG logo est auto-suffisant · tester sur 1024px (zone de transition).</p>
+  </div>
+
+  <!-- Desktop C -->
+  <div class="only-desktop">
+    <div class="vc-header">
+      <div class="vc-header-inner">
+        <a href="#" class="vc-logo">
+          <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 60'%3E%3Crect width='60' height='60' rx='4' fill='%23E81F1F'/%3E%3Ctext x='30' y='42' font-family='Anton,sans-serif' font-size='28' fill='%23fff' text-anchor='middle'%3EGS%3C/text%3E%3C/svg%3E"
+               alt="GS" style="height:36px">
+          <div class="vc-logo-text">
+            GIMMICK SHELTER
+            <small>Webzine Rock</small>
+          </div>
+        </a>
+
+        <nav class="vc-nav">
+          <a href="#">Accueil</a>
+          <a href="#" class="active">Actualités</a>
+          <a href="#">Chroniques</a>
+          <a href="#">Playlists</a>
+          <a href="#">Anachroniques</a>
+          <a href="#">Concerts</a>
+          <a href="#">À propos</a>
+        </nav>
+
+        <div class="vc-actions">
+          <div class="vc-search-box">
+            <input type="text" placeholder="Rechercher…" aria-label="Recherche">
+            <button aria-label="Lancer la recherche"><i class="fas fa-search"></i></button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="fake-hero">← contenu de la page →</div>
+  </div>
+
+  <!-- Mobile C -->
+  <div class="only-mobile">
+    <div class="vc-mobile">
+      <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 60'%3E%3Crect width='320' height='60' fill='none'/%3E%3Ctext x='160' y='44' font-family='Anton,sans-serif' font-size='40' fill='%23fff' text-anchor='middle' letter-spacing='2'%3EGIMMICK SHELTER%3C/text%3E%3C/svg%3E"
+           alt="Gimmick Shelter">
+      <div class="vc-mobile-right">
+        <button class="vc-mobile-search" aria-label="Rechercher"><i class="fas fa-search"></i></button>
+        <button class="vc-mobile-burger" aria-label="Menu"><i class="fas fa-bars"></i></button>
+      </div>
+    </div>
+    <!-- Drawer mobile (ouvert en démo) -->
+    <div class="vc-mobile-menu">
+      <a href="#" class="active">Accueil</a>
+      <a href="#">Actualités</a>
+      <a href="#">Chroniques</a>
+      <a href="#">Playlists</a>
+      <a href="#">Anachroniques</a>
+      <a href="#">Concerts</a>
+      <a href="#">À propos</a>
+    </div>
+    <div class="fake-hero" style="height:60px; font-size:0.8rem">← contenu page mobile →</div>
+  </div>
+</div>
+
+
+<!-- ── Note de bas de document ────────────────────────────────────── -->
+<div style="padding: 40px 24px; text-align:center; color: #333; font-size:0.75rem; letter-spacing:0.08em;">
+  PROPOSAL-HEADER-V2-2026-05 · Agent /designer · Gimmick Shelter Design System v1
+  <br>Les logos SVG inline sont des placeholders — à remplacer par gimmick-shelter-logo-blanc.svg
+</div>
+
+</body>
+</html>

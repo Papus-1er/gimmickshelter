@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Maquette Header Interactive — Gimmick Shelter — Mai 2026</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+  <!-- Font Awesome 5 -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+
+  <style>
+    /* ===========================
+       DESIGN TOKENS
+    =========================== */
+    :root {
+      --color1: #E81F1F;  /* Rouge GS   */
+      --color2: #000B29;  /* Bleu GS    */
+      --color3: #FFFFFF;  /* Blanc      */
+      --color4: #000000;  /* Noir       */
+      --color5: #6D6D64;  /* Khaki Web  */
+
+      --nav-bg: var(--color4);
+      --nav-bg-scrolled: var(--color2);
+      --nav-border-scrolled: var(--color1);
+    }
+
+    /* ===========================
+       RESET / BASE
+    =========================== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #111;
+      color: var(--color3);
+      overflow-x: hidden;
+    }
+
+    /* ===========================
+       BARRE DE CONTRÔLES (hors maquette)
+    =========================== */
+    .controls-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 9999;
+      background: #1a1a2e;
+      border-bottom: 2px solid var(--color2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 16px;
+      flex-wrap: wrap;
+    }
+
+    .controls-bar span {
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.75rem;
+      color: var(--color5);
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-right: 4px;
+    }
+
+    .ctrl-btn {
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.8rem;
+      font-weight: 500;
+      padding: 5px 14px;
+      border: 1px solid var(--color5);
+      background: transparent;
+      color: var(--color3);
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      letter-spacing: 0.03em;
+    }
+
+    .ctrl-btn:hover {
+      background: var(--color2);
+      border-color: var(--color2);
+      color: var(--color3);
+    }
+
+    .ctrl-btn.active {
+      background: var(--color1);
+      border-color: var(--color1);
+      color: var(--color3);
+    }
+
+    .ctrl-sep {
+      width: 1px;
+      height: 20px;
+      background: #333;
+      margin: 0 4px;
+    }
+
+    .ctrl-badge {
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 3px;
+      background: var(--color2);
+      color: var(--color5);
+      letter-spacing: 0.05em;
+    }
+
+    /* ===========================
+       CONTENEUR DE PRÉVISUALISATION
+    =========================== */
+    .preview-wrapper {
+      margin-top: 50px; /* hauteur controls-bar */
+      display: flex;
+      justify-content: center;
+      padding: 24px 0 80px;
+      background: #0d0d0d;
+      min-height: calc(100vh - 50px);
+    }
+
+    .preview-container {
+      width: 100%;
+      max-width: 1200px;
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 4px;
+      overflow: hidden;
+      position: relative;
+      transition: max-width 0.4s ease;
+    }
+
+    .preview-container.mobile-mode {
+      max-width: 390px;
+      border-radius: 8px;
+      box-shadow: 0 0 40px rgba(0,0,0,0.7);
+    }
+
+    /* ===========================
+       HEADER — STRUCTURE
+    =========================== */
+    .gs-header {
+      position: relative;
+    }
+
+    /* --- Bandeau logo (rouge) --- */
+    .gs-header__logo-band {
+      background-color: var(--color1);
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 16px;
+      overflow: hidden;
+      transition: padding 0.3s ease, height 0.3s ease;
+    }
+
+    .gs-header__tagline {
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 300;
+      color: rgba(255, 255, 255, 0.75);
+      letter-spacing: 0.12em;
+      margin-top: 6px;
+      text-align: center;
+    }
+
+    .mobile-mode .gs-header__tagline {
+      display: none;
+    }
+
+    .gs-header__logo-link {
+      display: inline-block;
+      text-decoration: none;
+    }
+
+    /* Logo SVG inline (placeholder texte Anton) */
+    .gs-logo-svg {
+      display: block;
+    }
+
+    .gs-logo-text {
+      font-family: 'Anton', sans-serif;
+      font-size: 3rem;
+      color: var(--color3);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      line-height: 1;
+      /* Simulation d'un logo texte en attendant le vrai SVG */
+      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .mobile-mode .gs-logo-text {
+      font-size: 1.6rem;
+    }
+
+    /* --- Barre de navigation noire --- */
+    .gs-header__nav-bar {
+      background-color: var(--color4);
+      width: 100%;
+      position: sticky;
+      top: 50px; /* sous la barre controls */
+      z-index: 100;
+      border-bottom: 3px solid transparent;
+      transition: background-color 0.35s ease, border-color 0.35s ease;
+    }
+
+    .gs-header__nav-bar.is-scrolled {
+      background-color: var(--nav-bg-scrolled);
+      border-bottom-color: var(--color1);
+    }
+
+    /* Ligne rouge focus search (border-bottom additionnelle) */
+    .gs-header__nav-bar.search-focus {
+      border-bottom-color: var(--color1);
+    }
+
+    /* ===========================
+       NAVIGATION DESKTOP
+    =========================== */
+    .gs-nav-desktop {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      height: 52px;
+      position: relative;
+    }
+
+    .mobile-mode .gs-nav-desktop {
+      display: none;
+    }
+
+    .gs-nav-desktop__links {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      list-style: none;
+      height: 100%;
+    }
+
+    .gs-nav-desktop__links li {
+      height: 100%;
+      display: flex;
+      align-items: stretch;
+    }
+
+    .gs-nav-desktop__links a {
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.875rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--color3);
+      text-decoration: none;
+      padding: 0 16px;
+      display: flex;
+      align-items: center;
+      position: relative;
+      transition: color 0.2s ease;
+    }
+
+    /* Soulignement rouge au hover */
+    .gs-nav-desktop__links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 16px; right: 16px;
+      height: 3px;
+      background: var(--color1);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.25s ease;
+    }
+
+    .gs-nav-desktop__links a:hover::after,
+    .gs-nav-desktop__links a.is-active::after {
+      transform: scaleX(1);
+    }
+
+    .gs-nav-desktop__links a.is-active {
+      color: var(--color3);
+    }
+
+    .gs-nav-desktop__links a:hover {
+      color: var(--color3);
+    }
+
+    /* ===========================
+       SEARCH — ICÔNE LOUPE DANS LA NAV
+    =========================== */
+    .gs-nav-desktop__search {
+      display: flex;
+      align-items: center;
+    }
+
+    /* Bouton loupe au repos */
+    .gs-search-icon-btn {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: var(--color3);
+      font-size: 1rem;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.7;
+      transition: opacity 0.2s ease, color 0.2s ease;
+      line-height: 1;
+    }
+
+    .gs-search-icon-btn:hover {
+      opacity: 1;
+      color: var(--color3);
+    }
+
+    /* ===========================
+       SEARCH OVERLAY — BARRE PLEINE LARGEUR
+    =========================== */
+
+    /* Couche de recherche pleine largeur, par-dessus la nav */
+    .gs-search-overlay {
+      position: absolute;
+      inset: 0;               /* couvre exactement la barre nav */
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      gap: 16px;
+      /* État fermé */
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease-out;
+    }
+
+    /* État ouvert */
+    .gs-search-overlay.is-open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* Loupe fixe à gauche (rouge) */
+    .gs-search-overlay__icon {
+      color: var(--color1);
+      font-size: 1rem;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+
+    /* Input pleine largeur */
+    .gs-search-overlay__input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--color3);
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      padding: 0;
+      min-width: 0;
+    }
+
+    .gs-search-overlay__input::placeholder {
+      color: var(--color5);
+    }
+
+    /* Bouton fermeture × à droite */
+    .gs-search-overlay__close {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: var(--color3);
+      font-size: 1.1rem;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.7;
+      flex-shrink: 0;
+      transition: opacity 0.2s ease, color 0.2s ease, transform 0.2s ease;
+      line-height: 1;
+    }
+
+    .gs-search-overlay__close:hover {
+      opacity: 1;
+      color: var(--color1);
+      transform: rotate(90deg);
+    }
+
+    /* La nav "disparaît" quand la search est ouverte */
+    .gs-nav-desktop__inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      height: 100%;
+      transition: opacity 0.25s ease-out;
+    }
+
+    .gs-nav-desktop__inner.search-open {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* ===========================
+       NAVIGATION MOBILE
+    =========================== */
+    .gs-nav-mobile {
+      display: none;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 0 16px;
+      height: 52px;
+      gap: 4px;
+      position: relative;
+    }
+
+    .mobile-mode .gs-nav-mobile {
+      display: flex;
+    }
+
+    /* Loupe mobile — même comportement que desktop */
+    .gs-search-icon-btn-mobile {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: var(--color3);
+      font-size: 1rem;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.7;
+      transition: opacity 0.2s ease;
+      line-height: 1;
+    }
+
+    .gs-search-icon-btn-mobile:hover {
+      opacity: 1;
+    }
+
+    .gs-hamburger {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: var(--color3);
+      font-size: 1.5rem;
+      padding: 8px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s;
+    }
+
+    .gs-hamburger:hover {
+      color: var(--color1);
+    }
+
+    /* Search overlay mobile — couvre la barre mobile */
+    .gs-search-overlay-mobile {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      gap: 12px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease-out;
+    }
+
+    .gs-search-overlay-mobile.is-open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .gs-search-overlay-mobile__icon {
+      color: var(--color1);
+      font-size: 0.95rem;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+
+    .gs-search-overlay-mobile__input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      outline: none;
+      color: var(--color3);
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.875rem;
+      padding: 0;
+      min-width: 0;
+    }
+
+    .gs-search-overlay-mobile__input::placeholder {
+      color: var(--color5);
+    }
+
+    .gs-search-overlay-mobile__close {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      color: var(--color3);
+      font-size: 1rem;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0.7;
+      flex-shrink: 0;
+      transition: opacity 0.2s ease, color 0.2s ease, transform 0.2s ease;
+      line-height: 1;
+    }
+
+    .gs-search-overlay-mobile__close:hover {
+      opacity: 1;
+      color: var(--color1);
+      transform: rotate(90deg);
+    }
+
+    /* La nav mobile se cache quand la search est ouverte */
+    .gs-nav-mobile__inner {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: opacity 0.25s ease-out;
+    }
+
+    .gs-nav-mobile__inner.search-open {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    /* ===========================
+       MENU MOBILE — OVERLAY
+    =========================== */
+    .gs-mobile-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      background: var(--color4);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0;
+
+      /* Animation slide-in depuis la droite */
+      transform: translateX(100%);
+      opacity: 0;
+      transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+                  opacity 0.25s ease;
+      pointer-events: none;
+      overflow-y: auto;
+    }
+
+    .gs-mobile-overlay.is-open {
+      transform: translateX(0);
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* --- En-tête overlay : croix de fermeture --- */
+    .gs-mobile-overlay__header {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding: 16px 20px;
+      flex-shrink: 0;
+    }
+
+    .gs-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--color3);
+      font-size: 2rem;
+      cursor: pointer;
+      line-height: 1;
+      padding: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    .gs-close-btn:hover {
+      color: var(--color1);
+      transform: rotate(90deg);
+    }
+
+    /* --- Corps overlay : liens de navigation --- */
+    .gs-mobile-overlay__nav {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 20px 24px;
+      gap: 8px;
+    }
+
+    .gs-mobile-overlay__nav a {
+      font-family: 'Anton', sans-serif;
+      font-size: 2rem;
+      color: var(--color3);
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      text-align: center;
+      padding: 10px 20px;
+      width: 100%;
+      display: block;
+      transition: color 0.2s ease, transform 0.2s ease;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+
+    .gs-mobile-overlay__nav a:last-child {
+      border-bottom: none;
+    }
+
+    .gs-mobile-overlay__nav a:hover {
+      color: var(--color1);
+      transform: translateX(4px);
+    }
+
+    .gs-mobile-overlay__nav a.is-active {
+      color: var(--color1);
+    }
+
+    /* --- Pied overlay : réseaux sociaux --- */
+    .gs-mobile-overlay__footer {
+      width: 100%;
+      padding: 20px 24px 32px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      flex-shrink: 0;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+
+    /* Réseaux sociaux */
+    .gs-social-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .gs-social-links a {
+      color: var(--color3);
+      font-size: 1.4rem;
+      text-decoration: none;
+      transition: color 0.2s ease, transform 0.2s ease;
+      opacity: 0.8;
+    }
+
+    .gs-social-links a:hover {
+      color: var(--color1);
+      transform: translateY(-2px);
+      opacity: 1;
+    }
+
+    /* ===========================
+       CONTENU DE DÉMONSTRATION
+    =========================== */
+    .demo-content {
+      padding: 40px 24px;
+      min-height: 600px;
+    }
+
+    .demo-content h2 {
+      font-family: 'Anton', sans-serif;
+      font-size: 2rem;
+      color: var(--color3);
+      margin-bottom: 16px;
+      letter-spacing: 0.04em;
+    }
+
+    .demo-content p {
+      font-family: 'Roboto', sans-serif;
+      font-size: 1rem;
+      color: var(--color5);
+      line-height: 1.7;
+      max-width: 720px;
+      margin-bottom: 12px;
+    }
+
+    .demo-article-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 32px;
+    }
+
+    .mobile-mode .demo-article-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .demo-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .demo-card__img {
+      height: 140px;
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .demo-card__img-label {
+      font-family: 'Anton', sans-serif;
+      color: rgba(255,255,255,0.15);
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .demo-card__body {
+      padding: 14px;
+    }
+
+    .demo-card__tag {
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--color1);
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    .demo-card__title {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.1rem;
+      color: var(--color3);
+      letter-spacing: 0.03em;
+      line-height: 1.3;
+    }
+
+    /* ===========================
+       INDICATEUR D'ÉTAT
+    =========================== */
+    .state-indicator {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--color5);
+      background: rgba(0,0,0,0.7);
+      border: 1px solid #333;
+      padding: 4px 8px;
+      border-radius: 3px;
+      pointer-events: none;
+    }
+
+    /* ===========================
+       ANIMATIONS D'ENTRÉE OVERLAY
+    =========================== */
+    .gs-mobile-overlay.is-open .gs-mobile-overlay__nav a {
+      animation: fadeSlideIn 0.3s ease both;
+    }
+
+    .gs-mobile-overlay.is-open .gs-mobile-overlay__nav a:nth-child(1) { animation-delay: 0.05s; }
+    .gs-mobile-overlay.is-open .gs-mobile-overlay__nav a:nth-child(2) { animation-delay: 0.10s; }
+    .gs-mobile-overlay.is-open .gs-mobile-overlay__nav a:nth-child(3) { animation-delay: 0.15s; }
+    .gs-mobile-overlay.is-open .gs-mobile-overlay__nav a:nth-child(4) { animation-delay: 0.20s; }
+    .gs-mobile-overlay.is-open .gs-mobile-overlay__nav a:nth-child(5) { animation-delay: 0.25s; }
+    .gs-mobile-overlay.is-open .gs-mobile-overlay__nav a:nth-child(6) { animation-delay: 0.30s; }
+
+    @keyframes fadeSlideIn {
+      from {
+        opacity: 0;
+        transform: translateX(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    /* ===========================
+       ACCESSIBILITÉ
+    =========================== */
+    .sr-only {
+      position: absolute;
+      height: 1px; width: 1px;
+      overflow: hidden;
+      clip: rect(1px,1px,1px,1px);
+    }
+
+    /* Focus visible */
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible {
+      outline: 2px solid var(--color1);
+      outline-offset: 2px;
+    }
+
+    /* ===========================
+       NOTES DE DESIGN (annotations)
+    =========================== */
+    .design-annotation {
+      margin-top: 32px;
+      padding: 0 24px 40px;
+    }
+
+    .design-annotation h3 {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.1rem;
+      color: var(--color5);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #222;
+    }
+
+    .design-annotation ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .design-annotation li {
+      font-family: 'Roboto', sans-serif;
+      font-size: 0.8rem;
+      color: var(--color5);
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+    }
+
+    .design-annotation li::before {
+      content: '→';
+      color: var(--color1);
+      flex-shrink: 0;
+    }
+
+    .token-pill {
+      display: inline-block;
+      font-family: monospace;
+      font-size: 0.75rem;
+      background: rgba(232, 31, 31, 0.12);
+      color: var(--color1);
+      border: 1px solid rgba(232, 31, 31, 0.25);
+      border-radius: 3px;
+      padding: 0 5px;
+      margin: 0 2px;
+    }
+
+    .token-pill.blue {
+      background: rgba(0, 11, 41, 0.5);
+      color: #5b8df8;
+      border-color: rgba(91, 141, 248, 0.25);
+    }
+
+    /* ===========================
+       RESPONSIVE — hors mode mobile-mode
+       (pour la barre controls elle-même)
+    =========================== */
+    @media (max-width: 600px) {
+      .controls-bar { gap: 6px; padding: 6px 10px; }
+      .ctrl-btn { padding: 4px 10px; font-size: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ===========================
+       BARRE DE CONTRÔLES
+  =========================== -->
+  <div class="controls-bar" role="toolbar" aria-label="Contrôles de la maquette">
+    <span>Vue :</span>
+    <button class="ctrl-btn active" id="btn-desktop" onclick="setViewport('desktop')" aria-pressed="true">
+      &#x1F5A5; Desktop
+    </button>
+    <button class="ctrl-btn" id="btn-mobile" onclick="setViewport('mobile')" aria-pressed="false">
+      &#x1F4F1; Mobile
+    </button>
+
+    <div class="ctrl-sep"></div>
+
+    <span>Scroll :</span>
+    <button class="ctrl-btn" id="btn-scroll" onclick="toggleScroll()">
+      Simuler le scroll
+    </button>
+
+    <div class="ctrl-sep"></div>
+
+    <div class="ctrl-badge" id="state-label">Desktop · Normal</div>
+  </div>
+
+  <!-- ===========================
+       CONTENEUR DE PRÉVISUALISATION
+  =========================== -->
+  <div class="preview-wrapper">
+    <div class="preview-container" id="preview-container">
+
+      <!-- ============================================
+           HEADER GIMMICK SHELTER
+      ============================================ -->
+      <header class="gs-header" id="gs-header">
+
+        <!-- Bandeau rouge — Logo -->
+        <div class="gs-header__logo-band" id="logo-band">
+          <a href="#" class="gs-header__logo-link" aria-label="Gimmick Shelter — Accueil">
+            <!-- Logo SVG placeholder (texte Anton en blanc) -->
+            <svg class="gs-logo-svg" viewBox="0 0 480 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"
+                 width="480" height="60" style="max-width:100%; height:auto;">
+              <defs>
+                <style>
+                  @import url('https://fonts.googleapis.com/css2?family=Anton&amp;display=swap');
+                  .logo-text { font-family: 'Anton', 'Impact', sans-serif; }
+                </style>
+              </defs>
+              <text class="logo-text" x="50%" y="50" text-anchor="middle"
+                    font-size="52" fill="#FFFFFF" letter-spacing="6">
+                GIMMICK SHELTER
+              </text>
+            </svg>
+            <span class="sr-only">Gimmick Shelter</span>
+          </a>
+          <p class="gs-header__tagline">Prédicateur rock et indépendant depuis 2021</p>
+        </div>
+
+        <!-- Barre de navigation noire -->
+        <div class="gs-header__nav-bar" id="nav-bar" role="navigation" aria-label="Navigation principale">
+
+          <!-- Navigation Desktop -->
+          <nav class="gs-nav-desktop" aria-label="Menu principal">
+
+            <!-- Contenu nav (liens + loupe) — disparaît à l'ouverture de la search -->
+            <div class="gs-nav-desktop__inner" id="nav-desktop-inner">
+              <ul class="gs-nav-desktop__links" role="list">
+                <li><a href="#" class="is-active" aria-current="page">Chroniques</a></li>
+                <li><a href="#">Interviews</a></li>
+                <li><a href="#">Live Reports</a></li>
+                <li><a href="#">Playlists</a></li>
+                <li><a href="#">Dates</a></li>
+                <li><a href="#">À propos</a></li>
+              </ul>
+
+              <div class="gs-nav-desktop__search">
+                <button class="gs-search-icon-btn" id="search-icon-btn"
+                        aria-label="Ouvrir la recherche"
+                        aria-expanded="false"
+                        aria-controls="search-overlay-desktop">
+                  <i class="fas fa-search" aria-hidden="true"></i>
+                </button>
+              </div>
+            </div>
+
+            <!-- Search overlay pleine largeur (par-dessus la nav) -->
+            <div class="gs-search-overlay" id="search-overlay-desktop"
+                 role="search" aria-label="Recherche"
+                 aria-hidden="true">
+              <i class="fas fa-search gs-search-overlay__icon" aria-hidden="true"></i>
+              <input class="gs-search-overlay__input" id="search-overlay-input"
+                     type="search"
+                     placeholder="Rechercher sur Gimmick Shelter..."
+                     aria-label="Recherche">
+              <button class="gs-search-overlay__close" id="search-overlay-close"
+                      aria-label="Fermer la recherche">
+                <i class="fas fa-times" aria-hidden="true"></i>
+              </button>
+            </div>
+
+          </nav>
+
+          <!-- Navigation Mobile : loupe + hamburger -->
+          <div class="gs-nav-mobile" id="nav-mobile">
+
+            <!-- Boutons au repos -->
+            <div class="gs-nav-mobile__inner" id="nav-mobile-inner">
+              <button class="gs-search-icon-btn-mobile" id="search-icon-btn-mobile"
+                      aria-label="Ouvrir la recherche"
+                      aria-expanded="false"
+                      aria-controls="search-overlay-mobile">
+                <i class="fas fa-search" aria-hidden="true"></i>
+              </button>
+              <button class="gs-hamburger" id="hamburger-btn"
+                      onclick="openMobileMenu()"
+                      aria-label="Ouvrir le menu"
+                      aria-expanded="false"
+                      aria-controls="mobile-overlay">
+                <i class="fas fa-bars" aria-hidden="true"></i>
+              </button>
+            </div>
+
+            <!-- Search overlay mobile -->
+            <div class="gs-search-overlay-mobile" id="search-overlay-mobile"
+                 role="search" aria-label="Recherche"
+                 aria-hidden="true">
+              <i class="fas fa-search gs-search-overlay-mobile__icon" aria-hidden="true"></i>
+              <input class="gs-search-overlay-mobile__input" id="search-overlay-mobile-input"
+                     type="search"
+                     placeholder="Rechercher sur Gimmick Shelter..."
+                     aria-label="Recherche">
+              <button class="gs-search-overlay-mobile__close" id="search-overlay-mobile-close"
+                      aria-label="Fermer la recherche">
+                <i class="fas fa-times" aria-hidden="true"></i>
+              </button>
+            </div>
+
+          </div>
+
+        </div>
+      </header>
+
+      <!-- ============================================
+           OVERLAY MENU MOBILE
+      ============================================ -->
+      <div class="gs-mobile-overlay" id="mobile-overlay"
+           role="dialog" aria-modal="true" aria-label="Menu de navigation"
+           aria-hidden="true">
+
+        <!-- En-tête overlay — Croix de fermeture -->
+        <div class="gs-mobile-overlay__header">
+          <button class="gs-close-btn" id="close-btn"
+                  onclick="closeMobileMenu()"
+                  aria-label="Fermer le menu">
+            <i class="fas fa-times" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <!-- Liens de navigation -->
+        <nav class="gs-mobile-overlay__nav" aria-label="Menu mobile">
+          <a href="#" class="is-active" aria-current="page">Chroniques</a>
+          <a href="#">Interviews</a>
+          <a href="#">Live Reports</a>
+          <a href="#">Playlists</a>
+          <a href="#">Dates</a>
+          <a href="#">À propos</a>
+        </nav>
+
+        <!-- Pied : réseaux sociaux -->
+        <div class="gs-mobile-overlay__footer">
+          <div class="gs-social-links" role="list" aria-label="Réseaux sociaux">
+            <a href="#" role="listitem" aria-label="Instagram">
+              <i class="fab fa-instagram" aria-hidden="true"></i>
+            </a>
+            <a href="#" role="listitem" aria-label="Twitter / X">
+              <i class="fab fa-twitter" aria-hidden="true"></i>
+            </a>
+            <a href="#" role="listitem" aria-label="Facebook">
+              <i class="fab fa-facebook-f" aria-hidden="true"></i>
+            </a>
+            <a href="#" role="listitem" aria-label="Spotify">
+              <i class="fab fa-spotify" aria-hidden="true"></i>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ============================================
+           CONTENU DE DÉMONSTRATION
+      ============================================ -->
+      <main class="demo-content" id="main-content">
+        <h2>Chroniques</h2>
+        <p>
+          Webzine rock indépendant. Dernières chroniques, interviews et live reports
+          de la scène rock / métal / alternative. Faites défiler pour tester l'effet
+          sticky de la barre de navigation.
+        </p>
+        <p>
+          La barre noire passe en <strong style="color:#5b8df8">bleu nuit (#000B29)</strong>
+          avec un <strong style="color:#E81F1F">liseré rouge</strong> au bas lors du scroll.
+          Utilisez le bouton <em>« Simuler le scroll »</em> pour tester sans scroller.
+        </p>
+
+        <div class="demo-article-grid">
+          <div class="demo-card">
+            <div class="demo-card__img">
+              <span class="demo-card__img-label">Photo album</span>
+            </div>
+            <div class="demo-card__body">
+              <div class="demo-card__tag">Chronique</div>
+              <div class="demo-card__title">IDLES — TANGK</div>
+            </div>
+          </div>
+          <div class="demo-card">
+            <div class="demo-card__img">
+              <span class="demo-card__img-label">Photo live</span>
+            </div>
+            <div class="demo-card__body">
+              <div class="demo-card__tag">Live Report</div>
+              <div class="demo-card__title">Fontaines D.C. — L'Olympia</div>
+            </div>
+          </div>
+          <div class="demo-card">
+            <div class="demo-card__img">
+              <span class="demo-card__img-label">Portrait artiste</span>
+            </div>
+            <div class="demo-card__body">
+              <div class="demo-card__tag">Interview</div>
+              <div class="demo-card__title">Yard Act — Rencontre à Leeds</div>
+            </div>
+          </div>
+          <div class="demo-card">
+            <div class="demo-card__img">
+              <span class="demo-card__img-label">Photo album</span>
+            </div>
+            <div class="demo-card__body">
+              <div class="demo-card__tag">Chronique</div>
+              <div class="demo-card__title">Nick Cave — Wild God</div>
+            </div>
+          </div>
+          <div class="demo-card">
+            <div class="demo-card__img">
+              <span class="demo-card__img-label">Photo live</span>
+            </div>
+            <div class="demo-card__body">
+              <div class="demo-card__tag">Live Report</div>
+              <div class="demo-card__title">Phoebe Bridgers — Zénith Paris</div>
+            </div>
+          </div>
+          <div class="demo-card">
+            <div class="demo-card__img">
+              <span class="demo-card__img-label">Playlist cover</span>
+            </div>
+            <div class="demo-card__body">
+              <div class="demo-card__tag">Playlist</div>
+              <div class="demo-card__title">50 albums qui ont changé nos vies</div>
+            </div>
+          </div>
+        </div>
+      </main>
+
+      <!-- Annotations de design -->
+      <div class="design-annotation">
+        <h3>Tokens utilisés — Header</h3>
+        <ul>
+          <li>Bandeau logo : fond <span class="token-pill">--color1 #E81F1F</span> · texte <span class="token-pill">--color3 #FFFFFF</span></li>
+          <li>Barre nav : fond <span class="token-pill">--color4 #000000</span> → scroll : <span class="token-pill blue">--color2 #000B29</span></li>
+          <li>Liseré scroll : <span class="token-pill">--color1 #E81F1F</span> 3px border-bottom</li>
+          <li>Hover liens nav : soulignement <span class="token-pill">--color1</span> animé scaleX(0→1) depuis la gauche</li>
+          <li>Overlay mobile : fond <span class="token-pill">--color4 #000000</span> · slide-in translateX depuis la droite</li>
+          <li>Liens overlay : Anton 2rem · hover → <span class="token-pill">--color1</span> + translateX(4px)</li>
+          <li>Croix fermeture : rotation 90° au hover</li>
+          <li>Typos : <span class="token-pill blue">Anton</span> (logo, liens mobile) · <span class="token-pill blue">Roboto</span> (nav desktop, recherche)</li>
+        </ul>
+
+        <h3 style="margin-top:20px;">Search — Loupe nav → overlay pleine largeur</h3>
+        <ul>
+          <li>Au repos : icône loupe <span class="token-pill">fa-search</span> à droite des liens, opacité 70% · discrète</li>
+          <li>Au clic : la nav disparaît (fade out 250ms) · un overlay pleine largeur apparaît (fade in 250ms ease-out)</li>
+          <li>Fond barre : reste <span class="token-pill">--color4 #000000</span> (ou <span class="token-pill blue">--color2 #000B29</span> si scrollé) — pas de changement de fond</li>
+          <li>Loupe fixe à gauche : <span class="token-pill">--color1 #E81F1F</span></li>
+          <li>Input : pleine largeur, pas de border, pas de fond — texte blanc · placeholder <span class="token-pill">--color5 #6D6D64</span></li>
+          <li>Au focus input : <span class="token-pill">border-bottom --color1</span> apparaît sur la barre nav (classe <code>search-focus</code>)</li>
+          <li>Croix ✕ à droite : fermeture + reset · hover → <span class="token-pill">--color1</span> + rotation 90°</li>
+          <li>Escape : fermeture aussi · focus retour sur le bouton loupe</li>
+          <li>Mobile : même comportement — loupe visible à côté du hamburger dans la barre noire</li>
+        </ul>
+      </div>
+
+      <!-- Indicateur d'état -->
+      <div class="state-indicator" id="state-indicator">Desktop · Normal</div>
+
+    </div><!-- / preview-container -->
+  </div><!-- / preview-wrapper -->
+
+
+  <!-- ===========================
+       JAVASCRIPT
+  =========================== -->
+  <script>
+    // ──────────────────────────────────────────────
+    // État global
+    // ──────────────────────────────────────────────
+    const state = {
+      viewport: 'desktop',   // 'desktop' | 'mobile'
+      scrolled: false,
+      menuOpen: false,
+      searchOpen: false,     // search overlay desktop
+      searchMobileOpen: false,
+    };
+
+    // Références DOM
+    const previewContainer    = document.getElementById('preview-container');
+    const navBar              = document.getElementById('nav-bar');
+    const btnDesktop          = document.getElementById('btn-desktop');
+    const btnMobile           = document.getElementById('btn-mobile');
+    const btnScroll           = document.getElementById('btn-scroll');
+    const stateLabel          = document.getElementById('state-label');
+    const stateIndicator      = document.getElementById('state-indicator');
+    const mobileOverlay       = document.getElementById('mobile-overlay');
+    const hamburgerBtn        = document.getElementById('hamburger-btn');
+
+    // Search desktop
+    const searchIconBtn       = document.getElementById('search-icon-btn');
+    const navDesktopInner     = document.getElementById('nav-desktop-inner');
+    const searchOverlayDt     = document.getElementById('search-overlay-desktop');
+    const searchOverlayInput  = document.getElementById('search-overlay-input');
+    const searchOverlayClose  = document.getElementById('search-overlay-close');
+
+    // Search mobile
+    const searchIconBtnMobile     = document.getElementById('search-icon-btn-mobile');
+    const navMobileInner          = document.getElementById('nav-mobile-inner');
+    const searchOverlayMobile     = document.getElementById('search-overlay-mobile');
+    const searchOverlayMobileInput = document.getElementById('search-overlay-mobile-input');
+    const searchOverlayMobileClose = document.getElementById('search-overlay-mobile-close');
+
+    // ──────────────────────────────────────────────
+    // Mise à jour de l'indicateur d'état
+    // ──────────────────────────────────────────────
+    function updateStateLabel() {
+      const vp     = state.viewport === 'desktop' ? 'Desktop' : 'Mobile';
+      const scroll = state.scrolled ? 'Scrollé' : 'Normal';
+      const label  = `${vp} · ${scroll}`;
+      stateLabel.textContent      = label;
+      stateIndicator.textContent  = label;
+    }
+
+    // ──────────────────────────────────────────────
+    // Basculement viewport Desktop / Mobile
+    // ──────────────────────────────────────────────
+    function setViewport(mode) {
+      state.viewport = mode;
+
+      if (mode === 'mobile') {
+        previewContainer.classList.add('mobile-mode');
+        btnMobile.classList.add('active');
+        btnDesktop.classList.remove('active');
+        btnMobile.setAttribute('aria-pressed', 'true');
+        btnDesktop.setAttribute('aria-pressed', 'false');
+      } else {
+        previewContainer.classList.remove('mobile-mode');
+        btnDesktop.classList.add('active');
+        btnMobile.classList.remove('active');
+        btnDesktop.setAttribute('aria-pressed', 'true');
+        btnMobile.setAttribute('aria-pressed', 'false');
+        // Fermer l'overlay si on revient en desktop
+        closeMobileMenu();
+        closeSearchMobile();
+      }
+
+      // Fermer aussi la search desktop si ouverte
+      closeSearchDesktop();
+      updateStateLabel();
+    }
+
+    // ──────────────────────────────────────────────
+    // Simulation du scroll
+    // ──────────────────────────────────────────────
+    function toggleScroll() {
+      state.scrolled = !state.scrolled;
+
+      if (state.scrolled) {
+        navBar.classList.add('is-scrolled');
+        btnScroll.classList.add('active');
+        btnScroll.textContent = '↩ Revenir Normal';
+      } else {
+        navBar.classList.remove('is-scrolled');
+        btnScroll.classList.remove('active');
+        btnScroll.textContent = 'Simuler le scroll';
+      }
+
+      updateStateLabel();
+    }
+
+    // ──────────────────────────────────────────────
+    // Menu mobile : ouverture
+    // ──────────────────────────────────────────────
+    function openMobileMenu() {
+      state.menuOpen = true;
+      mobileOverlay.classList.add('is-open');
+      mobileOverlay.setAttribute('aria-hidden', 'false');
+      hamburgerBtn.setAttribute('aria-expanded', 'true');
+      document.body.style.overflow = 'hidden'; // bloquer le scroll du body
+    }
+
+    // ──────────────────────────────────────────────
+    // Menu mobile : fermeture
+    // ──────────────────────────────────────────────
+    function closeMobileMenu() {
+      state.menuOpen = false;
+      mobileOverlay.classList.remove('is-open');
+      mobileOverlay.setAttribute('aria-hidden', 'true');
+      if (hamburgerBtn) hamburgerBtn.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    }
+
+    // ──────────────────────────────────────────────
+    // Fermeture overlay au clic sur un lien
+    // ──────────────────────────────────────────────
+    mobileOverlay.querySelectorAll('.gs-mobile-overlay__nav a').forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        e.preventDefault(); // pas de navigation réelle dans la maquette
+        closeMobileMenu();
+      });
+    });
+
+    // ──────────────────────────────────────────────
+    // Search desktop : ouverture
+    // ──────────────────────────────────────────────
+    function openSearchDesktop() {
+      state.searchOpen = true;
+      navDesktopInner.classList.add('search-open');
+      searchOverlayDt.classList.add('is-open');
+      searchOverlayDt.setAttribute('aria-hidden', 'false');
+      searchIconBtn.setAttribute('aria-expanded', 'true');
+      // Focus sur l'input après la transition
+      setTimeout(function() { searchOverlayInput.focus(); }, 260);
+    }
+
+    // ──────────────────────────────────────────────
+    // Search desktop : fermeture
+    // ──────────────────────────────────────────────
+    function closeSearchDesktop() {
+      if (!state.searchOpen) return;
+      state.searchOpen = false;
+      navDesktopInner.classList.remove('search-open');
+      searchOverlayDt.classList.remove('is-open');
+      searchOverlayDt.setAttribute('aria-hidden', 'true');
+      searchIconBtn.setAttribute('aria-expanded', 'false');
+      navBar.classList.remove('search-focus');
+      searchOverlayInput.value = '';
+    }
+
+    // ──────────────────────────────────────────────
+    // Search mobile : ouverture
+    // ──────────────────────────────────────────────
+    function openSearchMobile() {
+      state.searchMobileOpen = true;
+      navMobileInner.classList.add('search-open');
+      searchOverlayMobile.classList.add('is-open');
+      searchOverlayMobile.setAttribute('aria-hidden', 'false');
+      searchIconBtnMobile.setAttribute('aria-expanded', 'true');
+      setTimeout(function() { searchOverlayMobileInput.focus(); }, 260);
+    }
+
+    // ──────────────────────────────────────────────
+    // Search mobile : fermeture
+    // ──────────────────────────────────────────────
+    function closeSearchMobile() {
+      if (!state.searchMobileOpen) return;
+      state.searchMobileOpen = false;
+      navMobileInner.classList.remove('search-open');
+      searchOverlayMobile.classList.remove('is-open');
+      searchOverlayMobile.setAttribute('aria-hidden', 'true');
+      searchIconBtnMobile.setAttribute('aria-expanded', 'false');
+      navBar.classList.remove('search-focus');
+      searchOverlayMobileInput.value = '';
+    }
+
+    // ──────────────────────────────────────────────
+    // Listeners : Search desktop
+    // ──────────────────────────────────────────────
+    searchIconBtn.addEventListener('click', function() {
+      openSearchDesktop();
+    });
+
+    searchOverlayClose.addEventListener('click', function() {
+      closeSearchDesktop();
+      searchIconBtn.focus();
+    });
+
+    // Ligne rouge focus sur la barre
+    searchOverlayInput.addEventListener('focus', function() {
+      navBar.classList.add('search-focus');
+    });
+
+    searchOverlayInput.addEventListener('blur', function() {
+      navBar.classList.remove('search-focus');
+    });
+
+    // ──────────────────────────────────────────────
+    // Listeners : Search mobile
+    // ──────────────────────────────────────────────
+    searchIconBtnMobile.addEventListener('click', function() {
+      openSearchMobile();
+    });
+
+    searchOverlayMobileClose.addEventListener('click', function() {
+      closeSearchMobile();
+      searchIconBtnMobile.focus();
+    });
+
+    searchOverlayMobileInput.addEventListener('focus', function() {
+      navBar.classList.add('search-focus');
+    });
+
+    searchOverlayMobileInput.addEventListener('blur', function() {
+      navBar.classList.remove('search-focus');
+    });
+
+    // ──────────────────────────────────────────────
+    // Escape — ferme search ou menu mobile
+    // ──────────────────────────────────────────────
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') {
+        if (state.searchOpen) {
+          closeSearchDesktop();
+          searchIconBtn.focus();
+        } else if (state.searchMobileOpen) {
+          closeSearchMobile();
+          searchIconBtnMobile.focus();
+        } else if (state.menuOpen) {
+          closeMobileMenu();
+        }
+      }
+    });
+
+    // ──────────────────────────────────────────────
+    // Init
+    // ──────────────────────────────────────────────
+    updateStateLabel();
+
+    // Intercepter les liens de la nav desktop (maquette)
+    document.querySelectorAll('.gs-nav-desktop__links a').forEach(function(link) {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+      });
+    });
+  </script>
+</body>
+</html>

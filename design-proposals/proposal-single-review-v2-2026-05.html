@@ -1,0 +1,614 @@
+<!--
+  MAQUETTE — Single Anachronique · V2 révisée
+  Template : single-anachroniques.php
+  Base     : V1 Immersive Stage modifiée
+  Modifs   : hero moins flou · pochette retirée du hero (sidebar uniquement)
+             fiche fond var(--c2) bleu · related = style gs-related/gs-card playlist
+             version mobile complète · sans note_generale · sans prochain_concert
+  DS       : #E81F1F · #000B29 · #FFFFFF · #000000 · #6D6D64
+  Polices  : Anton · Roboto
+  Date     : 2026-05 · Agent Designer
+-->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Single Review V2 — Gimmick Shelter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+
+/* ── RESET + TOKENS ───────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --c1: #E81F1F;
+  --c2: #000B29;
+  --c3: #FFFFFF;
+  --c4: #000000;
+  --c5: #6D6D64;
+  --surface: #0c0c10;
+  --f-d: 'Anton', sans-serif;
+  --f-b: 'Roboto', sans-serif;
+  --max: 1200px;
+  --divider-light:  rgba(0,0,0,0.08);
+  --divider-dark:   rgba(255,255,255,0.08);
+  --overlay-card:   rgba(0,0,0,0.85);
+}
+html { scroll-behavior: smooth; }
+body {
+  background: var(--c3);
+  color: var(--c4);
+  font-family: var(--f-b);
+  line-height: 1.6;
+}
+a { color: inherit; text-decoration: none; }
+img { display: block; width: 100%; height: 100%; object-fit: cover; }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration:0s!important; transition-duration:0s!important; }
+}
+@keyframes fadeUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:none; } }
+
+/* ══════════════════════════════════════════════════════
+   PROGRESS BAR
+   ══════════════════════════════════════════════════════ */
+.progress-bar {
+  position: fixed; top: 0; left: 0; z-index: 999;
+  height: 3px; width: 55%;
+  background: var(--c1);
+  pointer-events: none;
+}
+
+/* ══════════════════════════════════════════════════════
+   NAV
+   ══════════════════════════════════════════════════════ */
+.nav {
+  position: sticky; top: 0; z-index: 200;
+  height: 54px;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 2.5rem;
+  background: rgba(10,10,14,.92);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(232,31,31,.12);
+}
+.nav__logo {
+  font-family: var(--f-d); font-size: 1.05rem;
+  letter-spacing: .07em; text-transform: uppercase;
+  color: var(--c3);
+}
+.nav__logo em { color: var(--c1); font-style: normal; }
+.nav__links { display: flex; list-style: none; height: 100%; }
+.nav__links a {
+  display: flex; align-items: center;
+  padding: 0 1.1rem; height: 100%;
+  font-size: .6rem; text-transform: uppercase; letter-spacing: .14em; font-weight: 700;
+  color: rgba(255,255,255,.35); border-bottom: 2px solid transparent;
+  transition: color .2s, border-color .2s;
+}
+.nav__links a:hover { color: var(--c3); }
+.nav__links .on a  { color: var(--c3); border-bottom-color: var(--c1); }
+.nav__burger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 4px; }
+.nav__burger span { display: block; width: 22px; height: 2px; background: var(--c3); }
+
+/* ══════════════════════════════════════════════════════
+   HERO — fond album moins flou, SANS pochette à gauche
+   ══════════════════════════════════════════════════════ */
+.hero {
+  position: relative;
+  min-height: min(72vh, 560px);
+  overflow: hidden;
+  display: flex; align-items: flex-end;
+  background: var(--surface);
+}
+.hero__bg { position: absolute; inset: 0; }
+.hero__bg img {
+  object-position: center;
+  /* blur réduit : 8px au lieu de 20px, saturation préservée */
+  filter: blur(8px) saturate(.75) brightness(.8);
+  transform: scale(1.05);
+}
+.hero__overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    160deg,
+    rgba(0,11,41,.65) 0%,
+    rgba(12,12,16,.72) 45%,
+    rgba(12,12,16,.96) 100%
+  );
+}
+
+/* Contenu hero : texte seul, pas de pochette */
+.hero__inner {
+  position: relative; z-index: 1;
+  max-width: var(--max); margin: 0 auto; width: 100%;
+  padding: 0 2.5rem 3.5rem;
+  animation: fadeUp .6s .1s ease both;
+}
+.hero__back {
+  display: inline-flex; align-items: center; gap: .45rem;
+  font-size: .62rem; text-transform: uppercase; letter-spacing: .16em;
+  color: rgba(255,255,255,.4);
+  margin-bottom: 1.5rem; transition: color .2s;
+}
+.hero__back:hover { color: var(--c3); }
+.hero__back::before { content: '←'; }
+.hero__artist {
+  font-size: .68rem; text-transform: uppercase; letter-spacing: .22em;
+  color: var(--c1); margin-bottom: .5rem;
+}
+.hero__title {
+  font-family: var(--f-d);
+  font-size: clamp(3rem, 7vw, 6rem);
+  text-transform: uppercase; line-height: .88; letter-spacing: .01em;
+  color: var(--c3); margin-bottom: 1.25rem;
+}
+.hero__meta-row {
+  display: flex; flex-wrap: wrap; gap: .6rem 1.2rem; align-items: center;
+  font-size: .78rem; letter-spacing: .1em; text-transform: uppercase;
+  color: rgba(255,255,255,.4);
+}
+.hero__pill {
+  background: var(--c1); color: var(--c3);
+  padding: .28rem .75rem;
+  font-size: .68rem; letter-spacing: .14em; font-weight: 700;
+}
+.hero__pill--ghost {
+  border: 1px solid rgba(255,255,255,.22);
+  color: rgba(255,255,255,.55);
+  padding: .28rem .75rem;
+  font-size: .68rem; letter-spacing: .14em;
+}
+
+/* ══════════════════════════════════════════════════════
+   BODY — fond blanc
+   ══════════════════════════════════════════════════════ */
+.body {
+  background: var(--c3);
+  max-width: var(--max); margin: 0 auto;
+  padding: 4rem 2.5rem 5rem;
+}
+.body__grid {
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 4rem;
+  align-items: start;
+}
+
+/* Article */
+.article-body {
+  font-size: 1.06rem; line-height: 1.8;
+  color: rgba(0,0,0,.8);
+}
+.article-body p {
+  text-align: justify;
+  margin-bottom: 1.5em;
+  max-width: 68ch;
+}
+.article-body p:last-child { margin-bottom: 0; }
+/* Drop-cap rouge façon playlist */
+.article-body p:first-of-type::first-letter {
+  font-family: var(--f-d);
+  font-size: 4.2rem;
+  float: left;
+  line-height: .88;
+  margin: .2rem .55rem 0 0;
+  color: var(--c1);
+}
+
+/* Partage */
+.share-row {
+  display: flex; align-items: center; gap: .6rem; flex-wrap: wrap;
+  margin-top: 2.5rem; padding-top: 1.5rem;
+  border-top: 1px solid var(--divider-light);
+}
+.share-label {
+  font-family: var(--f-d); font-size: .75rem;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--c5); margin-right: .3rem;
+}
+.share-btn {
+  width: 38px; height: 38px; border-radius: 50%;
+  background: var(--c2); color: var(--c3);
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: .78rem; transition: background .2s;
+}
+.share-btn:hover { background: var(--c1); }
+
+/* Back link */
+.back-link {
+  display: inline-flex; align-items: center; gap: .45rem;
+  margin-top: 2rem;
+  font-size: .78rem; text-transform: uppercase; letter-spacing: .14em;
+  color: var(--c5); transition: color .2s;
+}
+.back-link:hover { color: var(--c1); }
+.back-link::before { content: '←'; font-family: var(--f-d); }
+
+/* ══════════════════════════════════════════════════════
+   ASIDE — sidebar fond clair + fiche fond bleu
+   ══════════════════════════════════════════════════════ */
+.aside {
+  position: sticky; top: 74px;
+  display: flex; flex-direction: column; gap: 1.5rem;
+}
+
+/* Pochette ← uniquement ici, plus dans le hero */
+.aside__cover {
+  width: 100%; aspect-ratio: 1;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0,0,0,.14);
+}
+
+/* Spotify */
+.aside__spotify {
+  background: #f5f5f5;
+  border: 1px solid var(--divider-light);
+  padding: .75rem;
+}
+
+/* Fiche technique — fond bleu nuit var(--c2) */
+.aside__sheet {
+  background: var(--c2);
+  padding: 1.5rem;
+  border-left: 3px solid var(--c1);
+}
+.aside__sheet h4 {
+  font-family: var(--f-d); font-size: .75rem;
+  text-transform: uppercase; letter-spacing: .14em;
+  color: var(--c1); margin-bottom: 1rem;
+}
+.aside__row {
+  padding: .65rem 0;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  display: flex; flex-direction: column; gap: .2rem;
+}
+.aside__row:last-child { border-bottom: none; }
+.aside__key {
+  font-size: .58rem; text-transform: uppercase;
+  letter-spacing: .14em; color: var(--c5);
+}
+.aside__val {
+  font-size: .85rem; color: var(--c3); font-weight: 600;
+}
+
+/* ══════════════════════════════════════════════════════
+   RELATED — style gs-related / gs-card (playlist)
+   Fond blanc, titre Anton dark, cards carrées overlay
+   ══════════════════════════════════════════════════════ */
+.gs-related {
+  background: var(--c3);
+  padding: 4rem 0 5rem;
+  border-top: 1px solid var(--divider-light);
+}
+.gs-related__inner {
+  max-width: var(--max); margin: 0 auto; padding: 0 2.5rem;
+}
+.gs-related__head {
+  display: flex; align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem; flex-wrap: wrap;
+  margin-bottom: 2.5rem;
+}
+.gs-related__title {
+  font-family: var(--f-d);
+  font-size: clamp(2rem, 4vw, 3rem);
+  letter-spacing: .02em; line-height: 1;
+  color: var(--c2);
+}
+.gs-related__title em { font-style: normal; color: var(--c1); }
+.gs-related__all {
+  font-size: .85rem; text-transform: uppercase;
+  letter-spacing: .16em; color: var(--c2);
+  border-bottom: 1px solid var(--c2);
+  padding-bottom: 2px;
+  transition: color .2s, border-color .2s;
+  white-space: nowrap;
+}
+.gs-related__all:hover { color: var(--c1); border-color: var(--c1); }
+
+.related-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.gs-card {
+  position: relative; overflow: hidden;
+  aspect-ratio: 1; display: block;
+  text-decoration: none; color: var(--c3);
+}
+.gs-card-img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform .35s ease;
+}
+.gs-card:hover .gs-card-img { transform: scale(1.08); }
+.gs-card-img-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, var(--overlay-card), transparent 52%);
+  display: flex; align-items: flex-end;
+  padding: 1.2rem;
+}
+.gs-card-title {
+  font-family: var(--f-d);
+  font-size: 1.5rem; text-transform: uppercase;
+  line-height: 1; margin: 0; letter-spacing: .02em;
+}
+.gs-card-sub {
+  font-style: italic; font-size: .82rem;
+  opacity: .82; margin-top: .35rem; line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE — TABLETTE
+   ══════════════════════════════════════════════════════ */
+@media (max-width: 1024px) and (min-width: 769px) {
+  .body__grid { grid-template-columns: 1fr 280px; gap: 2.5rem; }
+  .hero__title { font-size: clamp(2.75rem, 6vw, 5rem); }
+}
+
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE — MOBILE (≤ 768px)
+   ══════════════════════════════════════════════════════ */
+@media (max-width: 768px) {
+
+  /* Nav mobile */
+  .nav { padding: 0 1.25rem; }
+  .nav__links { display: none; }
+  .nav__burger { display: flex; }
+
+  /* Hero mobile */
+  .hero { min-height: 52vh; }
+  .hero__inner { padding: 0 1.25rem 2.5rem; }
+  .hero__title { font-size: clamp(2.5rem, 10vw, 3.5rem); }
+  .hero__meta-row { gap: .5rem; font-size: .72rem; }
+
+  /* Body mobile : colonne unique, sidebar sous l'article */
+  .body { padding: 2.5rem 1.25rem 3rem; }
+  .body__grid {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+  }
+  /* Sur mobile la sidebar vient après l'article — aside reste dans le flux */
+  .aside { position: static; }
+
+  /* Pochette plus petite sur mobile */
+  .aside__cover { max-width: 280px; margin: 0 auto; }
+
+  /* Article : texte pleine largeur */
+  .article-body p { max-width: 100%; }
+
+  /* Related : colonne unique sur mobile */
+  .related-grid { grid-template-columns: 1fr; gap: 1rem; }
+  .gs-related { padding: 3rem 0 4rem; }
+  .gs-related__inner { padding: 0 1.25rem; }
+  .gs-related__head { margin-bottom: 1.75rem; }
+  .gs-related__title { font-size: 2rem; }
+  .gs-card { aspect-ratio: 4/3; }
+
+  /* Cards related full width readable */
+  .gs-card-title { font-size: 1.25rem; }
+}
+
+/* ══════════════════════════════════════════════════════
+   RESPONSIVE — TRÈS PETIT (≤ 480px)
+   ══════════════════════════════════════════════════════ */
+@media (max-width: 480px) {
+  .hero { min-height: 46vh; }
+  .hero__title { font-size: 2.4rem; }
+  .hero__meta-row { flex-direction: column; align-items: flex-start; gap: .4rem; }
+  .body { padding: 2rem 1rem 2.5rem; }
+  .gs-related__inner { padding: 0 1rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="progress-bar" role="progressbar" aria-label="Progression de lecture"></div>
+
+<!-- ── NAV ──────────────────────────────────────────── -->
+<nav class="nav" role="navigation" aria-label="Navigation principale">
+  <div class="nav__logo"><em>Gimmick</em> Shelter</div>
+  <ul class="nav__links">
+    <li class="on"><a href="#">Chroniques</a></li>
+    <li><a href="#">Playlists</a></li>
+    <li><a href="#">Live</a></li>
+    <li><a href="#">Agenda</a></li>
+  </ul>
+  <div class="nav__burger" aria-label="Menu" role="button" tabindex="0">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════════════════
+     HERO — fond album, blur léger, texte seul (pas de pochette)
+     ══════════════════════════════════════════════════ -->
+<section class="hero" aria-label="En-tête de la chronique">
+
+  <!-- Fond ← the_post_thumbnail utilisé comme background -->
+  <div class="hero__bg" aria-hidden="true">
+    <img src="https://picsum.photos/seed/review-bg-v2/1400/800" alt="">
+  </div>
+  <div class="hero__overlay" aria-hidden="true"></div>
+
+  <div class="hero__inner">
+
+    <!-- Fil d'Ariane -->
+    <a href="#" class="hero__back">Toutes les chroniques</a>
+
+    <!-- Artiste / labels ← get_field('labels') -->
+    <div class="hero__artist">Nick Cave &amp; The Bad Seeds</div>
+
+    <!-- Titre ← the_title() -->
+    <h1 class="hero__title">Wild God</h1>
+
+    <!-- Meta row : type + genre ← get_field('genre') -->
+    <div class="hero__meta-row">
+      <span class="hero__pill">Chronique</span>
+      <span class="hero__pill--ghost">Art Rock</span>
+      <span class="hero__pill--ghost">Post-Punk</span>
+      <span>Bad Seed Ltd. · 2024</span>
+      <span>· Par Lucas Bernard · 5 mai 2026</span>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     BODY — fond blanc
+     ══════════════════════════════════════════════════ -->
+<div class="body">
+  <div class="body__grid">
+
+    <!-- ARTICLE ← the_content() -->
+    <article>
+      <div class="article-body">
+        <p>
+          Il y a des disques qu'on reçoit comme un coup de poing, et d'autres qu'on absorbe lentement,
+          comme une lumière qui traverse le brouillard. <em>Wild God</em> appartient sans conteste
+          à la seconde catégorie. Nick Cave, accompagné d'un Bad Seeds au sommet de leur art,
+          signe ici un album d'une sobriété déconcertante — et d'une profondeur rare.
+        </p>
+        <p>
+          Dès les premières mesures de <em>Song of the Lake</em>, le ton est donné : pas de fanfare,
+          pas de provocation. Une voix qui porte le poids de ce qu'elle a traversé, une production
+          en retrait, et des arrangements qui respirent. Le deuil de son fils Arthur en 2015
+          et de Jethro en 2022 est présent partout — sans jamais s'énoncer frontalement.
+        </p>
+        <p>
+          L'album réussit là où tant d'artistes trébuchent : rendre la douleur universelle sans
+          la rendre spectaculaire. <em>O Wow O Wow (How Wonderful She Is)</em> est peut-être la piste
+          la plus lumineuse que Cave ait jamais enregistrée, et paradoxalement l'une des plus
+          déchirantes. La foi, la mort, la renaissance — tout coexiste sans contradiction.
+        </p>
+        <p>
+          Quelques réserves : le disque est court (38 minutes), et certains morceaux du milieu
+          manquent un peu de l'acuité dramatique des meilleurs moments. Mais ces imperfections
+          donnent au tout un caractère organique, humain, qui tranche avec la perfection
+          glaciale d'autres productions contemporaines.
+        </p>
+      </div>
+
+      <!-- Partage ← AddToAny -->
+      <div class="share-row" aria-label="Partager cet article">
+        <span class="share-label">Partager</span>
+        <a class="share-btn" href="#" aria-label="Facebook">f</a>
+        <a class="share-btn" href="#" aria-label="Twitter / X">𝕏</a>
+        <a class="share-btn" href="#" aria-label="WhatsApp">w</a>
+        <a class="share-btn" href="#" aria-label="Email">@</a>
+      </div>
+
+      <a href="#" class="back-link">Toutes les chroniques</a>
+    </article>
+
+    <!-- ASIDE ─────────────────────────────────── -->
+    <aside aria-label="Informations sur l'album">
+      <div class="aside">
+
+        <!-- Pochette ← the_post_thumbnail('card-fullsize')
+             Uniquement ici — retirée du hero -->
+        <div class="aside__cover">
+          <img src="https://picsum.photos/seed/album-cover-v2r/440/440"
+               alt="Pochette Wild God — Nick Cave & The Bad Seeds">
+        </div>
+
+        <!-- Spotify ← get_field('album_spotify') -->
+        <div class="aside__spotify">
+          <iframe
+            style="border-radius:0"
+            src="https://open.spotify.com/embed/album/1jJbFMHILxkCxFfXW5HnA7?utm_source=generator&theme=0"
+            width="100%" height="152" frameborder="0"
+            allowfullscreen
+            allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+            loading="lazy"
+            title="Écouter Wild God sur Spotify">
+          </iframe>
+        </div>
+
+        <!-- Fiche technique — fond bleu nuit var(--c2) -->
+        <div class="aside__sheet" aria-label="Fiche technique">
+          <h4>Fiche</h4>
+
+          <div class="aside__row">
+            <span class="aside__key">Genre</span>
+            <!-- ← get_field('genre') -->
+            <span class="aside__val">Art Rock · Post-Punk</span>
+          </div>
+
+          <div class="aside__row">
+            <span class="aside__key">Meilleurs titres</span>
+            <!-- ← get_field('best_tracks') -->
+            <span class="aside__val">Song of the Lake · O Wow O Wow · Joy</span>
+          </div>
+
+          <div class="aside__row">
+            <span class="aside__key">Où écouter</span>
+            <!-- ← get_field('ou_les_ecouter') -->
+            <span class="aside__val">Spotify · Apple Music · Bandcamp</span>
+          </div>
+
+        </div>
+      </div>
+    </aside>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     RELATED — style gs-related / gs-card (identique playlists)
+     Fond blanc, titre Anton dark, cards carrées
+     ══════════════════════════════════════════════════ -->
+<section class="gs-related" aria-label="Autres chroniques">
+  <div class="gs-related__inner">
+
+    <header class="gs-related__head">
+      <h2 class="gs-related__title">D'autres <em>chroniques</em></h2>
+      <a href="#" class="gs-related__all">Voir toutes les chroniques →</a>
+    </header>
+
+    <div class="related-grid">
+
+      <a href="#" class="gs-card">
+        <img class="gs-card-img"
+             src="https://picsum.photos/seed/rel-r2-1/600/600"
+             alt="Funeral for Justice — Mdou Moctar">
+        <div class="gs-card-img-overlay">
+          <div>
+            <h3 class="gs-card-title">Funeral for Justice</h3>
+            <p class="gs-card-sub">Mdou Moctar · Matador · 2024</p>
+          </div>
+        </div>
+      </a>
+
+      <a href="#" class="gs-card">
+        <img class="gs-card-img"
+             src="https://picsum.photos/seed/rel-r2-2/600/600"
+             alt="Intercepted Message — Osees">
+        <div class="gs-card-img-overlay">
+          <div>
+            <h3 class="gs-card-title">Intercepted Message</h3>
+            <p class="gs-card-sub">Osees · Castle Face · 2024</p>
+          </div>
+        </div>
+      </a>
+
+      <a href="#" class="gs-card">
+        <img class="gs-card-img"
+             src="https://picsum.photos/seed/rel-r2-3/600/600"
+             alt="Cartoon Darkness — Amyl and the Sniffers">
+        <div class="gs-card-img-overlay">
+          <div>
+            <h3 class="gs-card-title">Cartoon Darkness</h3>
+            <p class="gs-card-sub">Amyl and the Sniffers · Rough Trade · 2024</p>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

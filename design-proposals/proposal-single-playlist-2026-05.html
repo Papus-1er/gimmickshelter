@@ -1,0 +1,756 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Proposal — Single Playlist — Gimmick Shelter</title>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --color1: #E81F1F;
+    --color2: #000B29;
+    --color3: #FFFFFF;
+    --color4: #000000;
+    --color5: #6D6D64;
+    --gs-divider-soft: rgba(255,255,255,0.05);
+    --gs-divider-medium: rgba(255,255,255,0.08);
+    --gs-nav-height: 52px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Roboto', sans-serif;
+    background: var(--color4);
+    color: var(--color3);
+    font-size: 1.05rem;
+    line-height: 1.6;
+    letter-spacing: 0.03rem;
+  }
+  h1, h2, h3, h4, h5, h6 { font-family: 'Anton', sans-serif; font-weight: 400; margin: 0; letter-spacing: 0.02em; }
+  a { color: var(--color3); text-decoration: none; }
+  p { text-align: justify; margin: 0 0 1.2rem; }
+
+  /* === Doc shell === */
+  .doc-header {
+    background: linear-gradient(135deg, var(--color2), var(--color4));
+    padding: 3rem 2rem;
+    border-bottom: 4px solid var(--color1);
+    text-align: center;
+  }
+  .doc-header h1 {
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    color: var(--color3);
+    text-transform: uppercase;
+  }
+  .doc-header p { text-align: center; color: var(--color5); max-width: 720px; margin: 1rem auto 0; }
+  .doc-meta { display: inline-block; margin-top: 1rem; padding: .35rem .9rem; background: var(--color1); color: var(--color3); font-size: .85rem; letter-spacing: .15em; text-transform: uppercase; }
+  .variant {
+    border-bottom: 1px solid var(--gs-divider-medium);
+    padding-bottom: 4rem;
+  }
+  .variant-label {
+    background: var(--color1);
+    color: var(--color3);
+    padding: 2.5rem 2rem;
+    text-align: center;
+  }
+  .variant-label .tag { display: inline-block; padding: .25rem .8rem; border: 1px solid var(--color3); font-size: .75rem; letter-spacing: .2em; text-transform: uppercase; margin-bottom: 1rem; }
+  .variant-label h2 { font-size: clamp(2rem, 4vw, 3rem); text-transform: uppercase; }
+  .variant-label p { text-align: center; max-width: 760px; margin: 1rem auto 0; color: var(--color3); opacity: .92; }
+  .annotation {
+    background: var(--color2);
+    color: var(--color3);
+    padding: 1.5rem 2rem;
+    border-left: 4px solid var(--color1);
+    max-width: 1200px;
+    margin: 0 auto 2rem;
+    font-size: .95rem;
+  }
+  .annotation strong { font-family: 'Anton', sans-serif; letter-spacing: .05em; color: var(--color1); }
+  .annotation ul { margin: .5rem 0 0; padding-left: 1.2rem; }
+  .annotation li { margin-bottom: .3rem; }
+
+  /* === Mocked site header === */
+  .mock-header { background: var(--color1); color: var(--color3); padding: 1.2rem 2rem; display: flex; align-items: center; gap: 1.5rem; }
+  .mock-header .logo { font-family: 'Anton', sans-serif; font-size: 1.8rem; letter-spacing: .08em; text-transform: uppercase; }
+  .mock-header .tagline { font-style: italic; color: var(--color3); opacity: .85; font-size: .9rem; }
+  .mock-nav { background: var(--color4); border-top: 1px solid var(--gs-divider-medium); padding: 0 2rem; height: var(--gs-nav-height); display: flex; align-items: center; gap: 1.5rem; font-size: .9rem; text-transform: uppercase; letter-spacing: .12em; }
+  .mock-nav a { color: var(--color3); opacity: .8; }
+  .mock-nav a.active { color: var(--color1); opacity: 1; }
+
+  /* === Mocked site footer === */
+  .mock-footer { background: var(--color2); padding: 2rem; text-align: center; color: var(--color5); font-size: .85rem; letter-spacing: .1em; text-transform: uppercase; }
+  .mock-footer .links a { margin: 0 .8rem; color: var(--color3); }
+
+  /* ============================================
+     VARIANT A — Hero immersif full-width
+     ============================================ */
+  .v-a { background: var(--color4); }
+  .a-hero {
+    position: relative;
+    min-height: 78vh;
+    background-image:
+      radial-gradient(ellipse at 70% 30%, rgba(232,31,31,0.35), transparent 55%),
+      linear-gradient(180deg, rgba(0,11,41,0.55) 0%, rgba(0,0,0,0.85) 100%),
+      url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=1600&q=80');
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: flex-end;
+    padding: 4rem 2rem 3rem;
+    overflow: hidden;
+  }
+  .a-hero::after {
+    content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 120px;
+    background: linear-gradient(to top, var(--color4), transparent);
+    pointer-events: none;
+  }
+  .a-hero-inner { position: relative; z-index: 2; max-width: 1200px; margin: 0 auto; width: 100%; }
+  .a-breadcrumb { font-size: .8rem; letter-spacing: .25em; text-transform: uppercase; color: var(--color5); margin-bottom: 1.5rem; }
+  .a-breadcrumb .sep { margin: 0 .6rem; color: var(--color1); }
+  .a-hero h1 {
+    font-size: clamp(3rem, 8vw, 7rem);
+    line-height: 0.95;
+    text-transform: uppercase;
+    color: var(--color3);
+    text-shadow: 0 4px 24px rgba(0,0,0,0.6);
+    max-width: 900px;
+  }
+  .a-hero .subtitle {
+    font-family: 'Roboto', sans-serif;
+    font-style: italic;
+    font-size: clamp(1.1rem, 2vw, 1.6rem);
+    color: var(--color3);
+    opacity: .92;
+    margin-top: 1.2rem;
+    max-width: 780px;
+  }
+  .a-meta-row {
+    margin-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem 2rem;
+    align-items: center;
+    color: var(--color5);
+    font-size: .85rem;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+  }
+  .a-meta-row .pill { background: var(--color1); color: var(--color3); padding: .4rem .9rem; }
+
+  .a-body { max-width: 1200px; margin: -3rem auto 0; padding: 0 2rem 4rem; position: relative; z-index: 3; }
+  .a-grid { display: grid; grid-template-columns: 1fr 380px; gap: 3rem; align-items: start; }
+  @media (max-width: 992px) { .a-grid { grid-template-columns: 1fr; } }
+  .a-content p { font-size: 1.15rem; }
+  .a-content p:first-of-type::first-letter {
+    font-family: 'Anton', sans-serif;
+    font-size: 4.2rem;
+    float: left;
+    line-height: 0.9;
+    margin: .25rem .6rem 0 0;
+    color: var(--color1);
+  }
+
+  .a-aside { position: sticky; top: 1.5rem; }
+  .a-player {
+    background: var(--color2);
+    padding: 1.2rem;
+    border: 1px solid var(--gs-divider-medium);
+  }
+  .a-player .label { font-family: 'Anton', sans-serif; font-size: 1.1rem; letter-spacing: .15em; text-transform: uppercase; color: var(--color1); margin-bottom: .8rem; }
+
+  /* === Tracklist === */
+  .tracklist { margin-top: 3rem; border-top: 1px solid var(--gs-divider-medium); padding-top: 2rem; }
+  .tracklist h3 { font-size: 2rem; text-transform: uppercase; margin-bottom: 1.5rem; color: var(--color3); }
+  .tracklist h3 span { color: var(--color1); }
+  .track-row { display: grid; grid-template-columns: 36px 1fr auto; gap: 1rem; align-items: center; padding: .85rem 0; border-bottom: 1px solid var(--gs-divider-soft); transition: background .2s; }
+  .track-row:hover { background: var(--gs-divider-soft); padding-left: .5rem; padding-right: .5rem; }
+  .track-num { font-family: 'Anton', sans-serif; color: var(--color5); font-size: 1.3rem; }
+  .track-title { font-weight: 500; }
+  .track-artist { color: var(--color5); font-size: .9rem; display: block; margin-top: .1rem; }
+  .track-duration { font-family: 'Anton', sans-serif; color: var(--color5); font-size: 1rem; letter-spacing: .1em; }
+
+  /* === Spotify mock === */
+  .spotify-embed {
+    background: linear-gradient(135deg, #1db954 0%, #0e7c34 100%);
+    border-radius: 12px;
+    overflow: hidden;
+    color: #fff;
+    position: relative;
+    aspect-ratio: 1.4 / 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1.2rem;
+  }
+  .spotify-embed.compact { aspect-ratio: auto; padding: 1rem; flex-direction: row; align-items: center; gap: 1rem; }
+  .spotify-embed .sp-logo { font-family: 'Roboto', sans-serif; font-weight: 700; letter-spacing: .15em; text-transform: uppercase; font-size: .75rem; opacity: .9; }
+  .spotify-embed .sp-cover {
+    background-image: url('https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&q=80');
+    background-size: cover; background-position: center;
+    aspect-ratio: 1; border-radius: 6px;
+    flex-shrink: 0;
+    width: 80px;
+  }
+  .spotify-embed.full .sp-cover { width: 100%; }
+  .spotify-embed .sp-meta { font-family: 'Anton', sans-serif; font-size: 1.4rem; line-height: 1.05; letter-spacing: .04em; }
+  .spotify-embed .sp-sub { font-size: .8rem; opacity: .9; margin-top: .3rem; }
+  .spotify-embed .sp-play { width: 48px; height: 48px; border-radius: 50%; background: #fff; color: #1db954; display: inline-flex; align-items: center; justify-content: center; font-size: 1.2rem; align-self: flex-end; }
+
+  /* === Share + back === */
+  .share-row { display: flex; gap: .6rem; margin-top: 1rem; flex-wrap: wrap; }
+  .share-btn { width: 40px; height: 40px; border-radius: 50%; background: var(--color2); color: var(--color3); display: inline-flex; align-items: center; justify-content: center; border: 1px solid var(--gs-divider-medium); font-size: .9rem; }
+  .share-btn:hover { background: var(--color1); border-color: var(--color1); }
+  .back-link { display: inline-flex; align-items: center; gap: .5rem; margin: 2rem 0 1rem; color: var(--color5); font-size: .85rem; letter-spacing: .15em; text-transform: uppercase; }
+  .back-link:hover { color: var(--color1); }
+  .back-link .arrow { font-family: 'Anton', sans-serif; }
+
+  /* === Related === */
+  .related { background: var(--color2); padding: 4rem 2rem; }
+  .related h3 { font-size: 2.2rem; text-transform: uppercase; text-align: center; margin-bottom: 2.5rem; }
+  .related h3 span { color: var(--color1); }
+  .related-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  @media (max-width: 768px) { .related-grid { grid-template-columns: 1fr; } }
+  .gs-card { position: relative; overflow: hidden; aspect-ratio: 1; }
+  .gs-card-img { width: 100%; height: 100%; object-fit: cover; transition: transform .3s ease; }
+  .gs-card:hover .gs-card-img { transform: scale(1.08); }
+  .gs-card-img-overlay { position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,0.85), transparent 50%); display: flex; align-items: flex-end; padding: 1.2rem; }
+  .gs-card-title { font-family: 'Anton', sans-serif; font-size: 1.6rem; color: var(--color3); text-transform: uppercase; line-height: 1; }
+  .gs-card-sub { color: var(--color3); opacity: .8; font-size: .85rem; font-style: italic; margin-top: .3rem; }
+
+  /* ============================================
+     VARIANT B — Magazine deux colonnes
+     ============================================ */
+  .v-b { background: var(--color4); padding: 0; }
+  .b-wrap { max-width: 1280px; margin: 0 auto; padding: 3rem 2rem; }
+  .b-top { display: grid; grid-template-columns: 380px 1fr; gap: 3rem; align-items: start; }
+  @media (max-width: 992px) { .b-top { grid-template-columns: 1fr; } }
+  .b-cover-col { position: sticky; top: 1.5rem; }
+  .b-cover {
+    width: 100%;
+    aspect-ratio: 1;
+    background-image:
+      linear-gradient(135deg, rgba(232,31,31,0.18), transparent 60%),
+      url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=800&q=80');
+    background-size: cover; background-position: center;
+    border: 1px solid var(--gs-divider-medium);
+  }
+  .b-cover-meta { margin-top: 1rem; font-size: .8rem; color: var(--color5); letter-spacing: .15em; text-transform: uppercase; }
+  .b-cover-meta strong { color: var(--color3); }
+  .b-share { margin-top: 1.5rem; }
+  .b-share-label { font-family: 'Anton', sans-serif; font-size: .9rem; letter-spacing: .2em; text-transform: uppercase; color: var(--color5); margin-bottom: .6rem; }
+
+  .b-head .kicker {
+    display: inline-block;
+    background: var(--color1);
+    color: var(--color3);
+    padding: .3rem .8rem;
+    font-family: 'Anton', sans-serif;
+    font-size: .85rem;
+    letter-spacing: .25em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .b-head h1 {
+    font-size: clamp(2.4rem, 5vw, 4.5rem);
+    line-height: 0.95;
+    text-transform: uppercase;
+    color: var(--color3);
+  }
+  .b-head .sub {
+    font-family: 'Roboto', sans-serif;
+    font-style: italic;
+    font-size: 1.4rem;
+    color: var(--color5);
+    margin-top: 1rem;
+    max-width: 640px;
+  }
+  .b-byline {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin: 1.5rem 0 2rem;
+    padding: 1rem 0;
+    border-top: 1px solid var(--gs-divider-medium);
+    border-bottom: 1px solid var(--gs-divider-medium);
+    font-size: .85rem;
+    color: var(--color5);
+    letter-spacing: .1em;
+    text-transform: uppercase;
+  }
+  .b-byline strong { color: var(--color3); font-family: 'Anton', sans-serif; letter-spacing: .12em; }
+
+  .b-body { columns: 1; max-width: 720px; }
+  .b-body p { font-size: 1.1rem; line-height: 1.7; }
+  .b-body p:first-of-type::first-letter {
+    font-family: 'Anton', sans-serif;
+    font-size: 4rem; float: left; line-height: 0.9;
+    margin: .25rem .6rem 0 0;
+    color: var(--color1);
+  }
+
+  .b-player-block {
+    margin: 2.5rem 0;
+    padding: 1.2rem;
+    background: var(--color2);
+    border-left: 4px solid var(--color1);
+  }
+  .b-player-block .lbl { font-family: 'Anton', sans-serif; font-size: 1rem; letter-spacing: .2em; text-transform: uppercase; color: var(--color1); margin-bottom: .8rem; }
+
+  /* ============================================
+     VARIANT C — Player-first
+     ============================================ */
+  .v-c { background: var(--color4); }
+  .c-hero {
+    background: linear-gradient(180deg, var(--color2) 0%, var(--color4) 100%);
+    padding: 3rem 2rem 2rem;
+  }
+  .c-hero-inner { max-width: 1200px; margin: 0 auto; }
+  .c-kicker {
+    font-family: 'Anton', sans-serif;
+    font-size: .9rem;
+    letter-spacing: .3em;
+    text-transform: uppercase;
+    color: var(--color1);
+    margin-bottom: 1rem;
+  }
+  .c-hero h1 {
+    font-size: clamp(2rem, 4vw, 3.4rem);
+    text-transform: uppercase;
+    color: var(--color3);
+    line-height: 1;
+  }
+  .c-hero .sub {
+    font-family: 'Roboto', sans-serif;
+    font-style: italic;
+    color: var(--color5);
+    font-size: 1.15rem;
+    margin-top: .8rem;
+    max-width: 720px;
+  }
+
+  .c-player-card {
+    margin-top: 2rem;
+    background: var(--color4);
+    border: 1px solid var(--gs-divider-medium);
+    display: grid;
+    grid-template-columns: 280px 1fr auto;
+    gap: 1.5rem;
+    align-items: center;
+    padding: 1.5rem;
+  }
+  @media (max-width: 768px) { .c-player-card { grid-template-columns: 1fr; } }
+  .c-cover-thumb {
+    aspect-ratio: 1;
+    background-image: url('https://images.unsplash.com/photo-1470225620780-dba8ba36b745?w=600&q=80');
+    background-size: cover; background-position: center;
+  }
+  .c-player-meta .num { font-family: 'Anton', sans-serif; color: var(--color1); letter-spacing: .15em; font-size: .85rem; text-transform: uppercase; }
+  .c-player-meta .ttl { font-family: 'Anton', sans-serif; font-size: 1.8rem; line-height: 1; margin: .4rem 0; text-transform: uppercase; }
+  .c-player-meta .info { color: var(--color5); font-size: .85rem; letter-spacing: .1em; text-transform: uppercase; }
+  .c-cta { display: flex; gap: .6rem; flex-wrap: wrap; }
+  .c-cta .btn-play {
+    background: var(--color1); color: var(--color3); padding: .9rem 1.6rem;
+    font-family: 'Anton', sans-serif; letter-spacing: .15em; text-transform: uppercase;
+    border: 0; cursor: pointer; font-size: 1rem;
+  }
+  .c-cta .btn-spotify {
+    background: #1db954; color: #fff; padding: .9rem 1.6rem;
+    font-family: 'Anton', sans-serif; letter-spacing: .15em; text-transform: uppercase;
+    font-size: 1rem;
+  }
+
+  .c-tracklist-band {
+    background: var(--color2);
+    padding: 0;
+    margin-top: 0;
+  }
+  .c-tracklist-inner { max-width: 1200px; margin: 0 auto; padding: 2rem; }
+  .c-tracklist-inner h3 { font-size: 1.4rem; letter-spacing: .15em; text-transform: uppercase; margin-bottom: 1.2rem; color: var(--color1); }
+
+  .c-context { padding: 4rem 2rem; }
+  .c-context-inner { max-width: 820px; margin: 0 auto; }
+  .c-context-inner h2 { font-size: 2rem; text-transform: uppercase; margin-bottom: 1.5rem; color: var(--color3); }
+  .c-context-inner h2 span { color: var(--color1); }
+  .c-context-inner p { font-size: 1.1rem; }
+
+  /* === Compatibility responsive === */
+  @media (max-width: 768px) {
+    .a-hero { min-height: 60vh; padding: 3rem 1.2rem 2rem; }
+    .b-wrap { padding: 2rem 1.2rem; }
+    .c-hero { padding: 2rem 1.2rem; }
+  }
+</style>
+</head>
+<body>
+
+<header class="doc-header">
+  <span class="doc-meta">Designer · 2026-05</span>
+  <h1>Single Playlist — Redesign</h1>
+  <p>Trois directions visuelles pour la page individuelle <code>single-playlists.php</code>. Tokens DS uniquement, mock d'une playlist crédible et complète, header / footer simulés.</p>
+</header>
+
+<!-- =================================================================
+     VARIANT A — Hero immersif full-width
+     ================================================================= -->
+<section class="variant v-a">
+  <div class="variant-label">
+    <span class="tag">Variante A</span>
+    <h2>Hero immersif full-width</h2>
+    <p>Cover de la playlist en background plein écran, gradient bleu nuit + halo rouge. Titre Anton XXL, embed Spotify en sticky à droite. Focus ambiance, premium, cinématographique.</p>
+  </div>
+
+  <div class="annotation">
+    <strong>Ce que ça met en avant</strong>
+    <ul>
+      <li>L'image de couverture comme atmosphère immersive (gradient + halo rouge GS).</li>
+      <li>Le titre comme affiche, façon poster de festival.</li>
+      <li>Lecture éditoriale longue avec drop-cap rouge et tracklist en bas.</li>
+    </ul>
+    <strong>Compromis</strong>
+    <ul>
+      <li>L'embed Spotify n'est pas le héros, il faut scroller un peu pour lancer la lecture sur mobile.</li>
+      <li>Coût visuel : la cover doit être d'excellente qualité.</li>
+    </ul>
+  </div>
+
+  <!-- Mocked site header -->
+  <div class="mock-header">
+    <div class="logo">Gimmick Shelter</div>
+    <div class="tagline">Le webzine rock indépendant</div>
+  </div>
+  <nav class="mock-nav">
+    <a>Articles</a><a>Anachroniques</a><a class="active">Playlists</a><a>Dates</a><a>À propos</a>
+  </nav>
+
+  <!-- Hero -->
+  <div class="a-hero">
+    <div class="a-hero-inner">
+      <div class="a-breadcrumb">Accueil <span class="sep">/</span> Playlists <span class="sep">/</span> Édito de mai</div>
+      <h1>Insomnies de banlieue rouge</h1>
+      <p class="subtitle">Onze titres pour les nuits où les lampadaires clignotent et où les guitares saturées remplacent le silence.</p>
+      <div class="a-meta-row">
+        <span class="pill">Playlist du mois</span>
+        <span>11 titres</span>
+        <span>· 38 min</span>
+        <span>· Sélection par Adrien M.</span>
+        <span>· 09 mai 2026</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="a-body">
+    <div class="a-grid">
+      <article class="a-content">
+        <p>Il y a des soirs où la ville ne s'endort pas. Où le bitume reste tiède jusqu'à trois heures du matin et où la moindre voiture qui passe semble vouloir raconter quelque chose. Cette playlist est née comme ça : un soir de fin d'avril, fenêtre ouverte sur le périph, casque vissé, à chercher de quoi accompagner cette espèce d'insomnie urbaine qui ressemble à un état d'esprit autant qu'à un manque de sommeil.</p>
+        <p>On y croise des piliers évidents — Idles, Fontaines DC, Black Country New Road — et puis des découvertes plus discrètes, ces groupes qu'on entend une fois sur Bandcamp et qui s'incrustent dans la rotation pour les six mois suivants. Le fil rouge, c'est la tension : des morceaux qui montent, qui couvent, qui n'éclatent pas toujours mais qui laissent toujours quelque chose en suspens.</p>
+        <p>Côté production, on est volontairement à cheval entre les sonorités post-punk britanniques de la dernière vague et un certain math-rock instrumental, plus contemplatif. C'est une sélection qui se prête bien à la marche nocturne, à la conduite sur autoroute vide, ou au simple fait de fixer un plafond en attendant que les idées se rangent.</p>
+      </article>
+
+      <aside class="a-aside">
+        <div class="a-player">
+          <div class="label">Écouter sur Spotify</div>
+          <div class="spotify-embed full">
+            <div>
+              <div class="sp-logo">Spotify · Playlist</div>
+            </div>
+            <div class="sp-cover"></div>
+            <div>
+              <div class="sp-meta">Insomnies de banlieue rouge</div>
+              <div class="sp-sub">11 titres · 38 min</div>
+            </div>
+            <div class="sp-play">▶</div>
+          </div>
+          <div class="share-row">
+            <a class="share-btn" title="Facebook">f</a>
+            <a class="share-btn" title="Twitter">x</a>
+            <a class="share-btn" title="WhatsApp">w</a>
+            <a class="share-btn" title="Email">@</a>
+          </div>
+          <a class="back-link"><span class="arrow">←</span> Toutes les playlists</a>
+        </div>
+      </aside>
+    </div>
+
+    <!-- Tracklist -->
+    <div class="tracklist">
+      <h3>Track<span>list</span></h3>
+      <div class="track-row"><div class="track-num">01</div><div><div class="track-title">Car Crash</div><div class="track-artist">Idles</div></div><div class="track-duration">3:12</div></div>
+      <div class="track-row"><div class="track-num">02</div><div><div class="track-title">Roman Holiday</div><div class="track-artist">Fontaines D.C.</div></div><div class="track-duration">3:45</div></div>
+      <div class="track-row"><div class="track-num">03</div><div><div class="track-title">Concorde</div><div class="track-artist">Black Country, New Road</div></div><div class="track-duration">5:21</div></div>
+      <div class="track-row"><div class="track-num">04</div><div><div class="track-title">Chaise Longue</div><div class="track-artist">Wet Leg</div></div><div class="track-duration">3:14</div></div>
+      <div class="track-row"><div class="track-num">05</div><div><div class="track-title">Cockroach</div><div class="track-artist">Squid</div></div><div class="track-duration">4:38</div></div>
+      <div class="track-row"><div class="track-num">06</div><div><div class="track-title">A.O.C</div><div class="track-artist">Yard Act</div></div><div class="track-duration">4:02</div></div>
+      <div class="track-row"><div class="track-num">07</div><div><div class="track-title">Slow Movie</div><div class="track-artist">Shame</div></div><div class="track-duration">3:58</div></div>
+      <div class="track-row"><div class="track-num">08</div><div><div class="track-title">Statues</div><div class="track-artist">Dry Cleaning</div></div><div class="track-duration">3:33</div></div>
+      <div class="track-row"><div class="track-num">09</div><div><div class="track-title">The Wheel</div><div class="track-artist">PJ Harvey</div></div><div class="track-duration">4:11</div></div>
+      <div class="track-row"><div class="track-num">10</div><div><div class="track-title">Jam</div><div class="track-artist">Crows</div></div><div class="track-duration">3:21</div></div>
+      <div class="track-row"><div class="track-num">11</div><div><div class="track-title">Sirens</div><div class="track-artist">Sprints</div></div><div class="track-duration">3:09</div></div>
+    </div>
+  </div>
+
+  <!-- Related -->
+  <div class="related">
+    <h3>D'autres <span>playlists</span></h3>
+    <div class="related-grid">
+      <a class="gs-card">
+        <img class="gs-card-img" alt="" src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&q=80">
+        <div class="gs-card-img-overlay"><div><div class="gs-card-title">Dimanche pluie fine</div><div class="gs-card-sub">Folk feutré pour journée grise</div></div></div>
+      </a>
+      <a class="gs-card">
+        <img class="gs-card-img" alt="" src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600&q=80">
+        <div class="gs-card-img-overlay"><div><div class="gs-card-title">Stoner solaire</div><div class="gs-card-sub">Pour les routes de juillet</div></div></div>
+      </a>
+      <a class="gs-card">
+        <img class="gs-card-img" alt="" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&q=80">
+        <div class="gs-card-img-overlay"><div><div class="gs-card-title">Nineties forever</div><div class="gs-card-sub">Le grunge, encore</div></div></div>
+      </a>
+    </div>
+  </div>
+
+  <footer class="mock-footer">
+    <div class="links"><a>Mentions</a><a>Contact</a><a>Newsletter</a></div>
+    <div style="margin-top:1rem;">© Gimmick Shelter — 2026</div>
+  </footer>
+</section>
+
+<!-- =================================================================
+     VARIANT B — Magazine deux colonnes
+     ================================================================= -->
+<section class="variant v-b">
+  <div class="variant-label">
+    <span class="tag">Variante B</span>
+    <h2>Layout magazine deux colonnes</h2>
+    <p>Cover carrée sticky à gauche, titre + sous-titre + intro éditoriale à droite. Lecture façon presse musicale traditionnelle. Player intégré dans le flux du texte.</p>
+  </div>
+
+  <div class="annotation">
+    <strong>Ce que ça met en avant</strong>
+    <ul>
+      <li>L'éditorial : le texte est central et bien aéré (max 720px de large).</li>
+      <li>La cover de playlist comme repère visuel constant grâce au sticky.</li>
+      <li>Lisibilité optimale pour articles longs avec drop-cap.</li>
+    </ul>
+    <strong>Compromis</strong>
+    <ul>
+      <li>Moins immersif que la variante A — pas de hero plein écran.</li>
+      <li>Le Spotify embed apparaît en milieu de page (intégré au flux), il faut le faire monter pour usage rapide.</li>
+    </ul>
+  </div>
+
+  <div class="mock-header">
+    <div class="logo">Gimmick Shelter</div>
+    <div class="tagline">Le webzine rock indépendant</div>
+  </div>
+  <nav class="mock-nav">
+    <a>Articles</a><a>Anachroniques</a><a class="active">Playlists</a><a>Dates</a><a>À propos</a>
+  </nav>
+
+  <div class="b-wrap">
+    <a class="back-link"><span class="arrow">←</span> Toutes les playlists</a>
+
+    <div class="b-top">
+      <div class="b-cover-col">
+        <div class="b-cover"></div>
+        <div class="b-cover-meta">
+          <strong>Sélection</strong> · Adrien M.<br>
+          <strong>Durée</strong> · 38 min · 11 titres<br>
+          <strong>Publié</strong> · 09 mai 2026
+        </div>
+        <div class="b-share">
+          <div class="b-share-label">Partager</div>
+          <div class="share-row">
+            <a class="share-btn">f</a>
+            <a class="share-btn">x</a>
+            <a class="share-btn">w</a>
+            <a class="share-btn">@</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="b-head">
+        <span class="kicker">Playlist du mois · Mai 2026</span>
+        <h1>Insomnies de banlieue rouge</h1>
+        <p class="sub">Onze titres pour les nuits où les lampadaires clignotent et où les guitares saturées remplacent le silence.</p>
+        <div class="b-byline">
+          <span><strong>Par</strong> Adrien Masseron</span>
+          <span><strong>Genres</strong> Post-punk · Math-rock · Indie</span>
+          <span><strong>Lecture</strong> 4 min</span>
+        </div>
+
+        <div class="b-body">
+          <p>Il y a des soirs où la ville ne s'endort pas. Où le bitume reste tiède jusqu'à trois heures du matin et où la moindre voiture qui passe semble vouloir raconter quelque chose. Cette playlist est née comme ça : un soir de fin d'avril, fenêtre ouverte sur le périph, casque vissé, à chercher de quoi accompagner cette espèce d'insomnie urbaine qui ressemble à un état d'esprit autant qu'à un manque de sommeil.</p>
+
+          <div class="b-player-block">
+            <div class="lbl">Écouter pendant la lecture</div>
+            <div class="spotify-embed compact">
+              <div class="sp-cover"></div>
+              <div style="flex:1;">
+                <div class="sp-meta" style="font-size:1.1rem;">Insomnies de banlieue rouge</div>
+                <div class="sp-sub">11 titres · 38 min · Spotify</div>
+              </div>
+              <div class="sp-play">▶</div>
+            </div>
+          </div>
+
+          <p>On y croise des piliers évidents — Idles, Fontaines DC, Black Country New Road — et puis des découvertes plus discrètes, ces groupes qu'on entend une fois sur Bandcamp et qui s'incrustent dans la rotation pour les six mois suivants. Le fil rouge, c'est la tension : des morceaux qui montent, qui couvent, qui n'éclatent pas toujours mais qui laissent toujours quelque chose en suspens.</p>
+          <p>Côté production, on est volontairement à cheval entre les sonorités post-punk britanniques de la dernière vague et un certain math-rock instrumental, plus contemplatif. C'est une sélection qui se prête bien à la marche nocturne, à la conduite sur autoroute vide, ou au simple fait de fixer un plafond en attendant que les idées se rangent.</p>
+        </div>
+
+        <div class="tracklist">
+          <h3>Track<span>list</span></h3>
+          <div class="track-row"><div class="track-num">01</div><div><div class="track-title">Car Crash</div><div class="track-artist">Idles</div></div><div class="track-duration">3:12</div></div>
+          <div class="track-row"><div class="track-num">02</div><div><div class="track-title">Roman Holiday</div><div class="track-artist">Fontaines D.C.</div></div><div class="track-duration">3:45</div></div>
+          <div class="track-row"><div class="track-num">03</div><div><div class="track-title">Concorde</div><div class="track-artist">Black Country, New Road</div></div><div class="track-duration">5:21</div></div>
+          <div class="track-row"><div class="track-num">04</div><div><div class="track-title">Chaise Longue</div><div class="track-artist">Wet Leg</div></div><div class="track-duration">3:14</div></div>
+          <div class="track-row"><div class="track-num">05</div><div><div class="track-title">Cockroach</div><div class="track-artist">Squid</div></div><div class="track-duration">4:38</div></div>
+          <div class="track-row"><div class="track-num">06</div><div><div class="track-title">A.O.C</div><div class="track-artist">Yard Act</div></div><div class="track-duration">4:02</div></div>
+          <div class="track-row"><div class="track-num">07</div><div><div class="track-title">Slow Movie</div><div class="track-artist">Shame</div></div><div class="track-duration">3:58</div></div>
+          <div class="track-row"><div class="track-num">08</div><div><div class="track-title">Statues</div><div class="track-artist">Dry Cleaning</div></div><div class="track-duration">3:33</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="related">
+    <h3>D'autres <span>playlists</span></h3>
+    <div class="related-grid">
+      <a class="gs-card">
+        <img class="gs-card-img" alt="" src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&q=80">
+        <div class="gs-card-img-overlay"><div><div class="gs-card-title">Dimanche pluie fine</div><div class="gs-card-sub">Folk feutré pour journée grise</div></div></div>
+      </a>
+      <a class="gs-card">
+        <img class="gs-card-img" alt="" src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600&q=80">
+        <div class="gs-card-img-overlay"><div><div class="gs-card-title">Stoner solaire</div><div class="gs-card-sub">Pour les routes de juillet</div></div></div>
+      </a>
+      <a class="gs-card">
+        <img class="gs-card-img" alt="" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&q=80">
+        <div class="gs-card-img-overlay"><div><div class="gs-card-title">Nineties forever</div><div class="gs-card-sub">Le grunge, encore</div></div></div>
+      </a>
+    </div>
+  </div>
+
+  <footer class="mock-footer">
+    <div class="links"><a>Mentions</a><a>Contact</a><a>Newsletter</a></div>
+    <div style="margin-top:1rem;">© Gimmick Shelter — 2026</div>
+  </footer>
+</section>
+
+<!-- =================================================================
+     VARIANT C — Player-first
+     ================================================================= -->
+<section class="variant v-c">
+  <div class="variant-label">
+    <span class="tag">Variante C</span>
+    <h2>Player-first</h2>
+    <p>L'embed Spotify est le héros, dominant le haut de la page. Le titre, sous-titre et image vivent autour comme contexte. L'utilisateur lance la lecture en deux secondes puis lit la chronique pendant qu'il écoute.</p>
+  </div>
+
+  <div class="annotation">
+    <strong>Ce que ça met en avant</strong>
+    <ul>
+      <li>L'usage : on lance la playlist tout de suite, sans scroll.</li>
+      <li>La tracklist visible immédiatement après le player.</li>
+      <li>L'éditorial passe en deuxième écran, en lecture confortable centrée.</li>
+    </ul>
+    <strong>Compromis</strong>
+    <ul>
+      <li>Moins de wow visuel à l'arrivée — pas d'image plein écran.</li>
+      <li>Le contexte éditorial est dévalorisé visuellement (mais pas perdu).</li>
+    </ul>
+  </div>
+
+  <div class="mock-header">
+    <div class="logo">Gimmick Shelter</div>
+    <div class="tagline">Le webzine rock indépendant</div>
+  </div>
+  <nav class="mock-nav">
+    <a>Articles</a><a>Anachroniques</a><a class="active">Playlists</a><a>Dates</a><a>À propos</a>
+  </nav>
+
+  <div class="c-hero">
+    <div class="c-hero-inner">
+      <div class="c-kicker">Playlist · Mai 2026</div>
+      <h1>Insomnies de banlieue rouge</h1>
+      <p class="sub">Onze titres pour les nuits où les lampadaires clignotent et où les guitares saturées remplacent le silence.</p>
+
+      <div class="c-player-card">
+        <div class="c-cover-thumb"></div>
+        <div class="c-player-meta">
+          <div class="num">11 titres · 38 min</div>
+          <div class="ttl">Lancer la sélection</div>
+          <div class="info">Sélection par Adrien M. · 09 mai 2026</div>
+        </div>
+        <div class="c-cta">
+          <button class="btn-play">▶ Écouter</button>
+          <a class="btn-spotify">Spotify</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="c-tracklist-band">
+    <div class="c-tracklist-inner">
+      <h3>Tracklist</h3>
+      <div class="track-row"><div class="track-num">01</div><div><div class="track-title">Car Crash</div><div class="track-artist">Idles</div></div><div class="track-duration">3:12</div></div>
+      <div class="track-row"><div class="track-num">02</div><div><div class="track-title">Roman Holiday</div><div class="track-artist">Fontaines D.C.</div></div><div class="track-duration">3:45</div></div>
+      <div class="track-row"><div class="track-num">03</div><div><div class="track-title">Concorde</div><div class="track-artist">Black Country, New Road</div></div><div class="track-duration">5:21</div></div>
+      <div class="track-row"><div class="track-num">04</div><div><div class="track-title">Chaise Longue</div><div class="track-artist">Wet Leg</div></div><div class="track-duration">3:14</div></div>
+      <div class="track-row"><div class="track-num">05</div><div><div class="track-title">Cockroach</div><div class="track-artist">Squid</div></div><div class="track-duration">4:38</div></div>
+      <div class="track-row"><div class="track-num">06</div><div><div class="track-title">A.O.C</div><div class="track-artist">Yard Act</div></div><div class="track-duration">4:02</div></div>
+      <div class="track-row"><div class="track-num">07</div><div><div class="track-title">Slow Movie</div><div class="track-artist">Shame</div></div><div class="track-duration">3:58</div></div>
+      <div class="track-row"><div class="track-num">08</div><div><div class="track-title">Statues</div><div class="track-artist">Dry Cleaning</div></div><div class="track-duration">3:33</div></div>
+      <div class="track-row"><div class="track-num">09</div><div><div class="track-title">The Wheel</div><div class="track-artist">PJ Harvey</div></div><div class="track-duration">4:11</div></div>
+      <div class="track-row"><div class="track-num">10</div><div><div class="track-title">Jam</div><div class="track-artist">Crows</div></div><div class="track-duration">3:21</div></div>
+      <div class="track-row"><div class="track-num">11</div><div><div class="track-title">Sirens</div><div class="track-artist">Sprints</div></div><div class="track-duration">3:09</div></div>
+    </div>
+  </div>
+
+  <div class="c-context">
+    <div class="c-context-inner">
+      <h2>L'<span>histoire</span> derrière la sélection</h2>
+      <p>Il y a des soirs où la ville ne s'endort pas. Où le bitume reste tiède jusqu'à trois heures du matin et où la moindre voiture qui passe semble vouloir raconter quelque chose. Cette playlist est née comme ça : un soir de fin d'avril, fenêtre ouverte sur le périph, casque vissé, à chercher de quoi accompagner cette espèce d'insomnie urbaine qui ressemble à un état d'esprit autant qu'à un manque de sommeil.</p>
+      <p>On y croise des piliers évidents — Idles, Fontaines DC, Black Country New Road — et puis des découvertes plus discrètes, ces groupes qu'on entend une fois sur Bandcamp et qui s'incrustent dans la rotation pour les six mois suivants. Le fil rouge, c'est la tension : des morceaux qui montent, qui couvent, qui n'éclatent pas toujours mais qui laissent toujours quelque chose en suspens.</p>
+      <p>Côté production, on est volontairement à cheval entre les sonorités post-punk britanniques de la dernière vague et un certain math-rock instrumental, plus contemplatif. C'est une sélection qui se prête bien à la marche nocturne, à la conduite sur autoroute vide, ou au simple fait de fixer un plafond en attendant que les idées se rangent.</p>
+
+      <div class="b-share" style="margin-top:2rem;">
+        <div class="b-share-label">Partager</div>
+        <div class="share-row">
+          <a class="share-btn">f</a>
+          <a class="share-btn">x</a>
+          <a class="share-btn">w</a>
+          <a class="share-btn">@</a>
+        </div>
+      </div>
+
+      <a class="back-link"><span class="arrow">←</span> Toutes les playlists</a>
+    </div>
+  </div>
+
+  <div class="related">
+    <h3>D'autres <span>playlists</span></h3>
+    <div class="related-grid">
+      <a class="gs-card">
+        <img class="gs-card-img" alt="" src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=600&q=80">
+        <div class="gs-card-img-overlay"><div><div class="gs-card-title">Dimanche pluie fine</div><div class="gs-card-sub">Folk feutré pour journée grise</div></div></div>
+      </a>
+      <a class="gs-card">
+        <img class="gs-card-img" alt="" src="https://images.unsplash.com/photo-1459749411175-04bf5292ceea?w=600&q=80">
+        <div class="gs-card-img-overlay"><div><div class="gs-card-title">Stoner solaire</div><div class="gs-card-sub">Pour les routes de juillet</div></div></div>
+      </a>
+      <a class="gs-card">
+        <img class="gs-card-img" alt="" src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?w=600&q=80">
+        <div class="gs-card-img-overlay"><div><div class="gs-card-title">Nineties forever</div><div class="gs-card-sub">Le grunge, encore</div></div></div>
+      </a>
+    </div>
+  </div>
+
+  <footer class="mock-footer">
+    <div class="links"><a>Mentions</a><a>Contact</a><a>Newsletter</a></div>
+    <div style="margin-top:1rem;">© Gimmick Shelter — 2026</div>
+  </footer>
+</section>
+
+</body>
+</html>
